@@ -18,6 +18,13 @@ concrete reasons the favoured team can win — not just numbers.
                                                              └─────────────────┘
 ```
 
+![Dashboard — next match, title odds, dark horses](docs/assets/dashboard.png)
+
+> Post-match analytics: real goalscorers (scraped from ESPN) plus a model-generated
+> shot map, passing network and heat maps.
+>
+> ![Match analytics](docs/assets/match-analytics.png)
+
 ---
 
 ## Table of contents
