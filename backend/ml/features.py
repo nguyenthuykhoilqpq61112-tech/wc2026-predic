@@ -8,12 +8,74 @@ DB; for pure-history training they default to neutral values.
 """
 from __future__ import annotations
 
+import json
+import warnings
 from collections import defaultdict, deque
 
 import numpy as np
 import pandas as pd
 
+try:
+    from config import PROC
+except Exception:                       # config import optional for pure use
+    PROC = None
+
 FORM_WINDOW = 5
+
+# Per-feature "neutral" value — the value a feature takes when its signal is
+# absent. Used by the coverage report to detect features that are effectively
+# dead in training (always neutral) and would therefore be a train/inference
+# mismatch if they carry real signal at predict time.
+NEUTRAL_VALUES = {
+    "h2h_home_rate": 0.5,
+    "neutral": None,                    # structural flag, not a signal feature
+    "elo_home": None, "elo_away": None,
+}
+# Features that are filled from live team-news at predict time but default to
+# neutral during pure-history training — the ones most at risk of mismatch.
+TEAM_NEWS_FEATURES = ["avail_diff", "squad_val_diff", "market_home_edge"]
+
+
+def feature_coverage_report(frame: pd.DataFrame, cols: list[str],
+                            persist: bool = True) -> dict:
+    """Fraction of rows where each feature deviates from its neutral value.
+
+    A feature stuck at neutral for the whole training set carries no signal the
+    model can learn, yet may be populated live — a silent train/inference skew.
+    We surface those, warn, and (optionally) persist a coverage report artifact.
+    """
+    report: dict = {"n_rows": int(len(frame)), "features": {}, "dead": []}
+    for c in cols:
+        if c not in frame.columns:
+            continue
+        neutral = NEUTRAL_VALUES.get(c, 0.0)
+        if neutral is None:             # structural — coverage not meaningful
+            cov = 1.0
+        else:
+            cov = float((np.abs(frame[c].to_numpy(dtype=float) - neutral)
+                         > 1e-9).mean())
+        report["features"][c] = round(cov, 4)
+        if cov < 0.01:
+            report["dead"].append(c)
+
+    dead_news = [c for c in report["dead"] if c in TEAM_NEWS_FEATURES]
+    if dead_news:
+        warnings.warn(
+            "feature coverage: "
+            f"{dead_news} are neutral across the entire training set but are "
+            "filled live at predict time — backfill them historically or "
+            "downweight/remove them to avoid train/inference skew.",
+            RuntimeWarning, stacklevel=2)
+        report["recommendation"] = (
+            "backfill historical values for these features, or drop them from "
+            "FEATURE_COLS until a historical source exists")
+
+    if persist and PROC is not None:
+        try:
+            (PROC / "feature_coverage.json").write_text(json.dumps(report, indent=2))
+        except Exception:
+            pass
+    return report
 
 FEATURE_COLS = [
     "elo_diff", "elo_home", "elo_away",
@@ -74,7 +136,10 @@ def build_training_frame(df: pd.DataFrame) -> pd.DataFrame:
         h2h[key].append(1 if r.result == "H" and key[0] == h
                         else 1 if r.result == "A" and key[0] == a else 0)
 
-    return pd.DataFrame(rows)
+    out = pd.DataFrame(rows)
+    # emit a train/inference feature-coverage report (warns on dead features)
+    feature_coverage_report(out, FEATURE_COLS, persist=True)
+    return out
 
 
 def make_feature_vector(*, elo_home: float, elo_away: float, neutral: bool,

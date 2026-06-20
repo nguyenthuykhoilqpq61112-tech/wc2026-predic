@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import math
 import pickle
+import shutil
 from collections import defaultdict
+from datetime import datetime, timezone
 from typing import Any
 
 import numpy as np
@@ -231,6 +233,20 @@ def run(model: DCModel, field: list[str] | None = None,
     return out.reset_index(drop=True)
 
 
+def save_results(table: pd.DataFrame) -> None:
+    """Archive the previous sim_results before overwriting (so champion-odds
+    impact can be diffed across re-sims), then write the new parquet + json."""
+    prev = PROC / "sim_results.json"
+    if prev.exists():
+        arch = PROC / "sim_archive"
+        arch.mkdir(exist_ok=True)
+        ts = datetime.fromtimestamp(
+            prev.stat().st_mtime, timezone.utc).strftime("%Y%m%dT%H%M%S")
+        shutil.copy2(prev, arch / f"sim_results_{ts}.json")
+    table.to_parquet(PROC / "sim_results.parquet")
+    table.to_json(PROC / "sim_results.json", orient="records")
+
+
 def main() -> None:
     with open(PROC / "dc_model.pkl", "rb") as f:
         model: DCModel = pickle.load(f)
@@ -240,8 +256,7 @@ def main() -> None:
     print(f"[sim] Elo patched with WC2026 MD1/MD2 tournament results")
 
     table = run(model)
-    table.to_parquet(PROC / "sim_results.parquet")
-    table.to_json(PROC / "sim_results.json", orient="records")
+    save_results(table)
     print(f"[sim] {N_SIMS} tournaments complete. Title odds (top 15):")
     show = table[["team", "Champion", "Final", "SF"]].head(15).copy()
     show[["Champion", "Final", "SF"]] = (show[["Champion", "Final", "SF"]] * 100).round(1)

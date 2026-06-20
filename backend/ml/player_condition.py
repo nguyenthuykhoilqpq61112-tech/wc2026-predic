@@ -391,6 +391,38 @@ MD2_FIXTURES: list[dict] = [
 ]
 
 
+# ── manager track record (win rate over their international tenure, 0-1) ─────
+# Mirrors app/fixtures.py MANAGERS; kept here so the ml package stays standalone
+# (no app import). Teams not listed fall back to MANAGER_DEFAULT.
+MANAGER_WINRATE: dict[str, float] = {
+    # Group A
+    "Mexico": 0.56, "South Africa": 0.55, "South Korea": 0.55, "Czech Republic": 0.50,
+    # Group B
+    "Canada": 0.56, "Bosnia and Herzegovina": 0.50, "Qatar": 0.56, "Switzerland": 0.56,
+    # Group C
+    "Brazil": 0.60, "Morocco": 0.62, "Haiti": 0.45, "Scotland": 0.50,
+    # Group D
+    "United States": 0.56, "Paraguay": 0.56, "Australia": 0.54, "Turkey": 0.55,
+    # Group E
+    "Germany": 0.61, "Curaçao": 0.52, "Ivory Coast": 0.58, "Ecuador": 0.53,
+    # Group F
+    "Netherlands": 0.63, "Japan": 0.62, "Sweden": 0.50, "Tunisia": 0.52,
+    # Group G
+    "Belgium": 0.55, "Egypt": 0.60, "Iran": 0.60, "New Zealand": 0.50,
+    # Group H
+    "Spain": 0.70, "Cape Verde": 0.50, "Saudi Arabia": 0.48, "Uruguay": 0.58,
+    # Group I
+    "France": 0.66, "Senegal": 0.56, "Iraq": 0.52, "Norway": 0.55,
+    # Group J
+    "Argentina": 0.74, "Algeria": 0.52, "Austria": 0.62, "Jordan": 0.52,
+    # Group K
+    "Portugal": 0.64, "DR Congo": 0.53, "Uzbekistan": 0.50, "Colombia": 0.64,
+    # Group L
+    "England": 0.62, "Croatia": 0.60, "Ghana": 0.50, "Panama": 0.52,
+}
+MANAGER_DEFAULT = 0.50
+
+
 class TeamConditionEngine:
     """
     Computes a Team Condition Score (0-1) per team per match
@@ -554,12 +586,14 @@ class TeamConditionEngine:
         # Key players (top-3 by impact)
         key = sorted(squad, key=lambda p: p["impact"], reverse=True)[:3]
 
-        # Condition score composite
+        # Condition score composite — player FORM is prioritised (0.42), and
+        # tournament momentum is down-weighted to 0.03 because it is already
+        # carried live by the ensemble's patched Elo member (no double-count).
         condition = (
             0.35 * (avail_pct)                          +
-            0.30 * (form_rating / 10.0)                 +
+            0.42 * (form_rating / 10.0)                 +
             0.20 * (1.0 - star_penalty / 200.0)         +
-            0.15 * (min(max(self._elo_delta.get(team, 0.0), -50), 50) / 50.0 * 0.5 + 0.5)
+            0.03 * (min(max(self._elo_delta.get(team, 0.0), -50), 50) / 50.0 * 0.5 + 0.5)
         )
         condition = float(np.clip(condition, 0.1, 1.0))
 
@@ -613,22 +647,30 @@ class TeamConditionEngine:
         cond_delta  = hc["condition_score"] - ac["condition_score"]
         # Momentum delta
         mom_delta   = (hc["momentum"] - ac["momentum"]) / 100.0
-        # Attack/defence matchup
+        # Attack/defence matchup (team combination: how the units fit together)
         att_def_adv = hc["attack_rating"] - ac["defence_rating"]
+        # Manager track-record delta (win rate, 0-1)
+        mgr_delta   = (MANAGER_WINRATE.get(home, MANAGER_DEFAULT)
+                       - MANAGER_WINRATE.get(away, MANAGER_DEFAULT))
 
-        # Combined logit shift (tuned so ±0.2 = ±5% probability swing)
+        # Combined logit shift (tuned so ±0.2 = ±5% probability swing).
+        # Squad form, team combination and manager record are PRIORITISED here;
+        # location stats are handled (and down-weighted) in the ensemble.
         logit_shift = (
-            0.40 * cond_delta   +
-            0.25 * att_def_adv * 0.15
+            0.55 * cond_delta            +   # player form / fitness / availability
+            0.30 * att_def_adv * 0.15    +   # team combination (attack vs defence)
+            0.20 * mgr_delta                 # manager track record
         )
         if include_momentum:
             logit_shift += 0.35 * mom_delta
         return {
-            "logit_shift":  round(float(logit_shift), 4),
-            "home_cond":    hc["condition_score"],
-            "away_cond":    ac["condition_score"],
+            "logit_shift":   round(float(logit_shift), 4),
+            "home_cond":     hc["condition_score"],
+            "away_cond":     ac["condition_score"],
             "home_momentum": hc["momentum"],
             "away_momentum": ac["momentum"],
+            "home_manager_wr": MANAGER_WINRATE.get(home, MANAGER_DEFAULT),
+            "away_manager_wr": MANAGER_WINRATE.get(away, MANAGER_DEFAULT),
         }
 
     # ── plain-language "why this team wins" reasons ─────────────────────

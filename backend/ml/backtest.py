@@ -33,6 +33,8 @@ import pandas as pd
 from config import PROC
 import elo as elo_mod
 import model as model_mod
+import poisson as poisson_mod
+import calibration as calib
 
 # outcome index convention: 0=Home, 1=Draw, 2=Away
 _OUT = {"H": 0, "D": 1, "A": 2}
@@ -126,12 +128,20 @@ def backtest_tournament(full: pd.DataFrame, name: str, year: int,
         rh = ratings.get(r.home_team, 1500.0)
         ra = ratings.get(r.away_team, 1500.0)
         e = _elo_outcome(rh, ra, r.neutral)
+        # independent-Poisson ensemble member (leak-free Elo driven)
+        po = poisson_mod.outcome_probs(rh, ra, r.neutral)
+        # synthetic market member: Elo-implied odds shrunk 10% toward uniform
+        # (matches ensemble.py's no-real-book fallback) — lets the backtest
+        # score the market slot out-of-sample even with no historical book.
+        mk = 0.90 * e + 0.10 * np.array([1/3, 1/3, 1/3])
         rows.append({
             "tournament": f"{name} {year}",
             "date": r.date, "home": r.home_team, "away": r.away_team,
             "score": f"{r.home_score}-{r.away_score}", "y": y,
             "p_home": ph, "p_draw": pdr, "p_away": pa,
             "elo_home": e[0], "elo_draw": e[1], "elo_away": e[2],
+            "poisson_home": po[0], "poisson_draw": po[1], "poisson_away": po[2],
+            "market_home": mk[0], "market_draw": mk[1], "market_away": mk[2],
             "base_home": base[0], "base_draw": base[1], "base_away": base[2],
             "unif_home": 1/3, "unif_draw": 1/3, "unif_away": 1/3,
         })
@@ -146,6 +156,44 @@ _MODELS = {
 }
 
 
+def fit_reliability_artifacts(preds: pd.DataFrame | None = None) -> dict:
+    """Score the held-out backtest, fit calibrator + dynamic weights, and write
+    member_metrics.json / reliability.json / calibrator.json into PROC.
+
+    Safe to call standalone (loads backtest_preds.parquet when `preds` is None),
+    so the retrain pipeline can refresh artifacts without re-running the full
+    walk-forward. Returns the before/after report.
+    """
+    if preds is None:
+        p = PROC / "backtest_preds.parquet"
+        if not p.exists():
+            print("[calib] no backtest_preds.parquet — skipping artifact fit")
+            return {}
+        preds = pd.read_parquet(p)
+
+    # pull blend defaults + caps + synthetic-market penalty from the engine so
+    # there's a single source of truth.
+    from ensemble import (WEIGHTS, WEIGHT_MIN, WEIGHT_MAX,
+                          SYNTH_MARKET_WEIGHT_PENALTY)
+
+    report = calib.build_artifacts(
+        preds, default_weights=WEIGHTS, wmin=WEIGHT_MIN, wmax=WEIGHT_MAX,
+        synth_market_penalty=SYNTH_MARKET_WEIGHT_PENALTY, write_dir=PROC)
+
+    b, a, d = report["before_full"], report["after_full"], report["rel_improve_full"]
+    print("\n=== Calibration / reliability fit (pooled held-out backtest) ===")
+    print(f"members scored : {report['members_scored']}")
+    print(f"calibrator     : {report['calibrator_method']}  "
+          f"(adopted only if it beats identity on the held-out latest WC)")
+    print(f"BASELINE (legacy default blend): "
+          f"LL={b['log_loss']:.4f} ECE={b['ece']:.4f} RPS={b['rps']:.4f}")
+    print(f"AFTER (synth de-trust + calib) : "
+          f"LL={a['log_loss']:.4f} ECE={a['ece']:.4f} RPS={a['rps']:.4f}")
+    print(f"rel improvement : LogLoss {d['log_loss']:+.1f}%  "
+          f"ECE {d['ece']:+.1f}%  RPS {d['rps']:+.1f}%")
+    return report
+
+
 def run(name: str = "FIFA World Cup",
         years: list[int] | None = None,
         train_years: int = 12) -> pd.DataFrame:
@@ -155,6 +203,9 @@ def run(name: str = "FIFA World Cup",
     frames = [backtest_tournament(full, name, y, train_years) for y in years]
     preds = pd.concat([f for f in frames if f is not None], ignore_index=True)
     preds.to_parquet(PROC / "backtest_preds.parquet")
+
+    # fit + persist calibration / reliability / dynamic-weight artifacts
+    calib_report = fit_reliability_artifacts(preds)
 
     # per-model metrics over the pooled held-out matches
     summary = []
@@ -180,7 +231,7 @@ def run(name: str = "FIFA World Cup",
     print("\nLower RPS/LogLoss = better. DC should beat elo > base_rate > uniform.")
 
     summ.to_json(PROC / "backtest_summary.json", orient="records")
-    return summ
+    return calib_report
 
 
 def main():

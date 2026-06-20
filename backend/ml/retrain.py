@@ -24,6 +24,7 @@ import pandas as pd
 
 from config import PROC
 import ingest, elo as elo_mod, model as model_mod, simulate, xgb_model, nn_model
+import backtest
 
 META = PROC / "meta.json"
 
@@ -80,8 +81,15 @@ def run(force_download: bool = True) -> dict:
         with open(PROC / "dc_model.pkl", "rb") as f:
             m = pickle.load(f)
         table = simulate.run(m)
-        table.to_parquet(PROC / "sim_results.parquet")
-        table.to_json(PROC / "sim_results.json", orient="records")
+        # Archives prior sim_results before overwriting (see simulate.save_results).
+        simulate.save_results(table)
+
+    def _calibrate():
+        # Walk-forward backtest -> per-member metrics + fit calibrator + dynamic
+        # weights. Writes member_metrics.json / reliability.json / calibrator.json.
+        report = backtest.run()
+        log["calibration"] = report.get("after_val") if isinstance(report, dict) \
+            else None
 
     _step("ingest", _ingest, log)
     _step("players", _players, log)
@@ -90,6 +98,7 @@ def run(force_download: bool = True) -> dict:
     _step("xgboost", _xgb, log)
     _step("neural_net", _nn, log)
     _step("simulate", _sim, log)
+    _step("calibrate", _calibrate, log)
 
     log["finished"] = datetime.now(timezone.utc).isoformat()
     META.write_text(json.dumps(log, indent=2))
