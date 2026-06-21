@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,12 +28,23 @@ export default function MatchesPage() {
   const [upcoming, setUpcoming] = useState(false);
   const [view, setView] = useState<"cards" | "table">("cards");
 
-  const q = new URLSearchParams();
-  if (group) q.set("group", group);
-  if (matchday) q.set("matchday", matchday);
-  if (team) q.set("team", team);
-  if (upcoming) q.set("upcoming", "true");
-  const { data, error } = useSWR(`/api/matches?${q}`, fetcher);
+  // Fetch the full fixture list once, then filter CLIENT-SIDE. (Server-side
+  // query params can't be pre-rendered into the static snapshot demo, so the
+  // search/filters must run on the client to work with or without a live API.)
+  const { data: allData, error } = useSWR(`/api/matches?`, fetcher);
+
+  const data = useMemo(() => {
+    if (!allData) return allData;
+    const t = team.trim().toLowerCase();
+    return allData.filter((m: any) => {
+      if (group && m.group !== group) return false;
+      if (matchday && m.matchday !== matchday) return false;
+      if (upcoming && m.played) return false;
+      if (t && !m.home_team.toLowerCase().includes(t) &&
+              !m.away_team.toLowerCase().includes(t)) return false;
+      return true;
+    });
+  }, [allData, group, matchday, team, upcoming]);
 
   const played = (data ?? []).filter((m: any) => m.played).length;
   const total = (data ?? []).length;

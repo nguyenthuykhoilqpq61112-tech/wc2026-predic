@@ -38,7 +38,11 @@ export function RouteTransition() {
       {play && (
         <motion.div
           key={token}
-          className="pointer-events-none fixed inset-0 z-[200] overflow-hidden"
+          className="pointer-events-none fixed z-[200] overflow-hidden"
+          // Overscan beyond the viewport so the cover is bulletproof on every
+          // device: mobile dynamic toolbars (small vs large viewport) and the
+          // panel's skew never expose a strip of the page underneath.
+          style={{ top: "-8vh", left: "-8vw", width: "116vw", height: "116vh" }}
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -46,8 +50,8 @@ export function RouteTransition() {
           {/* Gold sweep panel: in from left, hold, out to right. Drives dismissal. */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-amber-500 via-gold to-amber-400"
-            initial={{ x: "-105%", skewX: "-8deg" }}
-            animate={{ x: ["-105%", "0%", "0%", "105%"] }}
+            initial={{ x: "-115%", skewX: "-8deg" }}
+            animate={{ x: ["-115%", "0%", "0%", "115%"] }}
             transition={{ duration: 1.5, times: [0, 0.34, 0.5, 1], ease: [0.7, 0, 0.3, 1] }}
             style={{ boxShadow: "0 0 80px rgba(0,0,0,0.5)" }}
             onAnimationComplete={() => setPlay(false)}
