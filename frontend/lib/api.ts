@@ -9,7 +9,10 @@ let _manifest: Record<string, string> | null | undefined;
 async function loadManifest(): Promise<Record<string, string> | null> {
   if (_manifest !== undefined) return _manifest ?? null;
   try {
-    const r = await fetch("/snapshot/manifest.json", { cache: "force-cache" });
+    // 'no-cache' = always revalidate with the server (etag) so a new deploy's
+    // snapshots are picked up. 'force-cache' served stale files across deploys
+    // because snapshot filenames are stable (e.g. api_knockout.json).
+    const r = await fetch("/snapshot/manifest.json", { cache: "no-cache" });
     _manifest = r.ok ? await r.json() : null;
   } catch {
     _manifest = null;
@@ -24,7 +27,7 @@ async function fromSnapshot<T>(path: string): Promise<T> {
   const file = manifest[path] ?? manifest[path.split("?")[0] + "?"] ??
     manifest[path.split("?")[0]];
   if (!file) throw new Error(`offline: no snapshot for ${path}`);
-  const r = await fetch(`/snapshot/${file}`, { cache: "force-cache" });
+  const r = await fetch(`/snapshot/${file}`, { cache: "no-cache" });
   if (!r.ok) throw new Error(`offline: snapshot ${file} ${r.status}`);
   return r.json();
 }
