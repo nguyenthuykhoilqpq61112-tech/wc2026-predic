@@ -1,12 +1,12 @@
 {
-  "n_rows": 49437,
+  "n_rows": 49439,
   "features": {
     "elo_diff": 0.9993,
     "elo_home": 1.0,
     "elo_away": 1.0,
     "form_pts_diff": 0.9123,
     "form_gd_diff": 0.9505,
-    "rest_diff": 0.6513,
+    "rest_diff": 0.6512,
     "h2h_home_rate": 0.7824,
     "neutral": 1.0,
     "avail_diff": 0.0,
