@@ -48,7 +48,7 @@ export function RouteTransition() {
             className="absolute inset-0 bg-gradient-to-r from-amber-500 via-gold to-amber-400"
             initial={{ x: "-105%", skewX: "-8deg" }}
             animate={{ x: ["-105%", "0%", "0%", "105%"] }}
-            transition={{ duration: 1.0, times: [0, 0.34, 0.5, 1], ease: [0.7, 0, 0.3, 1] }}
+            transition={{ duration: 1.5, times: [0, 0.34, 0.5, 1], ease: [0.7, 0, 0.3, 1] }}
             style={{ boxShadow: "0 0 80px rgba(0,0,0,0.5)" }}
             onAnimationComplete={() => setPlay(false)}
           />
@@ -57,14 +57,14 @@ export function RouteTransition() {
             className="absolute inset-y-0 w-24 bg-white/30 blur-xl"
             initial={{ x: "-130%" }}
             animate={{ x: ["-130%", "120%"] }}
-            transition={{ duration: 1.0, ease: [0.7, 0, 0.3, 1] }}
+            transition={{ duration: 1.5, ease: [0.7, 0, 0.3, 1] }}
           />
           {/* CAI logo riding the bar */}
           <motion.div
             className="absolute inset-0 flex items-center justify-center gap-3"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: [0, 1, 1, 0], scale: [0.9, 1, 1, 1.04] }}
-            transition={{ duration: 1.0, times: [0.18, 0.36, 0.5, 0.7], ease: "easeOut" }}
+            transition={{ duration: 1.5, times: [0.18, 0.36, 0.5, 0.7], ease: "easeOut" }}
           >
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-ink text-2xl shadow-xl">
               ⚽
