@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter } from "next/font/google";
 import { Nav } from "@/components/nav";
+import { RouteTransition } from "@/components/route-transition";
 
 const display = Sora({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ))}
         </div>
 
+        <RouteTransition />
         <Nav />
         <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-6">
           {children}
