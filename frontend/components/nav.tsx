@@ -35,7 +35,7 @@ export function Nav() {
               "🇫🇷 France 3-1 Senegal in Group I",
               "🇩🇪 Germany 7-1 Curaçao in Group E",
               "🏟️ MetLife · SoFi · AT&T · NRG",
-              "🤖 AI Ensemble: Dixon-Coles + Elo + XGBoost + Market",
+              "🤖 CAI Ensemble: Dixon-Coles + Elo + XGBoost + Market",
               "🏆 FIFA World Cup 2026",
               "🇺🇸 USA · 🇨🇦 Canada · 🇲🇽 Mexico",
               "⚽ 48 Teams · 12 Groups",
@@ -45,7 +45,7 @@ export function Nav() {
               "🇫🇷 France 3-1 Senegal in Group I",
               "🇩🇪 Germany 7-1 Curaçao in Group E",
               "🏟️ MetLife · SoFi · AT&T · NRG",
-              "🤖 AI Ensemble: Dixon-Coles + Elo + XGBoost + Market",
+              "🤖 CAI Ensemble: Dixon-Coles + Elo + XGBoost + Market",
             ].map((item, i) => (
               <span key={i} className="shrink-0 flex items-center gap-2">
                 {item}
@@ -72,7 +72,7 @@ export function Nav() {
                 <span className="text-gold">26</span>
               </div>
               <div className="text-[9px] uppercase tracking-[0.3em] text-muted/60 leading-none">
-                AI Predictor
+                CAI Predictor
               </div>
             </div>
           </Link>

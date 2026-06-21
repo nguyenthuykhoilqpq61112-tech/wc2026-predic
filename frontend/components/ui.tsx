@@ -346,7 +346,7 @@ export function AIInsightCard({ text, confidence }: { text: string; confidence?:
         <div className="mb-3 flex items-center gap-2">
           <div className="grid h-7 w-7 place-items-center rounded-lg bg-cyan/15 text-cyan text-sm">✦</div>
           <span className="font-display text-[11px] uppercase tracking-[0.2em] text-cyan/80">
-            AI Pre-Match Analysis
+            CAI Pre-Match Analysis
           </span>
           {confidence != null && (
             <span className="ml-auto chip-cyan">Conf {confidence}/100</span>

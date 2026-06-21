@@ -141,7 +141,7 @@ export default function MatchCenter({ params }: { params: { id: string } }) {
         <motion.section
           initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
           className="card-broadcast">
-          <SectionHeader title="AI PRE-MATCH ANALYSIS" sub="Ensemble narrative" />
+          <SectionHeader title="CAI PRE-MATCH ANALYSIS" sub="Ensemble narrative" />
           <div className="rounded-xl border border-cyan/10 bg-cyan/[0.03] p-4">
             <p className="text-[15px] leading-relaxed text-stadium/90">{p.explanation}</p>
           </div>

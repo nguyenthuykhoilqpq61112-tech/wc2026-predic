@@ -83,7 +83,7 @@ export default function Home() {
               <ProbBar home={hero.p_home} draw={hero.p_draw} away={hero.p_away} height={10} />
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
                 <span className="text-sm text-muted">
-                  AI picks{" "}
+                  CAI picks{" "}
                   <b className="font-display text-gold">{winner}</b>
                   {hero.confidence && (
                     <span className="ml-2 chip-gold text-xs">{hero.confidence} confidence</span>
@@ -195,7 +195,7 @@ export default function Home() {
       {/* ════════════ AI INSIGHTS ════════════ */}
       {data.insights?.length > 0 && (
         <motion.section variants={FADE_UP} initial="hidden" animate="show" transition={stagger(4)}>
-          <SectionHeader title="AI INSIGHTS" sub="Model signals & anomalies" />
+          <SectionHeader title="CAI INSIGHTS" sub="Model signals & anomalies" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {data.insights.slice(0, 3).map((ins: any, i: number) => (
               <AIInsightCard key={i} text={ins.text} confidence={ins.confidence} />

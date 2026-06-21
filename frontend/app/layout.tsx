@@ -16,10 +16,10 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "WC26 AI · FIFA World Cup 2026 Prediction Platform",
+  title: "WC26 CAI · FIFA World Cup 2026 Prediction Platform",
   description:
-    "World-class broadcast-grade FIFA World Cup 2026 prediction platform. " +
-    "Live match command center, AI pre-match analysis, ensemble forecasts, " +
+    "CAI (ChrisAI) — broadcast-grade FIFA World Cup 2026 prediction platform. " +
+    "Live match command center, CAI pre-match analysis, ensemble forecasts, " +
     "Monte Carlo tournament simulation and player impact insights.",
 };
 
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <div className="font-display text-sm font-bold uppercase tracking-[0.25em]">
                   <span className="cyan-text">WC26</span>
-                  <span className="text-muted"> · AI Prediction Platform</span>
+                  <span className="text-muted"> · CAI Prediction Platform</span>
                 </div>
                 <p className="mt-1 text-[11px] text-muted/60">
                   Elo · Poisson · Dixon-Coles · XGBoost · Market Odds Ensemble + Monte Carlo Simulation

@@ -95,7 +95,7 @@ export default function AnalyticsPage() {
       {/* AI insights */}
       {ins?.insights?.length > 0 && (
         <section>
-          <SectionHeader title="AI INSIGHTS" sub="Model anomaly signals" />
+          <SectionHeader title="CAI INSIGHTS" sub="Model anomaly signals" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {ins.insights.slice(0, 6).map((ins: any, i: number) => (
               <AIInsightCard key={i} text={ins.text} confidence={ins.confidence} />

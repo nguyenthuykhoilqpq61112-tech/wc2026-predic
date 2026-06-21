@@ -1,11 +1,14 @@
-# ⚽ WC2026 Prediction Platform
+# ⚽ WC2026 — CAI (ChrisAI) Prediction Platform
 
-A full-stack, continuously-learning prediction engine for the **48-team 2026 FIFA
-World Cup** (USA · Canada · Mexico). It blends five statistical/ML models into one
-calibrated forecast, runs a 50,000-iteration Monte Carlo simulation of the whole
-tournament, and serves it behind a FastAPI backend and a Next.js analytics
-dashboard. Every prediction ships with a plain-language explanation and three
-concrete reasons the favoured team can win — not just numbers.
+**CAI (ChrisAI)** is a full-stack, continuously-learning prediction engine for the
+**48-team 2026 FIFA World Cup** (USA · Canada · Mexico). It blends five
+statistical/ML models into one calibrated forecast, runs a 50,000-iteration Monte
+Carlo simulation of the whole tournament, and serves it behind a FastAPI backend
+and a Next.js analytics dashboard. Every prediction ships with a plain-language
+explanation and three concrete reasons the favoured team can win — not just
+numbers. The UI labels its calls **"CAI picks"**.
+
+🌐 **Live demo:** https://chris-fifaworldcup26-prediction.vercel.app
 
 ```
 ┌────────────┐   REST / JSON  ┌──────────────┐   artifacts   ┌─────────────────┐
@@ -38,6 +41,7 @@ concrete reasons the favoured team can win — not just numbers.
 - [Real match data (goalscorers)](#real-match-data-goalscorers)
 - [API reference](#api-reference)
 - [Frontend pages](#frontend-pages)
+- [Deployment](#deployment)
 - [Honest scope notes](#honest-scope-notes)
 - [License](#license)
 
@@ -49,11 +53,15 @@ concrete reasons the favoured team can win — not just numbers.
 - **Confidence** — 0–100, based on model agreement + decisiveness
 - **Three reasons to win** — squad-condition-driven, plain language
 - **Group standings** — live MP / W / D / L / GD / Pts + advancement %
-- **Knockout & final** — round-by-round projected matchups
+- **Knockout bracket (R32 → Final)** — group slots resolved from projected final
+  standings, every tie run through the predictor, a **podium** (champion /
+  runner-up / 3rd) and a per-tie **analysis modal** (player condition, manager
+  record, goalkeeper, xG). Penalty shootouts flagged on level ties.
 - **Tournament winner** — champion odds from 50k Monte Carlo runs
 - **Dark horses & upset alerts** — teams over-performing their seed
-- **Post-match analytics** — real goalscorers (web) + shot map, heat map,
-  passing network, box score (model-generated, clearly labeled)
+- **Post-match analysis** — news-sourced (ESPN + others) write-up per completed
+  match: headline, summary, star man, turning point, what was missing — plus real
+  goalscorers and a model-generated shot/heat/passing map (clearly labeled)
 
 ## How the prediction works
 Each match probability is an **ensemble blend** that degrades gracefully when a
@@ -73,9 +81,17 @@ On top of the blend:
    results (`tournament_form.py`), so a 6-0 win immediately lifts a team.
 2. **Squad condition** — `player_condition.py` builds a 0–1 condition score per
    team from player form, fitness, availability and attack/defence balance, then
-   applies a logit shift to the win probabilities. Momentum is *excluded* from
-   this shift to avoid double-counting the Elo patch.
-3. **Conditions** — travel fatigue + weather severity nudge the result.
+   applies a logit shift to the win probabilities. The shift weights, highest
+   first: **player form 0.55**, **manager track record 0.20**
+   (`MANAGER_WINRATE`, all 48 head coaches), **goalkeeper quality 0.25 × delta**
+   (`GK_QUALITY`, a curated keeper-strength table — added after Curaçao's keeper
+   made 15 saves in a 0-0). Momentum is *excluded* from this shift to avoid
+   double-counting the Elo patch.
+3. **Conditions** — travel fatigue + weather severity nudge the result
+   (deliberately down-weighted vs squad signals).
+4. **Draw-aware pick** — the headline pick reports **"Draw"** when the draw
+   probability is competitive and the sides are level, instead of always forcing
+   a home/away winner.
 
 The same squad-condition signal is baked into the **Monte Carlo simulation**:
 each of the 2,256 pairwise Dixon-Coles score matrices is tilted by that matchup's
@@ -261,18 +277,30 @@ Smoke-test a running API: `python backend/validate_api.py`
 | `/live` | up-next hero + all upcoming fixtures with live predictions |
 | `/matches` · `/matches/[id]` | fixture list; full match center + post-match analytics |
 | `/groups` | live group standings table + advancement % |
-| `/knockout` | bracket view (R32 → Final) |
+| `/knockout` | projected bracket (R32 → Final), podium, title-% per team, click-a-tie analysis modal |
 | `/simulator` | champion-probability chart + stage-by-stage odds + group projections |
 | `/teams` · `/teams/[name]` | all 48 teams by strength; profile + squad |
 | `/analytics` | title chart, upset alerts, dark horses |
-| `/admin` | JWT login → trigger retrain, data freshness |
+
+## Deployment
+- **Frontend → Vercel** (auto-deploys from `main`, root dir `frontend`). Live at
+  https://chris-fifaworldcup26-prediction.vercel.app
+- **Backend → Render** (`render.yaml`, native Python, prebuilt ML artifacts, no
+  boot retrain). See [DEPLOY.md](DEPLOY.md) for the step-by-step.
+- **Backend-free demo:** `backend/gen_snapshots.py` dumps the read-only API to
+  static JSON under `frontend/public/snapshot/`; the frontend falls back to those
+  snapshots when no live backend is configured, so the Vercel site shows real
+  data on its own. Refresh with `python backend/gen_snapshots.py` after new
+  results, then push.
 
 ## Honest scope notes
 - **Player / squad / injury data** is curated for marquee teams and generic for
   the rest, served from `fixtures.py`. Wire real feeds into the DB to make it live.
 - **Betting odds + injuries + weather** are wired with offline sample caches and
   optional live feeds (`ODDS_API_KEY`, `INJURY_API_KEY`, Open-Meteo no-key).
-- **Goalscorers are real** (ESPN). **Shot/heat/pass maps are model-generated.**
+- **Goalscorers + post-match analysis are real** (curated from ESPN and other
+  outlets in `match_events.json` / `post_match.json`; an auto-summary covers any
+  not-yet-curated completed match). **Shot/heat/pass maps are model-generated.**
 - **Postgres is optional** — the API runs DB-free from the fixtures provider + ML
   artifacts. Enable with `USE_DB=true` then `python backend/seed.py`.
 - **NN member** is off until `torch` is installed (intentional; heavy dep).
