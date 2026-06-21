@@ -137,7 +137,7 @@ export function MatchAnalytics({ matchId }: { matchId: number | string }) {
   if (!data) return <div className="h-64 animate-pulse rounded-2xl bg-ink-2" />;
 
   const { home, away, score, box_score: bx, scorers, shot_map, heat_map,
-    passing_network } = data;
+    passing_network, post_match: pm } = data;
   const net = passing_network[netSide];
   const netColor = netSide === "home" ? HOME : AWAY;
   const scorersLive = (data.scorers_source || "").startsWith("ESPN");
@@ -145,6 +145,48 @@ export function MatchAnalytics({ matchId }: { matchId: number | string }) {
   return (
     <section className="space-y-5">
       <SectionHeader title="MATCH ANALYTICS" sub="Post-match breakdown" />
+
+      {/* Post-match analysis from news (ESPN + others) */}
+      {pm && (
+        <div className="card-broadcast border-gold/30">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="chip-gold inline-flex items-center gap-1.5 text-[10px]">
+              📰 Post-match analysis
+            </span>
+            {pm.auto
+              ? <span className="text-[10px] text-muted/70">auto-summary</span>
+              : pm.sources?.length > 0 &&
+                <span className="text-[10px] text-muted/70">source: {pm.sources.join(" · ")}</span>}
+          </div>
+          {pm.headline && (
+            <h3 className="font-display text-base font-bold text-stadium">{pm.headline}</h3>
+          )}
+          {pm.summary && (
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{pm.summary}</p>
+          )}
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {pm.star_player && (
+              <div className="rounded-lg bg-gold/10 p-2.5">
+                <div className="text-[10px] uppercase tracking-widest text-gold/80">⭐ Star man</div>
+                <div className="font-display text-sm font-bold text-stadium">{pm.star_player}</div>
+                {pm.star_reason && <div className="text-[11px] text-muted">{pm.star_reason}</div>}
+              </div>
+            )}
+            {pm.turning_point && (
+              <div className="rounded-lg bg-white/[0.03] p-2.5">
+                <div className="text-[10px] uppercase tracking-widest text-muted">🔑 Turning point</div>
+                <div className="text-[11px] text-muted">{pm.turning_point}</div>
+              </div>
+            )}
+            {pm.what_lacked && (
+              <div className="rounded-lg bg-white/[0.03] p-2.5 sm:col-span-2">
+                <div className="text-[10px] uppercase tracking-widest text-muted">📉 What was missing</div>
+                <div className="text-[11px] text-muted">{pm.what_lacked}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {scorersLive

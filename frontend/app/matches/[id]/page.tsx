@@ -260,27 +260,31 @@ export default function MatchCenter({ params }: { params: { id: string } }) {
         </section>
       </div>
 
-      {/* ════════════ LIVE WIDGETS PLACEHOLDER ════════════ */}
-      <section className="card-broadcast border-dashed border-white/10">
-        <SectionHeader title="BROADCAST WIDGETS" sub="Activate at kickoff" />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            { icon: "🎯", label: "Shot Map" },
-            { icon: "🔗", label: "Passing Network" },
-            { icon: "🔥", label: "Heat Map" },
-            { icon: "📈", label: "Live Momentum" },
-          ].map((w) => (
-            <div key={w.label}
-              className="grid h-24 place-items-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-center text-xs text-muted">
-              <span>
-                <div className="text-2xl mb-1">{w.icon}</div>
-                {w.label}<br />
-                <span className="text-gold/60 text-[10px]">at kickoff</span>
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ════════════ LIVE WIDGETS PLACEHOLDER (pre-match only) ════════════ */}
+      {/* Completed matches show the news-sourced post-match analysis inside
+          <MatchAnalytics> above instead of these "activate at kickoff" stubs. */}
+      {!m.played && (
+        <section className="card-broadcast border-dashed border-white/10">
+          <SectionHeader title="BROADCAST WIDGETS" sub="Activate at kickoff" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[
+              { icon: "🎯", label: "Shot Map" },
+              { icon: "🔗", label: "Passing Network" },
+              { icon: "🔥", label: "Heat Map" },
+              { icon: "📈", label: "Live Momentum" },
+            ].map((w) => (
+              <div key={w.label}
+                className="grid h-24 place-items-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] text-center text-xs text-muted">
+                <span>
+                  <div className="text-2xl mb-1">{w.icon}</div>
+                  {w.label}<br />
+                  <span className="text-gold/60 text-[10px]">at kickoff</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

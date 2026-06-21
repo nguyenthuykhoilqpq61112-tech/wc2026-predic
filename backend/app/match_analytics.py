@@ -13,10 +13,23 @@ Pitch coordinate convention (matches the frontend SVG):
 """
 from __future__ import annotations
 
+import json
 import random
+from pathlib import Path
 from typing import Any
 
 from . import events, fixtures
+
+# Curated, news-sourced post-match analysis (ESPN + others), keyed "Home|Away".
+_POST_MATCH_FILE = (Path(__file__).resolve().parent.parent
+                    / "data" / "raw" / "post_match.json")
+
+
+def _load_post_match() -> dict:
+    try:
+        return json.loads(_POST_MATCH_FILE.read_text())
+    except Exception:  # noqa: BLE001
+        return {}
 
 # position weighting for who scores / shoots
 _SCORE_W = {"FW": 1.0, "MF": 0.55, "DF": 0.18, "GK": 0.01}
@@ -154,6 +167,65 @@ def _box_score(rng, eh, ea, gh, ga) -> dict:
     }
 
 
+def _auto_post_match(home, away, gh, ga, scorers) -> dict:
+    """Fallback post-match write-up from the scoreline + real scorers, for
+    completed matches not in the curated news file."""
+    if gh > ga:
+        winner, margin = home, gh - ga
+    elif ga > gh:
+        winner, margin = away, ga - gh
+    else:
+        winner, margin = None, 0
+
+    all_sc = [(s, "home") for s in scorers.get("home", [])] + \
+             [(s, "away") for s in scorers.get("away", [])]
+    # star = top scorer (most goals); else first scorer
+    from collections import Counter
+    tally = Counter(s["player"] for s, _ in all_sc if s.get("type") != "own goal")
+    star = tally.most_common(1)[0][0] if tally else None
+
+    if winner is None:
+        summary = f"{home} and {away} played out a {gh}-{ga} draw."
+        headline = f"{home} and {away} share the spoils"
+    else:
+        loser = away if winner == home else home
+        adj = "edged" if margin == 1 else ("beat" if margin == 2 else "swept aside")
+        summary = f"{winner} {adj} {loser} {max(gh, ga)}-{min(gh, ga)}."
+        headline = f"{winner} {'edge' if margin == 1 else 'see off'} {loser}"
+    if star:
+        n = tally[star]
+        summary += f" {star} {'scored' if n == 1 else f'struck {n}'} for the result."
+
+    return {
+        "headline": headline,
+        "summary": summary,
+        "star_player": star,
+        "star_reason": (f"Scored {tally[star]} in the match." if star else None),
+        "turning_point": None,
+        "what_lacked": None,
+        "sources": [],
+        "auto": True,
+    }
+
+
+def post_match_report(home: str, away: str, gh: int, ga: int,
+                      scorers: dict) -> dict:
+    """News-sourced post-match analysis for a completed match.
+
+    Prefers the curated file (real ESPN/news write-ups, oriented to our
+    home/away even if the source stored sides swapped); otherwise synthesises a
+    short factual write-up from the scoreline + real scorers.
+    """
+    db = _load_post_match()
+    rec = db.get(f"{home}|{away}")
+    if rec:
+        return {**rec, "auto": False}
+    swapped = db.get(f"{away}|{home}")
+    if swapped:  # rare: source keyed the other orientation — flip narrative roles
+        return {**swapped, "auto": False, "orientation_swapped": True}
+    return _auto_post_match(home, away, gh, ga, scorers)
+
+
 def analytics(match_id: int) -> dict | None:
     """Full generated post-match analytics, or None if the match isn't played."""
     m = fixtures.match_by_id(match_id)
@@ -190,6 +262,7 @@ def analytics(match_id: int) -> dict | None:
             "illustrations — that coordinate-level data is not openly available "
             "(Sofascore/FotMob block automated access).",
         "scorers": scorers,
+        "post_match": post_match_report(home, away, gh, ga, scorers),
         "box_score": box,
         "shot_map": {
             "home": _shots(rng, lh, gh, box["shots"][0], "home"),
