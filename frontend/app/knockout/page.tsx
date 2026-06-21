@@ -32,7 +32,7 @@ export default function KnockoutPage() {
 
       <p className="text-sm text-muted">
         {data.projected
-          ? "Projected bracket — group slots filled from final standings (real results + predicted remaining games). Each tie is run through the predictor; the higher win-probability side advances. % under each team is its Monte-Carlo title chance. Click a match for the full analysis."
+          ? "Projected bracket — group slots filled from final standings (real results + predicted remaining games). The 🏆 % next to a team is its chance to win the WHOLE tournament (Monte-Carlo) — not this match. A team can have higher title odds yet be the underdog in one specific tie: the side that advances is the higher match win-probability (shown inside each match). Click a match for the full analysis."
           : "Official knockout schedule (Round of 32 → Final). Team slots resolve once the group stage completes."}
       </p>
 
@@ -160,7 +160,9 @@ function TeamRow({ name, flag, win, title }:
       <span className={`min-w-0 flex-1 break-words font-display text-sm leading-tight ${
         win ? "font-bold text-stadium" : "font-medium"}`}>{name}</span>
       {title != null && (
-        <span className="shrink-0 text-[10px] text-muted">{pctStr(title)}</span>
+        <span className="shrink-0 text-[10px] text-muted" title="Monte-Carlo chance to win the whole tournament">
+          🏆 {pctStr(title)}
+        </span>
       )}
       {win && <span className="shrink-0 text-[10px] text-gold">▶</span>}
     </div>
