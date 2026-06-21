@@ -97,10 +97,7 @@ function Tie({ m, delay, onClick }: { m: any; delay: number; onClick: () => void
   const awayWin = resolved && m.predicted_winner === m.away_team;
   const wp = m.win_probability ? Math.round(m.win_probability * 100) : null;
   const scoreStr = m.predicted_score
-    ? (() => {
-        const [a, b] = String(m.predicted_score).split("-");
-        return a === b ? `${m.predicted_score} · pens` : m.predicted_score;
-      })()
+    ? (m.shootout ? `${m.predicted_score} · pens` : m.predicted_score)
     : "vs";
 
   return (

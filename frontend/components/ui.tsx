@@ -284,7 +284,29 @@ export function MatchCard({ m }: { m: any }) {
             <span className="text-muted">D {pct0(m.p_draw)}</span>
             <span className="text-cyan font-semibold">{pct0(m.p_away)}</span>
           </div>
+          {m.top_score && (
+            <div className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-white/5 py-1 text-[11px]">
+              <span className="uppercase tracking-wider text-muted">Predicted</span>
+              <span className="font-display font-bold text-gold">{m.top_score.score}</span>
+              {m.expected_goals && (
+                <span className="text-muted">
+                  · xG {m.expected_goals.home?.toFixed(1)}–{m.expected_goals.away?.toFixed(1)}
+                </span>
+              )}
+            </div>
+          )}
         </>
+      )}
+
+      {/* Played: predicted scoreline vs actual (accuracy) */}
+      {played && m.top_score && (
+        <div className="mt-1 flex items-center justify-center gap-1.5 text-[11px]">
+          <span className="uppercase tracking-wider text-muted">Predicted</span>
+          <span className={`font-display font-bold ${
+            m.top_score.score === `${m.home_score}-${m.away_score}`
+              ? "text-success" : "text-muted"}`}>{m.top_score.score}</span>
+          {m.top_score.score === `${m.home_score}-${m.away_score}` && <span>✓</span>}
+        </div>
       )}
 
       {/* Footer meta */}

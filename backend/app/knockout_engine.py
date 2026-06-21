@@ -149,6 +149,38 @@ def assign_third_slots(third_slots: list[dict],
 
 
 # ── 4. bracket resolution ───────────────────────────────────────────────────
+def _consistent_score(home: str, away: str, winner: str) -> tuple[str | None, bool]:
+    """Most-likely scoreline that is consistent with `winner` advancing.
+
+    A knockout has no draw on the night, but the single likeliest exact score can
+    be a draw or even favour the side we tip to lose (members disagree on a near
+    coin-flip). We never show a scoreline where the *loser* outscores the winner:
+    pick the highest-probability cell that is a draw or a winner-win. If the pick
+    is a draw, the tie is decided on penalties (shootout=True).
+    Returns (\"home-away\", shootout).
+    """
+    from . import ml_engine
+    import numpy as np
+    e = ml_engine.engine()
+    if e.dc is None:
+        return None, False
+    m = e.dc.score_matrix(home, away, neutral=True)
+    best = None  # (prob, i, j, shootout)
+    for (i, j), pr in np.ndenumerate(m):
+        if i == j:                       # draw -> winner takes it on pens
+            cand = (pr, i, j, True)
+        elif (i > j) == (winner == home):  # decisive, consistent with winner
+            cand = (pr, i, j, False)
+        else:
+            continue                     # loser-win: never displayed
+        if best is None or cand[0] > best[0]:
+            best = cand
+    if best is None:
+        return None, False
+    _, i, j, shootout = best
+    return f"{int(i)}-{int(j)}", shootout
+
+
 def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
     p = services.predict(home, away, neutral=True, match=None)
     ph, pa = p["p_home"], p["p_away"]
@@ -157,6 +189,7 @@ def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
     winner = home if ph >= pa else away
     loser = away if winner == home else home
     win_p = ph if winner == home else pa
+    score, shootout = _consistent_score(home, away, winner)
     cond = p.get("condition", {}) or {}
     analysis = {
         # player squad condition composite (0-1) per side
@@ -179,7 +212,8 @@ def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
         },
         "predicted_winner": winner,
         "win_probability": round(win_p / (ph + pa), 4) if (ph + pa) else 0.5,
-        "predicted_score": p["top_scores"][0]["score"] if p.get("top_scores") else None,
+        "predicted_score": score,
+        "shootout": shootout,
         "confidence": p.get("confidence"),
         "reasons": p.get("win_reasons", []),
         "analysis": analysis,
@@ -238,6 +272,7 @@ def resolve_bracket() -> dict:
                 "predicted_winner": tie["predicted_winner"],
                 "win_probability": tie["win_probability"],
                 "predicted_score": tie["predicted_score"],
+                "shootout": tie["shootout"],
                 "confidence": tie["confidence"],
                 "reasons": tie["reasons"],
                 "analysis": tie["analysis"],

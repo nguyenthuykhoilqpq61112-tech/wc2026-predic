@@ -976,5 +976,82 @@
   },
   "source": "ESPN",
   "date": "20260619"
+ },
+ "Netherlands|Sweden": {
+  "home": "Netherlands",
+  "away": "Sweden",
+  "score": [
+   5,
+   1
+  ],
+  "scorers": {
+   "home": [
+    {
+     "player": "Brian Brobbey",
+     "minute": 5,
+     "type": "goal"
+    },
+    {
+     "player": "Brian Brobbey",
+     "minute": 17,
+     "type": "goal"
+    },
+    {
+     "player": "Cody Gakpo",
+     "minute": 47,
+     "type": "goal"
+    },
+    {
+     "player": "Cody Gakpo",
+     "minute": 54,
+     "type": "goal"
+    },
+    {
+     "player": "Crysencio Summerville",
+     "minute": 89,
+     "type": "goal"
+    }
+   ],
+   "away": [
+    {
+     "player": "Anthony Elanga",
+     "minute": 59,
+     "type": "goal"
+    }
+   ]
+  },
+  "source": "ESPN",
+  "date": "20260620"
+ },
+ "Germany|Ivory Coast": {
+  "home": "Germany",
+  "away": "Ivory Coast",
+  "score": [
+   2,
+   1
+  ],
+  "scorers": {
+   "home": [
+    {
+     "player": "Deniz Undav",
+     "minute": 68,
+     "type": "goal"
+    },
+    {
+     "player": "Deniz Undav",
+     "minute": 94,
+     "type": "goal"
+    }
+   ],
+   "away": [
+    {
+     "player": "Franck Kessié",
+     "minute": 30,
+     "type": "goal"
+    }
+   ]
+  },
+  "source": "ESPN",
+  "date": "20260620"
  }
 }
