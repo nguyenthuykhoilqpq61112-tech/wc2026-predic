@@ -65,6 +65,15 @@ MIN_MEMBER_SAMPLES = 30
 SYNTH_MARKET_WEIGHT_PENALTY = 0.25    # 0..1; shrinks the synthetic market weight
 SYNTH_MARKET_CONF_PENALTY = 4         # confidence points removed when synthetic
 
+# Confidence display rescale. The raw 4-ingredient score is calibrated but, for
+# football's 3-way W/D/L outcome (frequent draws cap a single-match favourite
+# near ~70%), realistically lands in a compressed ~27..58 band — so the bar
+# never looks "full" even for the clearest games. Stretch that band onto a full
+# 0..100 scale for display. Monotonic + order-preserving; underlying
+# probabilities and calibration are untouched (presentation only).
+CONF_DISPLAY_LO = 27
+CONF_DISPLAY_HI = 58
+
 # Draw-call threshold for predicted_winner. The DC/ensemble draw probability for
 # 3-way football tops out ~0.28, so a raw argmax almost never returns a draw.
 # Emit "Draw" only when the draw outcome is genuinely competitive: its prob clears
@@ -437,9 +446,11 @@ class Ensemble:
         scores, xg_home, xg_away, p_over = self._scorelines(home, away, neutral)
         conf = self._confidence(stack, blended, len(members),
                                 TOTAL_MEMBERS, self.reliability)
-        # Don't report book-grade confidence off a synthetic market.
+        # Don't report book-grade confidence off a synthetic market. Penalty is
+        # applied in the raw scale, before the display stretch.
         if not market_real:
             conf = int(np.clip(conf - SYNTH_MARKET_CONF_PENALTY, 5, 99))
+        conf = self._display_confidence(conf)
         upset = self._upset(home, away, blended)
         market = members.get("market")
         expl = self._explain(home, away, blended, xg_home, xg_away, ctx, conf,
@@ -522,6 +533,17 @@ class Ensemble:
                        0.12 * coverage + 0.18 * reliability)
         return int(round(np.clip(score, 5, 99)))
 
+    @staticmethod
+    def _display_confidence(raw: int) -> int:
+        """Stretch the calibrated raw score onto a full 0..100 display scale.
+
+        Maps the realistic football band [CONF_DISPLAY_LO, CONF_DISPLAY_HI] to
+        1..100 (clipped). Monotonic, so ordering between matches is preserved —
+        a clearer game still outranks a coin-flip; only the spread widens.
+        """
+        lo, hi = CONF_DISPLAY_LO, CONF_DISPLAY_HI
+        return int(np.clip(round((raw - lo) / (hi - lo) * 100), 1, 99))
+
     def _upset(self, home, away, blended) -> float:
         """P(pre-match underdog wins outright), by Elo."""
         eh = self.elo.get(home, 1500.0); ea = self.elo.get(away, 1500.0)
@@ -566,11 +588,12 @@ class Ensemble:
                 f"The betting market {'agrees' if agree else 'leans the other way'}, "
                 f"pricing {m_fav} at {m_p*100:.0f}% to win"
                 + ("." if agree else f" against the model's {fav}."))
-        tone = ("High" if conf >= 70 else "Moderate" if conf >= 45 else "Low")
+        # Cutoffs in the display scale; Low (<26) aligns with the UI TOSS-UP flag.
+        tone = ("High" if conf >= 55 else "Moderate" if conf >= 26 else "Low")
         parts.append(f"{tone} confidence ({conf}/100): "
-                     + ("models broadly agree." if conf >= 70
+                     + ("models broadly agree." if conf >= 55
                         else "models partly disagree — treat as a coin-flippy tie."
-                        if conf < 45 else "reasonable agreement across models."))
+                        if conf < 26 else "reasonable agreement across models."))
         return " ".join(parts)
 
 

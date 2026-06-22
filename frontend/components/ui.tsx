@@ -39,7 +39,7 @@ export function LiveBadge({ label = "LIVE", color = "danger" }: { label?: string
    lean is barely ahead of the next outcome (often the likeliest scoreline is a
    draw) — flag it so users don't read a coin-flip as a call.
 ══════════════════════════════════════════════════════════════════════════════ */
-export const LOW_CONFIDENCE = 35;
+export const LOW_CONFIDENCE = 26;
 
 export function isLowConfidence(m: { confidence?: number | null; played?: boolean }) {
   return !m.played && m.confidence != null && m.confidence < LOW_CONFIDENCE;
