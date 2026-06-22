@@ -61,6 +61,11 @@ Branch: `main` · all work committed + pushed to
   champion unchanged: Argentina ≈31.0%** (Spain 11.0%, England 8.0%, France 7.6%).
   The two Jun 21 draws shift Group G/H standings, not the title favorite.
   Tests pass (calibration 7/7, ensemble 14/14); knockout/services engines verified.
+- Jun 22: **Argentina 2-0 Austria** (MD2, Group J) — Messi 38' + 90+5' (now WC
+  all-time top scorer; missed a 9th-min penalty). Model had Argentina favoured
+  (p_home 0.57, predicted 1-0) — correct winner. Ingested via fixtures.py +
+  `WC2026_PLAYED` + `match_events.json`, re-sim + snapshots regenerated. Messi → 5
+  tournament goals (Golden Boot leader); Argentina → 2 clean sheets.
 
 ## 6. Branding — DONE
 - Rebranded all user-facing "AI" → **CAI (ChrisAI)** (nav, titles, "CAI picks",
@@ -129,6 +134,24 @@ played games) and clustered too low for blowouts. Fixed:
   move `LOW_CONFIDENCE` (ui.tsx) and the `_explain` cutoffs to match, then
   regenerate snapshots. Stays a pure display transform — never feed the stretched
   value back into calibration/backtest.
+
+## 10. Awards tab — DONE (commits 8ce7c9e + 7636947)
+- New `/awards` page + `GET /api/awards` (`app/routers/awards.py` → `ml/awards.py`).
+  Nav has a 🏆 Awards tab.
+- **Golden Boot** — LIVE/real: `tournament_stats.player_goals()` from the ESPN
+  scorer feed; country from `match_events.json`; tiebreak goals→assists→name.
+  Auto-updates whenever a result is ingested (e.g. Messi → 5).
+- **Golden Glove** — NO per-keeper save feed exists (Sofascore/FotMob bot-blocked).
+  Curated web contender list ranked by the app's live team clean sheets + GA.
+  Clearly labeled in the UI as clean-sheet based.
+- **Golden Ball** — curated media power ranking, enriched with each player's real
+  tournament goals. Labeled "media power ranking".
+- **Curated source:** `data/raw/awards.json` (web-sourced; git-tracked via a
+  `.gitignore` whitelist like `match_events.json`). Holds `golden_glove` +
+  `golden_ball` lists, `golden_boot_assists`, `as_of`, `sources`. **Refresh it by
+  hand from the web** (same cadence as `post_match.json`); bump `as_of`. The
+  Golden Boot needs no manual edit. `ml/awards.py` is presentation-agnostic; the
+  router decorates rows with flag + headshot URLs from `fixtures`.
 
 ## Known issues / watch-outs
 - **Custom alias is not on the Vercel project, so deploys don't update it.**
