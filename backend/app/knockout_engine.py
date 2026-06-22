@@ -182,14 +182,33 @@ def _consistent_score(home: str, away: str, winner: str) -> tuple[str | None, bo
 
 
 def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
+    from . import ml_engine
     p = services.predict(home, away, neutral=True, match=None)
     ph, pa = p["p_home"], p["p_away"]
-    # No draws in knockout: redistribute the draw mass proportionally and pick
-    # the higher post-draw win prob.
-    winner = home if ph >= pa else away
-    loser = away if winner == home else home
-    win_p = ph if winner == home else pa
-    score, shootout = _consistent_score(home, away, winner)
+
+    # Full match-flow simulation (90' -> ET -> shootout). It is the source of
+    # truth for who advances in a knockout tie: the Monte-Carlo folds in extra
+    # time and penalties, which a 90'-only win prob cannot. Fall back to the
+    # ensemble's post-draw win prob if the simulation errors.
+    flow = None
+    try:
+        flow = ml_engine.match_flow(home, away, p)
+    except Exception:  # noqa: BLE001 - never break the bracket on a sim error
+        flow = None
+
+    if flow:
+        winner = flow["winner"]
+        loser = flow["loser"]
+        win_p_norm = flow["win_probability"]
+        score = flow["predicted_score"]
+        shootout = flow["shootout"]
+    else:
+        # No draws in knockout: pick the higher post-draw win prob.
+        winner = home if ph >= pa else away
+        loser = away if winner == home else home
+        win_p = ph if winner == home else pa
+        win_p_norm = round(win_p / (ph + pa), 4) if (ph + pa) else 0.5
+        score, shootout = _consistent_score(home, away, winner)
     cond = p.get("condition", {}) or {}
     analysis = {
         # player squad condition composite (0-1) per side
@@ -214,12 +233,13 @@ def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
             "p_away": round(pa, 4),
         },
         "predicted_winner": winner,
-        "win_probability": round(win_p / (ph + pa), 4) if (ph + pa) else 0.5,
+        "win_probability": win_p_norm,
         "predicted_score": score,
         "shootout": shootout,
         "confidence": p.get("confidence"),
         "reasons": p.get("win_reasons", []),
         "analysis": analysis,
+        "flow": flow,
     }
 
 
@@ -279,6 +299,7 @@ def resolve_bracket() -> dict:
                 "confidence": tie["confidence"],
                 "reasons": tie["reasons"],
                 "analysis": tie["analysis"],
+                "flow": tie["flow"],
                 "resolved": True,
             })
         else:

@@ -71,9 +71,19 @@ def match_detail(mid: int) -> dict | None:
         return None
     pred = predict(m["home_team"], m["away_team"], m["neutral"], match=m)
     cond = _conditions(m["home_team"], m["away_team"], m)
+    # Full match-flow simulation (same engine as the knockout bracket). Group
+    # fixtures are simulated as non-knockout: a 90' draw is a valid result and
+    # there is no extra time / shootout.
+    is_ko = m.get("stage", "group") != "group"
+    try:
+        flow = ml_engine.match_flow(m["home_team"], m["away_team"], pred,
+                                    knockout=is_ko, neutral=m["neutral"])
+    except Exception:  # noqa: BLE001
+        flow = None
     return {
         "match": m,
         "prediction": pred,
+        "flow": flow,
         "key_players": {
             m["home_team"]: fixtures.key_players(m["home_team"]),
             m["away_team"]: fixtures.key_players(m["away_team"]),

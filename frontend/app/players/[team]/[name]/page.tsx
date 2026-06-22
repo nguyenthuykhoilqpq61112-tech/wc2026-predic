@@ -20,12 +20,20 @@ export default function PlayerPage({ params }: { params: { team: string; name: s
   ];
   return (
     <div className="space-y-6">
-      <section className="card">
-        <h1 className="text-2xl font-bold">{data.name}</h1>
-        <p className="text-muted">{team} · {data.position} · {data.club}</p>
-        <div className="mt-4 inline-flex items-center gap-3 rounded-xl border border-line px-4 py-3">
-          <span className="text-xs text-muted">Impact rating</span>
-          <span className="text-3xl font-extrabold text-acc tabnum">{data.impact}</span>
+      <section className="card flex items-start gap-4">
+        <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-white/5 text-3xl">
+          {data.photo_url
+            /* eslint-disable-next-line @next/next/no-img-element */
+            ? <img src={data.photo_url} alt={data.name} className="h-full w-full object-cover" />
+            : "👤"}
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold">{data.name}</h1>
+          <p className="text-muted">{team} · {data.position} · {data.club}</p>
+          <div className="mt-4 inline-flex items-center gap-3 rounded-xl border border-line px-4 py-3">
+            <span className="text-xs text-muted">Impact rating</span>
+            <span className="text-3xl font-extrabold text-acc tabnum">{data.impact}</span>
+          </div>
         </div>
       </section>
       <section className="card grid grid-cols-2 gap-x-8 sm:grid-cols-4">

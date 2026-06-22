@@ -335,31 +335,32 @@ PLAYER_DB: dict[str, dict[str, Any]] = {
 }
 
 # ── MD1 results (for tournament momentum) ──────────────────────────────────
+# Canonical MD1 results — kept in lock-step with app/fixtures.py MD1.
 MD1_RESULTS: list[dict] = [
-    {"home": "Mexico",       "away": "South Africa",  "hg": 2, "ag": 0},
-    {"home": "South Korea",  "away": "Czech Republic","hg": 1, "ag": 1},
-    {"home": "Canada",       "away": "Switzerland",   "hg": 6, "ag": 0},
-    {"home": "Qatar",        "away": "Bosnia and Herzegovina","hg": 0,"ag": 2},
-    {"home": "Brazil",       "away": "Morocco",       "hg": 3, "ag": 1},
-    {"home": "Haiti",        "away": "Scotland",      "hg": 0, "ag": 4},
-    {"home": "United States","away": "Paraguay",      "hg": 2, "ag": 1},
-    {"home": "Australia",    "away": "Turkey",        "hg": 1, "ag": 2},
-    {"home": "Germany",      "away": "Ivory Coast",   "hg": 3, "ag": 1},
-    {"home": "Curaçao",      "away": "Ecuador",       "hg": 0, "ag": 2},
-    {"home": "Netherlands",  "away": "Tunisia",       "hg": 3, "ag": 0},
-    {"home": "Sweden",       "away": "Japan",         "hg": 1, "ag": 2},
-    {"home": "Belgium",      "away": "New Zealand",   "hg": 4, "ag": 0},
-    {"home": "Iran",         "away": "Egypt",         "hg": 1, "ag": 2},
-    {"home": "Spain",        "away": "Saudi Arabia",  "hg": 5, "ag": 0},
-    {"home": "Cape Verde",   "away": "Uruguay",       "hg": 0, "ag": 3},
-    {"home": "France",       "away": "Iraq",          "hg": 3, "ag": 0},
-    {"home": "Norway",       "away": "Senegal",       "hg": 3, "ag": 1},
-    {"home": "Argentina",    "away": "Algeria",       "hg": 3, "ag": 0},
-    {"home": "Jordan",       "away": "Austria",       "hg": 0, "ag": 2},
-    {"home": "Portugal",     "away": "Uzbekistan",    "hg": 4, "ag": 0},
-    {"home": "Colombia",     "away": "DR Congo",      "hg": 2, "ag": 0},
-    {"home": "England",      "away": "Panama",        "hg": 3, "ag": 0},
-    {"home": "Croatia",      "away": "Ghana",         "hg": 2, "ag": 1},
+    {"home": "Mexico",                  "away": "South Africa",            "hg": 2, "ag": 0},
+    {"home": "South Korea",             "away": "Czech Republic",          "hg": 2, "ag": 1},
+    {"home": "Canada",                  "away": "Bosnia and Herzegovina",  "hg": 1, "ag": 1},
+    {"home": "United States",           "away": "Paraguay",                "hg": 4, "ag": 1},
+    {"home": "Qatar",                   "away": "Switzerland",             "hg": 1, "ag": 1},
+    {"home": "Brazil",                  "away": "Morocco",                 "hg": 1, "ag": 1},
+    {"home": "Haiti",                   "away": "Scotland",                "hg": 0, "ag": 1},
+    {"home": "Australia",               "away": "Turkey",                  "hg": 2, "ag": 0},
+    {"home": "Germany",                 "away": "Curaçao",                 "hg": 7, "ag": 1},
+    {"home": "Netherlands",             "away": "Japan",                   "hg": 2, "ag": 2},
+    {"home": "Ivory Coast",             "away": "Ecuador",                 "hg": 1, "ag": 0},
+    {"home": "Sweden",                  "away": "Tunisia",                 "hg": 5, "ag": 1},
+    {"home": "Spain",                   "away": "Cape Verde",              "hg": 0, "ag": 0},
+    {"home": "Belgium",                 "away": "Egypt",                   "hg": 1, "ag": 1},
+    {"home": "Saudi Arabia",            "away": "Uruguay",                 "hg": 1, "ag": 1},
+    {"home": "Iran",                    "away": "New Zealand",             "hg": 2, "ag": 2},
+    {"home": "France",                  "away": "Senegal",                 "hg": 3, "ag": 1},
+    {"home": "Iraq",                    "away": "Norway",                  "hg": 1, "ag": 4},
+    {"home": "Argentina",               "away": "Algeria",                 "hg": 3, "ag": 0},
+    {"home": "Austria",                 "away": "Jordan",                  "hg": 3, "ag": 1},
+    {"home": "Portugal",                "away": "DR Congo",                "hg": 1, "ag": 1},
+    {"home": "England",                 "away": "Croatia",                 "hg": 4, "ag": 2},
+    {"home": "Ghana",                   "away": "Panama",                  "hg": 1, "ag": 0},
+    {"home": "Uzbekistan",              "away": "Colombia",                "hg": 1, "ag": 3},
 ]
 
 # ── MD2 upcoming fixtures ───────────────────────────────────────────────────
@@ -450,6 +451,35 @@ GK_QUALITY_DEFAULT = 0.55
 GK_COEF = 0.25
 
 
+# ── tournament-evidence blending ────────────────────────────────────────────
+# The GK and manager tables above are pre-tournament priors. Once games are
+# played we blend in the actual evidence (goals conceded / clean sheets for the
+# keeper; points-per-game for the manager), weighted by how many games the side
+# has played — so the model reacts to current form without overfitting a 2-3
+# game sample. See tournament_stats.py.
+import tournament_stats as _tstats  # noqa: E402
+
+
+def gk_rating(team: str) -> float:
+    """Pre-tournament GK reputation blended with in-tournament defence form."""
+    base = GK_QUALITY.get(team, GK_QUALITY_DEFAULT)
+    tf = _tstats.gk_form(team)
+    if tf is None:
+        return base
+    w = _tstats.evidence_weight(team)
+    return round((1 - w) * base + w * tf, 4)
+
+
+def manager_rating(team: str) -> float:
+    """Pre-tournament manager win-rate blended with in-tournament points/game."""
+    base = MANAGER_WINRATE.get(team, MANAGER_DEFAULT)
+    tf = _tstats.manager_form(team)
+    if tf is None:
+        return base
+    w = _tstats.evidence_weight(team)
+    return round((1 - w) * base + w * tf, 4)
+
+
 class TeamConditionEngine:
     """
     Computes a Team Condition Score (0-1) per team per match
@@ -468,6 +498,20 @@ class TeamConditionEngine:
 
         self.md1     = MD1_RESULTS
         self._elo_delta = self._compute_tournament_elo_delta()
+        self._apply_tournament_form()
+
+    def _apply_tournament_form(self) -> None:
+        """Boost players' form/scoring from goals actually scored in the
+        tournament (real scorer feed). A player banging in goals now is in form;
+        this lifts their form rating and recent-goal count, which flows into the
+        team attack rating and the 'players to decide it' picks."""
+        for name, goals in _tstats.player_goals().items():
+            p = self.players.get(name)
+            if not p:
+                continue
+            p["goals_last5"] = int(p.get("goals_last5", 0)) + goals
+            p["form"] = float(min(10.0, p.get("form", 7.0) + 0.6 * goals))
+            p["tourn_goals"] = goals
 
     def _merge_external_players(self) -> None:
         """Merge processed Kaggle player features onto the in-memory player DB.
@@ -613,7 +657,7 @@ class TeamConditionEngine:
 
         # Goalkeeper quality: curated reputation, dimmed if the #1 keeper is
         # not fully fit (best available fit GK's fitness scales the rating).
-        gk_base = GK_QUALITY.get(team, GK_QUALITY_DEFAULT)
+        gk_base = gk_rating(team)   # pre-tournament prior blended with form
         gks = [p for p in squad if p["position"] == "GK"]
         fit_gk = [p for p in gks if p["status"] == "fit"]
         gk_fitness = max((p["fitness"] for p in (fit_gk or gks)), default=1.0)
@@ -689,9 +733,11 @@ class TeamConditionEngine:
         mom_delta   = (hc["momentum"] - ac["momentum"]) / 100.0
         # Attack/defence matchup (team combination: how the units fit together)
         att_def_adv = hc["attack_rating"] - ac["defence_rating"]
-        # Manager track-record delta (win rate, 0-1)
-        mgr_delta   = (MANAGER_WINRATE.get(home, MANAGER_DEFAULT)
-                       - MANAGER_WINRATE.get(away, MANAGER_DEFAULT))
+        # Manager track-record delta (win rate, 0-1), blended with in-tournament
+        # points-per-game once games are played.
+        mgr_home    = manager_rating(home)
+        mgr_away    = manager_rating(away)
+        mgr_delta   = mgr_home - mgr_away
         # Goalkeeper quality delta (0-1): a stronger, fit keeper helps his side.
         gk_delta    = hc["gk_quality"] - ac["gk_quality"]
 
@@ -712,8 +758,8 @@ class TeamConditionEngine:
             "away_cond":     ac["condition_score"],
             "home_momentum": hc["momentum"],
             "away_momentum": ac["momentum"],
-            "home_manager_wr": MANAGER_WINRATE.get(home, MANAGER_DEFAULT),
-            "away_manager_wr": MANAGER_WINRATE.get(away, MANAGER_DEFAULT),
+            "home_manager_wr": mgr_home,
+            "away_manager_wr": mgr_away,
             "home_gk_quality": hc["gk_quality"],
             "away_gk_quality": ac["gk_quality"],
         }

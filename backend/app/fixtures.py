@@ -90,9 +90,9 @@ MD23: list[tuple] = [
     ("2026-06-20T16:00:00-04:00", "E", "MD2", "Germany", "Ivory Coast", 2, 1, "Toronto"),
     ("2026-06-20T20:00:00-04:00", "E", "MD2", "Ecuador", "Curaçao", 0, 0, "Kansas City"),
     ("2026-06-21T00:00:00-04:00", "F", "MD2", "Tunisia", "Japan", 0, 4, "Monterrey"),
-    ("2026-06-21T12:00:00-04:00", "H", "MD2", "Spain", "Saudi Arabia", None, None, "Atlanta"),
-    ("2026-06-21T15:00:00-04:00", "G", "MD2", "Belgium", "Iran", None, None, "Los Angeles"),
-    ("2026-06-21T18:00:00-04:00", "H", "MD2", "Uruguay", "Cape Verde", None, None, "Miami"),
+    ("2026-06-21T12:00:00-04:00", "H", "MD2", "Spain", "Saudi Arabia", 4, 0, "Atlanta"),
+    ("2026-06-21T15:00:00-04:00", "G", "MD2", "Belgium", "Iran", 0, 0, "Los Angeles"),
+    ("2026-06-21T18:00:00-04:00", "H", "MD2", "Uruguay", "Cape Verde", 2, 2, "Miami"),
     ("2026-06-21T21:00:00-04:00", "G", "MD2", "New Zealand", "Egypt", None, None, "Vancouver"),
     ("2026-06-22T13:00:00-04:00", "J", "MD2", "Argentina", "Austria", None, None, "Dallas"),
     ("2026-06-22T17:00:00-04:00", "I", "MD2", "France", "Iraq", None, None, "Philadelphia"),
@@ -348,13 +348,32 @@ def _full_squads() -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
 
 
+@lru_cache
+def _player_images() -> dict:
+    """name -> free-licensed Wikipedia/Commons headshot URL.
+
+    Built offline by `gen_player_images.py`. Players with no free image are
+    absent; the frontend falls back to an initials avatar.
+    """
+    import json
+    p = Path(__file__).resolve().parent.parent / "data" / "raw" / "player_images.json"
+    try:
+        return json.loads(p.read_text()) if p.exists() else {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def player_photo(name: str) -> str:
+    return _player_images().get(name, "")
+
+
 def squad(name: str) -> list[dict]:
     # 1. curated marquee squad (rich real stats)
     rows = SQUADS.get(name)
     if rows is not None:
         return [{"name": nm, "position": pos, "club": club, "goals": g,
                  "assists": a, "xg": xg, "xa": xa, "impact": imp,
-                 "fitness": fit, "photo_url": ""}
+                 "fitness": fit, "photo_url": player_photo(nm)}
                 for (nm, pos, club, g, a, xg, xa, imp, fit) in rows]
     # 2. full real roster (name/position/club); ratings derived deterministically
     full = _full_squads().get(name)
@@ -366,7 +385,8 @@ def squad(name: str) -> list[dict]:
             out.append({"name": p["name"], "position": pos,
                         "club": p.get("club") or "—", "number": p.get("number"),
                         "goals": 0, "assists": 0, "xg": 0.0, "xa": 0.0,
-                        "impact": impact, "fitness": "fit", "photo_url": ""})
+                        "impact": impact, "fitness": "fit",
+                        "photo_url": player_photo(p["name"])})
         return out
     # 3. generic fallback (team with no roster data)
     rows = [(f"{name} Player {i+1}", _POS_CYCLE[i % 6], "—",

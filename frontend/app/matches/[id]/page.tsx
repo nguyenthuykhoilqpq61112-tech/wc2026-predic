@@ -7,6 +7,7 @@ import {
   LiveBadge, AIInsightCard, SectionHeader, StatRow,
 } from "@/components/ui";
 import { MatchAnalytics } from "@/components/match-analytics";
+import { MatchFlowReport } from "@/components/match-flow";
 
 const fetcher = (p: string) => api(p);
 
@@ -137,25 +138,32 @@ export default function MatchCenter({ params }: { params: { id: string } }) {
           </div>
         </motion.section>
 
-        {/* AI analysis */}
+        {/* Pre-match analysis — match-flow simulation (same engine as the
+            knockout bracket: 90' -> ET -> shootout; group games allow a draw) */}
         <motion.section
           initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
           className="card-broadcast">
-          <SectionHeader title="CAI PRE-MATCH ANALYSIS" sub="Ensemble narrative" />
-          <div className="rounded-xl border border-cyan/10 bg-cyan/[0.03] p-4">
-            <p className="text-[15px] leading-relaxed text-stadium/90">{p.explanation}</p>
-          </div>
-
-          <div className="mt-5">
-            <div className="mb-2 text-[11px] uppercase tracking-widest text-muted">xG Momentum</div>
-            <MomentumBar home={home} away={away} homeVal={xg.home} awayVal={xg.away} />
-          </div>
-          <div className="mt-5 grid grid-cols-2 gap-x-8">
-            <Meter label={`${home} attack`} value={(xg.home / ((xg.home + xg.away) || 1)) * 100} color="#00E676" />
-            <Meter label={`${away} attack`} value={(xg.away / ((xg.home + xg.away) || 1)) * 100} color="#00D4FF" />
-            <Meter label={`${home} strength`} value={tc[home]?.strength_index ?? 50} color="#FFD700" />
-            <Meter label={`${away} strength`} value={tc[away]?.strength_index ?? 50} color="#FFD700" />
-          </div>
+          <SectionHeader title="CAI MATCH SIMULATION"
+            sub={data.flow ? `${data.flow.n_sims?.toLocaleString()}-run Monte-Carlo` : "Ensemble narrative"} />
+          {data.flow
+            ? <MatchFlowReport flow={data.flow} />
+            : (
+              <>
+                <div className="rounded-xl border border-cyan/10 bg-cyan/[0.03] p-4">
+                  <p className="text-[15px] leading-relaxed text-stadium/90">{p.explanation}</p>
+                </div>
+                <div className="mt-5">
+                  <div className="mb-2 text-[11px] uppercase tracking-widest text-muted">xG Momentum</div>
+                  <MomentumBar home={home} away={away} homeVal={xg.home} awayVal={xg.away} />
+                </div>
+                <div className="mt-5 grid grid-cols-2 gap-x-8">
+                  <Meter label={`${home} attack`} value={(xg.home / ((xg.home + xg.away) || 1)) * 100} color="#00E676" />
+                  <Meter label={`${away} attack`} value={(xg.away / ((xg.home + xg.away) || 1)) * 100} color="#00D4FF" />
+                  <Meter label={`${home} strength`} value={tc[home]?.strength_index ?? 50} color="#FFD700" />
+                  <Meter label={`${away} strength`} value={tc[away]?.strength_index ?? 50} color="#FFD700" />
+                </div>
+              </>
+            )}
         </motion.section>
       </div>
 

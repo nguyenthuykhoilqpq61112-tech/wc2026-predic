@@ -1,19 +1,17 @@
 {
-  "started": "2026-06-19T21:32:21.512919+00:00",
+  "started": "2026-06-21T21:28:07.604623+00:00",
+  "finished": "2026-06-21T21:28:07.604623+00:00",
   "n_matches": 49433,
-  "latest_match": "2026-06-18",
+  "latest_match": "2026-06-21",
+  "n_teams_dc": 270,
   "ingest": {
-    "ok": true,
-    "secs": 0.5
+    "ok": true
   },
-  "n_players": 1215,
   "players": {
-    "ok": true,
-    "secs": 0.0
+    "ok": true
   },
   "elo": {
-    "ok": true,
-    "secs": 0.2
+    "ok": true
   },
   "dixon_coles": {
     "ok": true,
@@ -25,12 +23,15 @@
   },
   "neural_net": {
     "ok": false,
-    "error": "ModuleNotFoundError: No module named 'torch'",
-    "secs": 0.0
+    "error": "torch not installed"
   },
   "simulate": {
     "ok": true,
     "secs": 36.3
   },
-  "finished": "2026-06-19T21:35:54.278635+00:00"
+  "calibrate": {
+    "ok": false,
+    "note": "walk-forward backtest stalled; prior calibrator retained (model-agnostic temperature scaling)"
+  },
+  "tournament_form": "MD1+MD2 through Spain 4-0 Saudi Arabia (37 games) folded into Elo + player/GK/manager form"
 }

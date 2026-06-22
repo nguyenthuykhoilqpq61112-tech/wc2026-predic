@@ -43,59 +43,53 @@ def _mov_mult(goal_diff: int, elo_diff: float) -> float:
 # WC 2026 MD1 results (played June 11-19, 2026)
 # Format: (home, away, home_score, away_score, neutral)
 # ---------------------------------------------------------------------------
+# Mirrors the canonical played group games in app/fixtures.py (MD1 + the
+# played MD2 fixtures). Kept in lock-step with that schedule — if you mark a new
+# result there, add the same (home, away, hs, as, neutral) row here so the form
+# /Elo engine and the standings never diverge. neutral=False only when a host
+# nation (USA / Mexico / Canada) plays at home.
 WC2026_PLAYED: list[tuple[str, str, int, int, bool]] = [
-    # MD1 — Group A
-    ("Mexico",          "South Africa",        2, 0, False),  # Estadio Azteca
-    ("South Korea",     "Czech Republic",       1, 1, True),
-
-    # MD1 — Group B
-    ("Canada",          "Qatar",               6, 0, True),
-    ("Switzerland",     "Bosnia and Herzegovina", 4, 1, True),
-
-    # MD1 — Group C
-    ("Brazil",          "Morocco",             2, 1, True),
-    ("Haiti",           "Scotland",            0, 3, True),
-
-    # MD1 — Group D
-    ("United States",   "Paraguay",            2, 0, False),  # SoFi
-    ("Australia",       "Turkey",              1, 1, True),
-
-    # MD1 — Group E
-    ("Germany",         "Ivory Coast",         3, 0, True),
-    ("Curaçao",         "Ecuador",             0, 4, True),
-
-    # MD1 — Group F
-    ("Netherlands",     "Sweden",              3, 1, True),
-    ("Japan",           "Tunisia",             2, 0, True),
-
-    # MD1 — Group G
-    ("Belgium",         "New Zealand",         4, 0, True),
-    ("Egypt",           "Iran",                1, 1, True),
-
-    # MD1 — Group H
-    ("Spain",           "Saudi Arabia",        5, 0, True),
-    ("Uruguay",         "Cape Verde",          2, 0, True),
-
-    # MD1 — Group I
-    ("France",          "Iraq",                4, 0, True),
-    ("Norway",          "Senegal",             2, 1, True),
-
-    # MD1 — Group J
-    ("Argentina",       "Algeria",             3, 0, True),
-    ("Austria",         "Jordan",              3, 0, True),
-
-    # MD1 — Group K
-    ("Portugal",        "Uzbekistan",          4, 0, True),
-    ("Colombia",        "DR Congo",            2, 0, True),
-
-    # MD1 — Group L
-    ("England",         "Panama",              3, 0, True),
-    ("Croatia",         "Ghana",               2, 0, True),
-
-    # MD2 (partial — games played by Jun 19, 2026)
-    ("Czech Republic",  "South Africa",        1, 1, True),
-    ("Switzerland",     "Canada",              0, 6, True),  # (Canada 6-0)
-    ("Mexico",          "South Korea",         1, 0, False),
+    # ── Matchday 1 ──
+    ("Mexico",          "South Africa",            2, 0, False),
+    ("South Korea",     "Czech Republic",          2, 1, True),
+    ("Canada",          "Bosnia and Herzegovina",  1, 1, False),
+    ("United States",   "Paraguay",                4, 1, False),
+    ("Qatar",           "Switzerland",             1, 1, True),
+    ("Brazil",          "Morocco",                 1, 1, True),
+    ("Haiti",           "Scotland",                0, 1, True),
+    ("Australia",       "Turkey",                  2, 0, True),
+    ("Germany",         "Curaçao",                 7, 1, True),
+    ("Netherlands",     "Japan",                   2, 2, True),
+    ("Ivory Coast",     "Ecuador",                 1, 0, True),
+    ("Sweden",          "Tunisia",                 5, 1, True),
+    ("Spain",           "Cape Verde",              0, 0, True),
+    ("Belgium",         "Egypt",                   1, 1, True),
+    ("Saudi Arabia",    "Uruguay",                 1, 1, True),
+    ("Iran",            "New Zealand",             2, 2, True),
+    ("France",          "Senegal",                 3, 1, True),
+    ("Iraq",            "Norway",                  1, 4, True),
+    ("Argentina",       "Algeria",                 3, 0, True),
+    ("Austria",         "Jordan",                  3, 1, True),
+    ("Portugal",        "DR Congo",                1, 1, True),
+    ("England",         "Croatia",                 4, 2, True),
+    ("Ghana",           "Panama",                  1, 0, True),
+    ("Uzbekistan",      "Colombia",                1, 3, True),
+    # ── Matchday 2 (played so far) ──
+    ("Czech Republic",  "South Africa",            1, 1, True),
+    ("Switzerland",     "Bosnia and Herzegovina",  4, 1, True),
+    ("Canada",          "Qatar",                   6, 0, False),
+    ("Mexico",          "South Korea",             1, 0, False),
+    ("United States",   "Australia",               2, 0, False),
+    ("Scotland",        "Morocco",                 0, 1, True),
+    ("Brazil",          "Haiti",                   3, 0, True),
+    ("Paraguay",        "Turkey",                  1, 0, True),
+    ("Netherlands",     "Sweden",                  5, 1, True),
+    ("Germany",         "Ivory Coast",             2, 1, True),
+    ("Ecuador",         "Curaçao",                 0, 0, True),
+    ("Tunisia",         "Japan",                   0, 4, True),
+    ("Spain",           "Saudi Arabia",            4, 0, True),
+    ("Belgium",         "Iran",                    0, 0, True),
+    ("Uruguay",         "Cape Verde",              2, 2, True),
 ]
 
 

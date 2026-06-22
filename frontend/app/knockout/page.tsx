@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
 import { Flag } from "@/components/ui";
+import { MatchFlowReport } from "@/components/match-flow";
 
 const fetcher = (p: string) => api(p);
 const ET = "America/New_York";
@@ -242,6 +243,12 @@ function AnalysisModal({ m, onClose }: { m: any; onClose: () => void }) {
               ))}
             </ul>
           </>
+        )}
+
+        {m.flow && (
+          <div className="mt-5 border-t border-white/10 pt-4">
+            <MatchFlowReport flow={m.flow} />
+          </div>
         )}
       </motion.div>
     </motion.div>

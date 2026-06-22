@@ -46,6 +46,24 @@ def predict_match(home: str, away: str, neutral: bool = True,
     return res
 
 
+def match_flow(home: str, away: str, base: dict | None = None,
+               knockout: bool = True, neutral: bool = True) -> dict:
+    """Full match-flow simulation.
+
+    knockout=True  -> regulation -> extra time -> shootout (always a winner).
+    knockout=False -> group/league game where a draw is a valid result.
+    """
+    key = f"flow:{home}:{away}:{int(knockout)}:{int(neutral)}"
+    hit = cache.get(key)
+    if hit:
+        return hit
+    import match_flow as mf
+    res = mf.simulate_tie(engine(), home, away, base,
+                          knockout=knockout, neutral=neutral)
+    cache.set(key, res)
+    return res
+
+
 def sim_table(top: int | None = None) -> list[dict]:
     p = ML_DIR.parent / "data" / "processed" / "sim_results.json"
     if not p.exists():
