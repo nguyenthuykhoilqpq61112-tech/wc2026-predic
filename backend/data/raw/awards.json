@@ -1,0 +1,31 @@
+{
+  "as_of": "2026-06-22",
+  "sources": [
+    "https://www.goal.com/en/lists/world-cup-2026-golden-boot-standings-fifa-award/blt29fdba0896b8fd09",
+    "https://www.goal.com/en/lists/world-cup-2026-golden-ball-power-rankings-fifa-award/bltebb443122ae575ac",
+    "https://blog.wego.com/fifa-world-cup-golden-glove-winners/",
+    "https://www.espn.com/soccer/story/_/id/49024760/2026-world-cup-awards-golden-ball-golden-boot-golden-glove-trophies-revealed"
+  ],
+  "golden_boot_assists": {
+    "Deniz Undav": 2
+  },
+  "golden_glove": [
+    {"player": "Emiliano Martínez", "team": "Argentina", "note": "Reigning Golden Glove holder; pre-tournament favourite"},
+    {"player": "Unai Simón", "team": "Spain", "note": "First-choice behind one of the most organised defences"},
+    {"player": "Mike Maignan", "team": "France", "note": "Leads at some books; standout for clean sheets + saves"},
+    {"player": "Alisson Becker", "team": "Brazil", "note": "Vastly experienced; dozens of clean sheets for Brazil"},
+    {"player": "Thibaut Courtois", "team": "Belgium", "note": "2018 winner; delivers in finals"},
+    {"player": "Diogo Costa", "team": "Portugal", "note": "Shootout specialist behind a deep-running side"},
+    {"player": "Vozinha", "team": "Cape Verde", "note": "7 saves in a 0-0 draw with Spain"}
+  ],
+  "golden_ball": [
+    {"rank": 1, "player": "Lionel Messi", "team": "Argentina", "note": "Hat-trick vs Algeria; joint-top all-time with 16 World Cup goals"},
+    {"rank": 2, "player": "Kylian Mbappé", "team": "France", "note": "Scored twice in the opener; moved past Pelé's 12 WC goals"},
+    {"rank": 3, "player": "Michael Olise", "team": "France", "note": "FIFA Man of the Match in France's 3-1 win; electric form"},
+    {"rank": 4, "player": "Erling Haaland", "team": "Norway", "note": "Two goals + MOTM in Norway's 4-1 opening win"},
+    {"rank": 5, "player": "Harry Kane", "team": "England", "note": "European Golden Shoe winner; scored twice vs Croatia"},
+    {"rank": 6, "player": "Alexander Isak", "team": "Sweden", "note": "Goal + two assists in Sweden's 5-1 win over Tunisia"},
+    {"rank": 7, "player": "Kai Havertz", "team": "Germany", "note": "Two goals incl. a penalty in Germany's 7-1 rout"},
+    {"rank": 8, "player": "Yasin Ayari", "team": "Sweden", "note": "Two long-range strikes in Sweden's 5-1 opener"}
+  ]
+}

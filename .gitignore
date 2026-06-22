@@ -18,6 +18,7 @@ backend/data/processed/*
 !backend/data/raw/match_events.json
 !backend/data/raw/post_match.json
 !backend/data/raw/player_images.json
+!backend/data/raw/awards.json
 
 # node / next
 node_modules/
