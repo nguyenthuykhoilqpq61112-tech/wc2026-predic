@@ -78,6 +78,30 @@ Branch: `main` · all work committed + pushed to
 
 ---
 
+## 8. Scoreline calibration — DONE
+Scorelines ran ~13% low on goals (modeled 2.60 vs actual 3.00 g/match over 39
+played games) and clustered too low for blowouts. Fixed:
+- **`config.GOAL_SCALE = 1.15`** — multiplicative calibration on Dixon-Coles
+  lambdas (`model.py._lambdas`). Implied scale now **1.005** (modeled total/match
+  2.98 vs actual 3.00). Re-tune from `backtest.scoreline_calibration()`'s
+  `implied_scale` if a future slice drifts.
+- **Poisson member de-flattened** (`poisson.py`): supremacy + total now scale with
+  the Elo gap (`POISSON_SUP_K`, `POISSON_TOT_GAMMA`) — even 3.10, mismatch 5.45,
+  huge 6.09. Was locked at 2.70 total / per-team ≤1.89 (couldn't blow out).
+- **rho bounded** (`DC_RHO_BOUNDS`) so an odd training slice can't over-damp high
+  scores; DC refit (rho=−0.080, in range).
+- Predictions now carry **`total_goals` + `over_2_5`**; list cards expose
+  `top_scores` (detail page already rendered the top-3). `backtest.py` gains
+  `scoreline_calibration()` (modeled vs actual totals, goal MAE, O/U-2.5 acc).
+- Re-sim: champion stable (Argentina 32.3%). O/U-2.5 acc 0.72, goal MAE 0.86.
+- **⚠️ Refit DC only via module import** (`import model; model.fit(...)`), never
+  `python ml/model.py` directly — the latter pickles the class as
+  `__main__.DCModel`, which `ensemble.py` (`from model import DCModel`) can't load.
+  `retrain.py` already does it the right way.
+- **Bigger accuracy levers still need new data** (not done): real shot-level xG
+  feed, confirmed kickoff lineups, real over/under + handicap odds, match-event
+  (red cards/pens) data. See the chat analysis for the ranked list.
+
 ## Known issues / watch-outs
 - **Custom alias is not on the Vercel project, so deploys don't update it.**
   Root cause (diagnosed Jun 21): `chris-fifaworldcup26-prediction.vercel.app` is
