@@ -49,6 +49,19 @@ export default function MatchesPage() {
   const played = (data ?? []).filter((m: any) => m.played).length;
   const total = (data ?? []).length;
 
+  // Overall model accuracy across ALL played matches (unfiltered, so the
+  // headline number is stable regardless of the active group/MD filter).
+  const accuracy = useMemo(() => {
+    const pl = (allData ?? []).filter((m: any) => m.played);
+    const n = pl.length;
+    if (!n) return null;
+    const wdl = pl.filter((m: any) => predictionHit(m) === true).length;
+    const exact = pl.filter((m: any) =>
+      m.top_score && m.top_score.score === `${m.home_score}-${m.away_score}`).length;
+    return { n, wdl, wdlPct: Math.round((wdl / n) * 100),
+             exact, exactPct: Math.round((exact / n) * 100) };
+  }, [allData]);
+
   return (
     <div className="space-y-6">
 
@@ -62,6 +75,29 @@ export default function MatchesPage() {
               className={`btn-sm ${view === "table" ? "btn-gold" : ""}`}>☰ Table</button>
           </div>
         } />
+
+      {/* ── Overall model accuracy ── */}
+      {accuracy && (
+        <div className="card-broadcast flex flex-wrap items-center gap-x-8 gap-y-3 py-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🎯</span>
+            <span className="font-display text-xs uppercase tracking-widest text-muted">Model accuracy</span>
+          </div>
+          <div>
+            <div className="font-display text-2xl font-bold tabnum text-success">{accuracy.wdlPct}%</div>
+            <div className="text-[10px] uppercase tracking-wider text-muted">
+              Outcome · <span className="text-stadium">{accuracy.wdl}/{accuracy.n}</span> correct
+            </div>
+          </div>
+          <div>
+            <div className="font-display text-2xl font-bold tabnum text-gold">{accuracy.exactPct}%</div>
+            <div className="text-[10px] uppercase tracking-wider text-muted">
+              Exact score · <span className="text-stadium">{accuracy.exact}/{accuracy.n}</span>
+            </div>
+          </div>
+          <span className="ml-auto text-[11px] text-muted">across {accuracy.n} played matches</span>
+        </div>
+      )}
 
       {/* ── Filter bar ── */}
       <div className="card-broadcast flex flex-wrap items-center gap-3 py-4">
