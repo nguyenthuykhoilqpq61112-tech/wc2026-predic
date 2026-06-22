@@ -1,4 +1,40 @@
 {
+  "New Zealand|Egypt": {
+    "home": "New Zealand",
+    "away": "Egypt",
+    "score": [
+      1,
+      3
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Surman",
+          "minute": 15,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Mostafa Zico",
+          "minute": 58,
+          "type": "goal"
+        },
+        {
+          "player": "Mohamed Salah",
+          "minute": 67,
+          "type": "goal"
+        },
+        {
+          "player": "Trezeguet",
+          "minute": 82,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260621"
+  },
   "Argentina|Austria": {
     "home": "Argentina",
     "away": "Austria",

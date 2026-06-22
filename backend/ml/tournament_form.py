@@ -91,6 +91,7 @@ WC2026_PLAYED: list[tuple[str, str, int, int, bool]] = [
     ("Belgium",         "Iran",                    0, 0, True),
     ("Uruguay",         "Cape Verde",              2, 2, True),
     ("Argentina",       "Austria",                 2, 0, True),
+    ("New Zealand",     "Egypt",                   1, 3, True),
 ]
 
 

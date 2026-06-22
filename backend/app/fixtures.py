@@ -93,7 +93,7 @@ MD23: list[tuple] = [
     ("2026-06-21T12:00:00-04:00", "H", "MD2", "Spain", "Saudi Arabia", 4, 0, "Atlanta"),
     ("2026-06-21T15:00:00-04:00", "G", "MD2", "Belgium", "Iran", 0, 0, "Los Angeles"),
     ("2026-06-21T18:00:00-04:00", "H", "MD2", "Uruguay", "Cape Verde", 2, 2, "Miami"),
-    ("2026-06-21T21:00:00-04:00", "G", "MD2", "New Zealand", "Egypt", None, None, "Vancouver"),
+    ("2026-06-21T21:00:00-04:00", "G", "MD2", "New Zealand", "Egypt", 1, 3, "Vancouver"),
     ("2026-06-22T13:00:00-04:00", "J", "MD2", "Argentina", "Austria", 2, 0, "Dallas"),
     ("2026-06-22T17:00:00-04:00", "I", "MD2", "France", "Iraq", None, None, "Philadelphia"),
     ("2026-06-22T20:00:00-04:00", "I", "MD2", "Norway", "Senegal", None, None, "New York/NJ"),
