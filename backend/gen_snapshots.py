@@ -48,6 +48,7 @@ def main() -> None:
     grab("/api/home")
     grab("/api/insights")
     grab("/api/knockout")
+    grab("/api/awards")
     grab("/api/teams")
     grab("/api/simulate/groups")
     grab("/api/simulate?top=16")

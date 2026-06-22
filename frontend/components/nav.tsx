@@ -12,6 +12,7 @@ const LINKS: [string, string, string][] = [
   ["/knockout",  "Knockout",   "◈"],
   ["/simulator", "Simulator",  "◎"],
   ["/teams",     "Teams",      "🛡"],
+  ["/awards",    "Awards",     "🏆"],
   ["/analytics", "Analytics",  "◈"],
 ];
 

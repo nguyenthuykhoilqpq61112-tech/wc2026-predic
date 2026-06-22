@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import get_settings
-from .routers import admin, matches, players, predictions, simulate, teams
+from .routers import admin, awards, matches, players, predictions, simulate, teams
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name, version="1.0.0")
@@ -16,7 +16,7 @@ app.add_middleware(
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
 )
 
-for r in (predictions, matches, teams, players, simulate, admin):
+for r in (predictions, matches, teams, players, simulate, awards, admin):
     app.include_router(r.router)
 
 
