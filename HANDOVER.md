@@ -46,13 +46,21 @@ Branch: `main` · all work committed + pushed to
 - Frontend: completed matches show a 📰 Post-Match Analysis card; the old
   "BROADCAST WIDGETS / Activate at kickoff" stubs render only for unplayed games.
 
-## 5. Results ingested (MD1 + MD2 through Jun 20)
+## 5. Results ingested (MD1 + MD2 through Jun 21)
 - Jun 19: Scotland 0-1 Morocco, Brazil 3-0 Haiti, Paraguay 1-0 Turkey.
 - Jun 20: Netherlands 5-1 Sweden, Germany 2-1 Ivory Coast, Ecuador 0-0 Curaçao,
-  Tunisia 0-4 Japan. All with web-verified scorers in `match_events.json`.
-- Updated via `fixtures.py` schedule + `data/raw/results.csv` (Python csv, not sed).
-- Winner accuracy ≈ 23/38. Models retrained (Elo/DC/XGB) through Jun 20;
-  Monte Carlo re-run. **Projected champion: Spain** (RU England, 3rd Germany).
+  Tunisia 0-4 Japan.
+- Jun 21: Spain 4-0 Saudi Arabia, Belgium 0-0 Iran (Belgium red card 2H),
+  Uruguay 2-2 Cape Verde (Araújo 44', Canobbio 45+6' / Pina 21', Varela 61').
+  All with web-verified scorers in `match_events.json` + curated `post_match.json`.
+  **NZ vs Egypt left unplayed** (`None`) — was still live (NZ 1-0) at ingest time;
+  ingest it once final.
+- Updated via `fixtures.py` schedule + `data/raw/results.csv` (Python, not sed) +
+  `ml/tournament_form.py` `WC2026_PLAYED` (kept in lock-step with fixtures).
+- Monte Carlo re-run (`python ml/simulate.py`, N=50000, ~25s). **Projected
+  champion unchanged: Argentina ≈31.0%** (Spain 11.0%, England 8.0%, France 7.6%).
+  The two Jun 21 draws shift Group G/H standings, not the title favorite.
+  Tests pass (calibration 7/7, ensemble 14/14); knockout/services engines verified.
 
 ## 6. Branding — DONE
 - Rebranded all user-facing "AI" → **CAI (ChrisAI)** (nav, titles, "CAI picks",
