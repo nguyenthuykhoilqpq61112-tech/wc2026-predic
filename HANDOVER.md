@@ -109,20 +109,35 @@ played games) and clustered too low for blowouts. Fixed:
   the project owns — here `frontend-five-iota-33.vercel.app`. The custom alias was
   set manually once and stays pinned; pushes to `main` build fine but never move
   it, so the live URL serves stale data while the repo + build are correct.
-  **Permanent fix:** add `chris-fifaworldcup26-prediction.vercel.app` under
-  Vercel → project → Settings → Domains (then it follows every deploy).
-  **Manual fix (used Jun 21):** from the repo ROOT (not `frontend/`, or Vercel
-  looks for `frontend/frontend`): `npx vercel --prod --yes` then
+  **⚠️ STILL OUTSTANDING — permanent fix not yet applied.** Recurred again
+  Jun 22 (had to re-run the manual alias after the recalibrated-model push).
+  It will keep recurring on every prod deploy until done. **Permanent fix
+  (do this once):** add `chris-fifaworldcup26-prediction.vercel.app` under
+  Vercel → project → Settings → Domains → Add — then it follows every deploy
+  and the manual step below is no longer needed.
+  **Manual fix (used Jun 21 + Jun 22):** from the repo ROOT (not `frontend/`,
+  or Vercel looks for `frontend/frontend`): `npx vercel --prod --yes` then
   `npx vercel alias set <printed-hash-url> chris-fifaworldcup26-prediction.vercel.app`.
-  Verify with the snapshot `curl` in `DEPLOY.md` (`last-modified` ≈ now, low `age`).
+  Verify by comparing a prediction value (e.g. match 40 `p_home`) in the live
+  `…/snapshot/api_home.json` against the local file — they must match. NOTE: the
+  response `last-modified`/`age` headers are NOT a reliable stale tell here —
+  Vercel returns `last-modified ≈ now, age 0` even when the alias serves an old
+  deployment. Compare content, not headers.
   Vercel MCP is 403 for this team scope, so the agent can't do it — needs the CLI.
-- **`retrain.py` full run can hang at the sim step** in this macOS/Python 3.14
-  environment (BLAS/multiprocessing + the subprocess stdout pipe). `_sim` now runs
-  `simulate.py` in a subprocess writing to a log file (not the inherited pipe) with
-  a 900s timeout. If a full `retrain.run()` still stalls, run the steps' models
-  then `python ml/simulate.py` standalone (reliable ~1 min), which is what the
-  current artifacts were built with.
-- `torch` not installed → NN member off (intentional). XGBoost member active.
+- **`retrain.py` OpenMP deadlock — FIXED Jun 22 (commit 7df34f4).** Full
+  `retrain.run()` used to hang ~12h: running several OpenMP/BLAS steps (Dixon-Coles
+  scipy refit, XGBoost, sim, walk-forward backtest) back-to-back in one process
+  deadlocked in libomp's join barrier (`__kmpc_fork_call → __kmp_join_call →
+  _pthread_cond_wait`, 0% CPU) on this macOS/Python 3.14 box, so the `calibrate`
+  step never ran. Fix: cap math-lib threads to 1 for the whole process
+  (`OMP/OPENBLAS/MKL/VECLIB/NUMEXPR_NUM_THREADS`, set via `os.environ.setdefault`
+  at the TOP of `retrain.py` BEFORE numpy/pandas/xgboost import); `_sim` and
+  `_calibrate` also run their heavy scripts in fresh subprocesses (own thread caps,
+  stdout→logfile, timeouts). Full run now completes ~14 min, every step ok incl
+  calibrate (~476s). If a new heavy step ever re-hangs at 0% CPU, `sample <pid>`
+  for `__kmp_join_call` and isolate it in a subprocess.
+- `torch` now installed → NN member trains in retrain (was off when absent).
+  XGBoost member active.
 - `results.csv` is git-ignored (large); the prebuilt artifacts in
   `data/processed/` are committed so the API/snapshots work without a retrain.
 
