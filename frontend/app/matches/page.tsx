@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
 import { api, pct0 } from "@/lib/api";
-import { Flag, ProbBar, LiveBadge, SectionHeader, LowConfidenceTag, isLowConfidence } from "@/components/ui";
+import { Flag, ProbBar, LiveBadge, SectionHeader, LowConfidenceTag, isLowConfidence, PredictionBadge, predictionHit } from "@/components/ui";
 
 const fetcher = (p: string) => api(p);
 const GROUPS = "ABCDEFGHIJKL".split("");
@@ -189,6 +189,13 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
         </div>
       </div>
 
+      {/* played: did the model's pick land? */}
+      {m.played && (
+        <div className="mb-2 flex justify-center">
+          <PredictionBadge m={m} />
+        </div>
+      )}
+
       {/* prob bar */}
       {!m.played && (
         <>
@@ -264,6 +271,10 @@ function TableView({ data, router }: { data: any[]; router: any }) {
                     <span className="font-bold tabnum text-stadium">
                       {m.home_score}–{m.away_score}
                       <span className="ml-1.5 text-[10px] text-success">FT</span>
+                      {predictionHit(m) === true &&
+                        <span className="ml-1 text-[11px] text-success" title={`Model predicted ${m.predicted_winner} — correct`}>✓</span>}
+                      {predictionHit(m) === false &&
+                        <span className="ml-1 text-[11px] text-muted" title={`Model predicted ${m.predicted_winner}`}>✗</span>}
                     </span>
                   ) : (
                     <span className="flex items-center justify-center gap-2 text-xs tabnum">

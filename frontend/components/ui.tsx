@@ -57,6 +57,36 @@ export function LowConfidenceTag({ confidence, className = "" }:
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
+   PREDICTION RESULT (played matches)
+   Compares the model's pre-match pick (`predicted_winner`, a team name or "Draw")
+   against the actual W/D/L result, so a played match shows whether the call landed.
+══════════════════════════════════════════════════════════════════════════════ */
+export function predictionHit(m: any): boolean | null {
+  if (!m?.played || m.home_score == null || m.away_score == null || !m.predicted_winner)
+    return null;
+  const actual = m.home_score > m.away_score ? m.home_team
+    : m.away_score > m.home_score ? m.away_team : "Draw";
+  return m.predicted_winner === actual;
+}
+
+export function PredictionBadge({ m, className = "" }: { m: any; className?: string }) {
+  const hit = predictionHit(m);
+  if (hit === null) return null;
+  return hit ? (
+    <span title={`Model predicted ${m.predicted_winner} — correct`}
+      className={`inline-flex items-center gap-1 rounded-full border border-success/30 bg-success/10
+                  px-2.5 py-0.5 text-[10px] font-semibold text-success ${className}`}>
+      ✓ Prediction correct
+    </span>
+  ) : (
+    <span title={`Model predicted ${m.predicted_winner}`}
+      className={`chip text-[10px] ${className}`}>
+      ✗ Off — predicted {m.predicted_winner}
+    </span>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
    PROBABILITY BAR (tri-segment broadcast style)
 ══════════════════════════════════════════════════════════════════════════════ */
 export function ProbBar({ home, draw, away, animate = true, height = 10 }:
@@ -321,14 +351,19 @@ export function MatchCard({ m }: { m: any }) {
         </>
       )}
 
-      {/* Played: predicted scoreline vs actual (accuracy) */}
-      {played && m.top_score && (
-        <div className="mt-1 flex items-center justify-center gap-1.5 text-[11px]">
-          <span className="uppercase tracking-wider text-muted">Predicted</span>
-          <span className={`font-display font-bold ${
-            m.top_score.score === `${m.home_score}-${m.away_score}`
-              ? "text-success" : "text-muted"}`}>{m.top_score.score}</span>
-          {m.top_score.score === `${m.home_score}-${m.away_score}` && <span>✓</span>}
+      {/* Played: did the model's pick land + predicted scoreline vs actual */}
+      {played && (
+        <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5 text-[11px]">
+          <PredictionBadge m={m} />
+          {m.top_score && (
+            <span className="flex items-center gap-1 text-muted">
+              <span className="uppercase tracking-wider">Score</span>
+              <span className={`font-display font-bold ${
+                m.top_score.score === `${m.home_score}-${m.away_score}`
+                  ? "text-success" : "text-muted"}`}>{m.top_score.score}</span>
+              {m.top_score.score === `${m.home_score}-${m.away_score}` && <span>✓</span>}
+            </span>
+          )}
         </div>
       )}
 

@@ -5,6 +5,7 @@ import { api, pct, pct0 } from "@/lib/api";
 import {
   Flag, ProbBar, ProbRing, Countdown, MomentumBar, Meter, PlayerCard,
   LiveBadge, AIInsightCard, SectionHeader, StatRow, LowConfidenceTag, isLowConfidence,
+  PredictionBadge,
 } from "@/components/ui";
 import { MatchAnalytics } from "@/components/match-analytics";
 import { MatchFlowReport } from "@/components/match-flow";
@@ -69,6 +70,13 @@ export default function MatchCenter({ params }: { params: { id: string } }) {
               {m.played
                 ? <span className="chip-gold text-xs">FULL TIME</span>
                 : <Countdown to={m.kickoff} />}
+              {m.played && (
+                <PredictionBadge m={{
+                  played: true, home_team: m.home_team, away_team: m.away_team,
+                  home_score: m.home_score, away_score: m.away_score,
+                  predicted_winner: p.predicted_winner,
+                }} />
+              )}
               <span className="chip text-xs">Draw {pct0(p.p_draw)}</span>
             </div>
 
