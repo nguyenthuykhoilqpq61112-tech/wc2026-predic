@@ -51,6 +51,7 @@ def main() -> None:
     grab("/api/awards")
     grab("/api/teams")
     grab("/api/simulate/groups")
+    grab("/api/simulate/champion-trend")
     grab("/api/simulate?top=16")
     grab("/api/simulate?top=24")
     grab("/api/matches?upcoming=true&limit=18")

@@ -5,13 +5,18 @@ import { api, pct } from "@/lib/api";
 import { AIInsightCard, SectionHeader } from "@/components/ui";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
+  LineChart, Line, CartesianGrid, Legend,
 } from "recharts";
 
 const fetcher = (p: string) => api(p);
 
+// Distinct line colours for the champion-trend chart (by rank).
+const TREND_COLORS = ["#FFD700", "#00D4FF", "#00FFB2", "#FF6B9D", "#B388FF", "#FFA94D"];
+
 export default function AnalyticsPage() {
   const { data: ins } = useSWR("/api/insights", fetcher);
   const { data: sim } = useSWR("/api/simulate?top=16", fetcher);
+  const { data: trend } = useSWR("/api/simulate/champion-trend", fetcher);
 
   return (
     <div className="space-y-8">
@@ -49,6 +54,44 @@ export default function AnalyticsPage() {
             </ResponsiveContainer>
           ) : <div className="h-full animate-pulse rounded-xl bg-ink-2" />}
         </div>
+      </section>
+
+      {/* champion % trend over time */}
+      <section className="card-broadcast">
+        <SectionHeader title="CHAMPION % TREND"
+          sub="How title-winner probability has moved as results come in" />
+        <div className="h-80">
+          {trend && trend.series?.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={trend.series}
+                margin={{ left: 4, right: 20, top: 8, bottom: 4 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="date" stroke="#4A5B80" fontSize={11} tick={{ fill: "#8FA0C8" }} />
+                <YAxis tickFormatter={(v) => `${v}%`} stroke="#4A5B80" fontSize={11}
+                  tick={{ fill: "#8FA0C8" }} width={40} domain={[0, "auto"]} />
+                <Tooltip
+                  formatter={(v: number, name: string) => [`${v}%`, name]}
+                  contentStyle={{
+                    background: "#0F1D3D",
+                    border: "1px solid rgba(0,212,255,0.2)",
+                    borderRadius: 12,
+                    fontSize: 12,
+                  }} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                {trend.teams.map((t: string, i: number) => (
+                  <Line key={t} type="monotone" dataKey={t}
+                    stroke={TREND_COLORS[i % TREND_COLORS.length]}
+                    strokeWidth={i === 0 ? 2.5 : 1.5}
+                    dot={{ r: 2.5 }} activeDot={{ r: 4 }} />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          ) : <div className="h-full animate-pulse rounded-xl bg-ink-2" />}
+        </div>
+        <p className="mt-2 text-[11px] text-muted/70">
+          One point per matchday · in-tournament results nudge each team's Elo, which feeds the
+          50 000-run knockout simulation. Moves are small by design (group-stage K-factor is damped).
+        </p>
       </section>
 
       {/* upset alerts + dark horses */}

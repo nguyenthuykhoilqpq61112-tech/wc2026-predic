@@ -20,6 +20,14 @@ def simulation(top: int = Query(48, le=48)):
     }
 
 
+@router.get("/champion-trend")
+def champion_trend(top: int = Query(6, le=12)):
+    """Per-day title-winner probability for the current top teams (from the
+    sim archive) — drives the champion % trend chart."""
+    import champion_trend as ct  # flat ml module (ml_engine put ml/ on sys.path)
+    return ct.build(top=top)
+
+
 @router.get("/groups")
 def group_standings():
     """Live group standings (MP/W/D/L/GF/GA/GD/Pts from played matches) merged
