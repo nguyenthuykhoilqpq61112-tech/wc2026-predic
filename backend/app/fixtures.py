@@ -367,40 +367,66 @@ def player_photo(name: str) -> str:
     return _player_images().get(name, "")
 
 
+def _tournament_goals() -> dict[str, int]:
+    """Real WC2026 goals per player from the ESPN scorer feed (lazy import to
+    avoid app↔ml import-order issues; cached inside tournament_stats)."""
+    try:
+        import sys
+        ml_dir = str(Path(__file__).resolve().parent.parent / "ml")
+        if ml_dir not in sys.path:
+            sys.path.insert(0, ml_dir)
+        import tournament_stats as ts
+        return ts.player_goals()
+    except Exception:  # noqa: BLE001
+        return {}
+
+
 def squad(name: str) -> list[dict]:
     # 1. curated marquee squad (rich real stats)
     rows = SQUADS.get(name)
     if rows is not None:
-        return [{"name": nm, "position": pos, "club": club, "goals": g,
-                 "assists": a, "xg": xg, "xa": xa, "impact": imp,
-                 "fitness": fit, "photo_url": player_photo(nm)}
-                for (nm, pos, club, g, a, xg, xa, imp, fit) in rows]
-    # 2. full real roster (name/position/club); ratings derived deterministically
-    full = _full_squads().get(name)
-    if full:
-        out = []
-        for i, p in enumerate(full):
-            pos = _POS_MAP.get(p.get("position", "MF"), "MF")
-            impact = max(40, min(90, round(_POS_BASE[pos] - i * 0.18)))
-            out.append({"name": p["name"], "position": pos,
-                        "club": p.get("club") or "—", "number": p.get("number"),
-                        "goals": 0, "assists": 0, "xg": 0.0, "xa": 0.0,
-                        "impact": impact, "fitness": "fit",
-                        "photo_url": player_photo(p["name"])})
-        return out
-    # 3. generic fallback (team with no roster data)
-    rows = [(f"{name} Player {i+1}", _POS_CYCLE[i % 6], "—",
-             max(0, 5 - i), max(0, 4 - i), 0.0, 0.0, 70 - i * 3, "fit")
-            for i in range(6)]
-    return [{"name": nm, "position": pos, "club": club, "goals": g, "assists": a,
-             "xg": xg, "xa": xa, "impact": imp, "fitness": fit, "photo_url": ""}
-            for (nm, pos, club, g, a, xg, xa, imp, fit) in rows]
+        out = [{"name": nm, "position": pos, "club": club, "goals": g,
+                "assists": a, "xg": xg, "xa": xa, "impact": imp,
+                "fitness": fit, "photo_url": player_photo(nm)}
+               for (nm, pos, club, g, a, xg, xa, imp, fit) in rows]
+    else:
+        # 2. full real roster (name/position/club); ratings derived deterministically
+        full = _full_squads().get(name)
+        if full:
+            out = []
+            for i, p in enumerate(full):
+                pos = _POS_MAP.get(p.get("position", "MF"), "MF")
+                impact = max(40, min(90, round(_POS_BASE[pos] - i * 0.18)))
+                out.append({"name": p["name"], "position": pos,
+                            "club": p.get("club") or "—", "number": p.get("number"),
+                            "goals": 0, "assists": 0, "xg": 0.0, "xa": 0.0,
+                            "impact": impact, "fitness": "fit",
+                            "photo_url": player_photo(p["name"])})
+        else:
+            # 3. generic fallback (team with no roster data)
+            gen = [(f"{name} Player {i+1}", _POS_CYCLE[i % 6], "—",
+                    max(0, 5 - i), max(0, 4 - i), 0.0, 0.0, 70 - i * 3, "fit")
+                   for i in range(6)]
+            out = [{"name": nm, "position": pos, "club": club, "goals": g, "assists": a,
+                    "xg": xg, "xa": xa, "impact": imp, "fitness": fit, "photo_url": ""}
+                   for (nm, pos, club, g, a, xg, xa, imp, fit) in gen]
+
+    # Overlay REAL tournament goals so the `goals` field reflects WC2026, not the
+    # curated pre-tournament number. A player's tournament goals are authoritative
+    # once games are played (0 if they haven't scored).
+    tg = _tournament_goals()
+    for p in out:
+        p["goals"] = int(tg.get(p["name"], 0))
+    return out
 
 
 def key_players(name: str, k: int = 3) -> dict:
-    s = sorted(squad(name), key=lambda p: p["impact"], reverse=True)
+    # Rank "to watch" by who's actually scoring this tournament, then impact —
+    # so the team's in-form scorers (e.g. Ronaldo) surface, not just rep.
+    s = sorted(squad(name), key=lambda p: (p["goals"], p["impact"]), reverse=True)
     attack = [p for p in s if p["position"] in ("FW", "MF")][:k]
-    defense = [p for p in s if p["position"] in ("DF", "GK")][:max(2, k - 1)]
+    defense = [p for p in sorted(squad(name), key=lambda p: p["impact"], reverse=True)
+               if p["position"] in ("DF", "GK")][:max(2, k - 1)]
     return {"attacking": attack, "defensive": defense}
 
 
