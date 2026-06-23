@@ -33,17 +33,27 @@ def _match_top_scorer(events: dict, home: str, away: str) -> str | None:
     rec = events.get(f"{home}|{away}") or events.get(f"{away}|{home}")
     if not rec:
         return None
-    tally: dict[str, int] = {}
-    for side in ("home", "away"):
-        for sc in rec.get("scorers", {}).get(side, []):
-            if sc.get("type") == "own goal":
-                continue
-            nm = sc.get("player")
-            if nm and nm != "Unknown":
-                tally[nm] = tally.get(nm, 0) + 1
-    if not tally:
+    score = rec.get("score") or [0, 0]
+    # Prefer the winning side's scorer (a draw falls back to either side).
+    win_side = "home" if score[0] > score[1] else "away" if score[1] > score[0] else None
+
+    def tally(sides) -> dict[str, int]:
+        t: dict[str, int] = {}
+        for side in sides:
+            for sc in rec.get("scorers", {}).get(side, []):
+                if sc.get("type") == "own goal":  # not the scorer's credit
+                    continue
+                nm = sc.get("player")
+                if nm and nm != "Unknown":
+                    t[nm] = t.get(nm, 0) + 1
+        return t
+
+    t = tally([win_side]) if win_side else {}
+    if not t:  # draw, or winner scored only via own goal
+        t = tally(["home", "away"])
+    if not t:
         return None
-    name, n = max(tally.items(), key=lambda kv: kv[1])
+    name, n = max(t.items(), key=lambda kv: kv[1])
     return f"{name} {'⚽' * min(n, 3)}" if n >= 2 else name
 
 
