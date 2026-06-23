@@ -21,9 +21,11 @@ def simulation(top: int = Query(48, le=48)):
 
 
 @router.get("/champion-trend")
-def champion_trend(top: int = Query(6, le=12)):
-    """Per-day title-winner probability for the current top teams (from the
-    sim archive) — drives the champion % trend chart."""
+def champion_trend(top: int = Query(48, le=48)):
+    """Per-day title-winner probability per team (from the sim archive) — drives
+    the champion % trend chart. Returns all teams by default; `teams` is ordered
+    by current champion %, so the UI can default to the leaders and let the user
+    toggle any of the rest."""
     import champion_trend as ct  # flat ml module (ml_engine put ml/ on sys.path)
     return ct.build(top=top)
 

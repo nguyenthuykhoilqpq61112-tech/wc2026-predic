@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { motion } from "framer-motion";
 import { api, pct } from "@/lib/api";
@@ -10,13 +11,29 @@ import {
 
 const fetcher = (p: string) => api(p);
 
-// Distinct line colours for the champion-trend chart (by rank).
-const TREND_COLORS = ["#FFD700", "#00D4FF", "#00FFB2", "#FF6B9D", "#B388FF", "#FFA94D"];
+// Distinct line colours for the champion-trend chart (by team rank).
+const TREND_COLORS = ["#FFD700", "#00D4FF", "#00FFB2", "#FF6B9D", "#B388FF",
+  "#FFA94D", "#4DD0E1", "#F06292", "#AED581", "#9575CD"];
 
 export default function AnalyticsPage() {
   const { data: ins } = useSWR("/api/insights", fetcher);
   const { data: sim } = useSWR("/api/simulate?top=16", fetcher);
   const { data: trend } = useSWR("/api/simulate/champion-trend", fetcher);
+
+  // Which teams to plot on the trend chart. All teams are selectable; default
+  // to the current top 6 so the chart isn't 48-line spaghetti.
+  const [picked, setPicked] = useState<string[] | null>(null);
+  useEffect(() => {
+    if (trend?.teams && picked === null) setPicked(trend.teams.slice(0, 6));
+  }, [trend, picked]);
+  const sel = picked ?? [];
+  const colorFor = (team: string) =>
+    TREND_COLORS[(trend?.teams?.indexOf(team) ?? 0) % TREND_COLORS.length];
+  const toggle = (team: string) =>
+    setPicked((p) => {
+      const cur = p ?? [];
+      return cur.includes(team) ? cur.filter((t) => t !== team) : [...cur, team];
+    });
 
   return (
     <div className="space-y-8">
@@ -59,7 +76,34 @@ export default function AnalyticsPage() {
       {/* champion % trend over time */}
       <section className="card-broadcast">
         <SectionHeader title="CHAMPION % TREND"
-          sub="How title-winner probability has moved as results come in" />
+          sub="How title-winner probability has moved as results come in"
+          action={trend?.teams?.length > 0 ? (
+            <div className="flex gap-1.5">
+              <button onClick={() => setPicked(trend.teams)}
+                className="btn-sm text-[11px]">All</button>
+              <button onClick={() => setPicked(trend.teams.slice(0, 6))}
+                className="btn-sm text-[11px]">Top 6</button>
+              <button onClick={() => setPicked([])}
+                className="btn-sm text-[11px]">Clear</button>
+            </div>
+          ) : undefined} />
+
+        {/* team selector — every team is toggleable */}
+        {trend?.teams?.length > 0 && (
+          <div className="mb-3 flex max-h-24 flex-wrap gap-1.5 overflow-y-auto">
+            {trend.teams.map((t: string) => {
+              const on = sel.includes(t);
+              return (
+                <button key={t} onClick={() => toggle(t)}
+                  className={`chip cursor-pointer text-[10px] transition ${on ? "" : "opacity-50"}`}
+                  style={on ? { borderColor: colorFor(t), color: colorFor(t) } : undefined}>
+                  {t} {trend.current?.[t] != null && <span className="opacity-70">{trend.current[t]}%</span>}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         <div className="h-80">
           {trend && trend.series?.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
@@ -77,20 +121,20 @@ export default function AnalyticsPage() {
                     borderRadius: 12,
                     fontSize: 12,
                   }} />
-                <Legend wrapperStyle={{ fontSize: 12 }} />
-                {trend.teams.map((t: string, i: number) => (
+                {sel.length <= 8 && <Legend wrapperStyle={{ fontSize: 12 }} />}
+                {sel.map((t: string) => (
                   <Line key={t} type="monotone" dataKey={t}
-                    stroke={TREND_COLORS[i % TREND_COLORS.length]}
-                    strokeWidth={i === 0 ? 2.5 : 1.5}
-                    dot={{ r: 2.5 }} activeDot={{ r: 4 }} />
+                    stroke={colorFor(t)} strokeWidth={1.8}
+                    dot={{ r: 2 }} activeDot={{ r: 4 }} />
                 ))}
               </LineChart>
             </ResponsiveContainer>
           ) : <div className="h-full animate-pulse rounded-xl bg-ink-2" />}
         </div>
         <p className="mt-2 text-[11px] text-muted/70">
-          One point per matchday · in-tournament results nudge each team's Elo, which feeds the
-          50 000-run knockout simulation. Moves are small by design (group-stage K-factor is damped).
+          {sel.length} of {trend?.teams?.length ?? 0} teams shown · tap a team to toggle. One point
+          per matchday · in-tournament results nudge each team's Elo, which feeds the 50 000-run
+          knockout simulation. Moves are small by design (group-stage K-factor is damped).
         </p>
       </section>
 

@@ -67,5 +67,6 @@ def build(top: int = 6) -> dict:
             row[t] = round(cm.get(t, 0.0) * 100, 1)
         series.append(row)
 
-    return {"series": series, "teams": teams,
+    current = {t: round(latest.get(t, 0.0) * 100, 1) for t in teams}
+    return {"series": series, "teams": teams, "current": current,
             "n_points": len(series), "as_of": days[-1].isoformat()}
