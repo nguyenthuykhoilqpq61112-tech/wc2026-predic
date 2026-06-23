@@ -1,4 +1,106 @@
 {
+  "France|Iraq": {
+    "home": "France",
+    "away": "Iraq",
+    "score": [
+      3,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Kylian Mbappé",
+          "minute": 14,
+          "type": "goal"
+        },
+        {
+          "player": "Kylian Mbappé",
+          "minute": 54,
+          "type": "goal"
+        },
+        {
+          "player": "Ousmane Dembélé",
+          "minute": 70,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "Norway|Senegal": {
+    "home": "Norway",
+    "away": "Senegal",
+    "score": [
+      3,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Marcus Pedersen",
+          "minute": 43,
+          "type": "goal"
+        },
+        {
+          "player": "Erling Haaland",
+          "minute": 48,
+          "type": "goal"
+        },
+        {
+          "player": "Erling Haaland",
+          "minute": 58,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ismaïla Sarr",
+          "minute": 64,
+          "type": "goal"
+        },
+        {
+          "player": "Ismaïla Sarr",
+          "minute": 90,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "Jordan|Algeria": {
+    "home": "Jordan",
+    "away": "Algeria",
+    "score": [
+      1,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Nizar Al-Rashdan",
+          "minute": 28,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Nadhir Benbouali",
+          "minute": 68,
+          "type": "goal"
+        },
+        {
+          "player": "Amine Gouiri",
+          "minute": 82,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
   "New Zealand|Egypt": {
     "home": "New Zealand",
     "away": "Egypt",
