@@ -154,27 +154,24 @@ played games) and clustered too low for blowouts. Fixed:
   router decorates rows with flag + headshot URLs from `fixtures`.
 
 ## Known issues / watch-outs
-- **Custom alias is not on the Vercel project, so deploys don't update it.**
-  Root cause (diagnosed Jun 21): `chris-fifaworldcup26-prediction.vercel.app` is
-  **not in the project's Domains list**. Prod deploys only auto-alias the domains
-  the project owns — here `frontend-five-iota-33.vercel.app`. The custom alias was
-  set manually once and stays pinned; pushes to `main` build fine but never move
-  it, so the live URL serves stale data while the repo + build are correct.
-  **⚠️ STILL OUTSTANDING — permanent fix not yet applied.** Recurred again
-  Jun 22 (had to re-run the manual alias after the recalibrated-model push).
-  It will keep recurring on every prod deploy until done. **Permanent fix
-  (do this once):** add `chris-fifaworldcup26-prediction.vercel.app` under
-  Vercel → project → Settings → Domains → Add — then it follows every deploy
-  and the manual step below is no longer needed.
-  **Manual fix (used Jun 21 + Jun 22):** from the repo ROOT (not `frontend/`,
-  or Vercel looks for `frontend/frontend`): `npx vercel --prod --yes` then
+- **Custom alias auto-follows deploys — FIXED Jun 24.** Permanent fix applied:
+  `npx vercel domains add chris-fifaworldcup26-prediction.vercel.app` from repo
+  ROOT registered the domain on the project. Verified: a fresh `npx vercel --prod`
+  now lists `chris-fifaworldcup26-prediction.vercel.app` in the deploy's alias set
+  automatically — no manual `alias set` step anymore. Plain `git push` (Vercel
+  git-integration auto-deploy) should now move the live URL too.
+  Root cause (was diagnosed Jun 21): the domain was **not in the project's Domains
+  list**, so prod deploys only auto-aliased project-owned domains
+  (`frontend-five-iota-33.vercel.app`) and the custom alias stayed pinned to an old
+  deploy, serving stale data while repo + build were correct.
+  **Verify after a deploy:** compare live content vs local, e.g.
+  `curl …/snapshot/api_news.json` first item against
+  `frontend/public/snapshot/api_news.json`. NOTE: `last-modified`/`age` headers are
+  NOT a reliable stale tell — Vercel returns `age 0` even when serving old. Compare
+  content, not headers.
+  **Fallback (if it ever regresses):** from repo ROOT (not `frontend/`),
+  `npx vercel --prod --yes` then
   `npx vercel alias set <printed-hash-url> chris-fifaworldcup26-prediction.vercel.app`.
-  Verify by comparing a prediction value (e.g. match 40 `p_home`) in the live
-  `…/snapshot/api_home.json` against the local file — they must match. NOTE: the
-  response `last-modified`/`age` headers are NOT a reliable stale tell here —
-  Vercel returns `last-modified ≈ now, age 0` even when the alias serves an old
-  deployment. Compare content, not headers.
-  Vercel MCP is 403 for this team scope, so the agent can't do it — needs the CLI.
 - **`retrain.py` OpenMP deadlock — FIXED Jun 22 (commit 7df34f4).** Full
   `retrain.run()` used to hang ~12h: running several OpenMP/BLAS steps (Dixon-Coles
   scipy refit, XGBoost, sim, walk-forward backtest) back-to-back in one process
