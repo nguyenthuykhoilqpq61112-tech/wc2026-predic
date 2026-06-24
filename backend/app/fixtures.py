@@ -99,9 +99,9 @@ MD23: list[tuple] = [
     ("2026-06-22T20:00:00-04:00", "I", "MD2", "Norway", "Senegal", 3, 2, "New York/NJ"),
     ("2026-06-22T23:00:00-04:00", "J", "MD2", "Jordan", "Algeria", 1, 2, "San Francisco"),
     ("2026-06-23T13:00:00-04:00", "K", "MD2", "Portugal", "Uzbekistan", 5, 0, "Houston"),
-    ("2026-06-23T16:00:00-04:00", "L", "MD2", "England", "Ghana", None, None, "Boston"),
-    ("2026-06-23T19:00:00-04:00", "L", "MD2", "Panama", "Croatia", None, None, "Toronto"),
-    ("2026-06-23T22:00:00-04:00", "K", "MD2", "Colombia", "DR Congo", None, None, "Guadalajara"),
+    ("2026-06-23T16:00:00-04:00", "L", "MD2", "England", "Ghana", 0, 0, "Boston"),
+    ("2026-06-23T19:00:00-04:00", "L", "MD2", "Panama", "Croatia", 0, 1, "Toronto"),
+    ("2026-06-23T22:00:00-04:00", "K", "MD2", "Colombia", "DR Congo", 1, 0, "Guadalajara"),
     # ---- Matchday 3 (Jun 24-27) ----
     ("2026-06-24T15:00:00-04:00", "B", "MD3", "Switzerland", "Canada", None, None, "Vancouver"),
     ("2026-06-24T15:00:00-04:00", "B", "MD3", "Bosnia and Herzegovina", "Qatar", None, None, "Seattle"),
