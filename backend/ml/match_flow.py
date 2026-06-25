@@ -41,10 +41,8 @@ from typing import Any
 
 import numpy as np
 
-# How much of the regulation scoring rate carries into a 30' extra-time period,
-# before fatigue. 30/90 of the match length, nudged up slightly for the tired,
-# stretched end-to-end football that defines extra time.
-ET_RATE_FACTOR = 30.0 / 90.0 * 1.10
+import config
+from knockout_resolve import ET_RATE_FACTOR, shootout
 
 # Strength of the squad-condition tilt on the regulation goal rates (mirrors
 # ensemble.CONDITION_COEF in spirit; kept gentle so the DC rates still lead).
@@ -115,16 +113,19 @@ def _form_record(team: str) -> dict[str, Any]:
 # team profiles (regulation rates + penalty / fatigue inputs)
 # ─────────────────────────────────────────────────────────────────────────────
 def _profiles(engine, home: str, away: str,
-              neutral: bool = True) -> dict[str, Any]:
+              neutral: bool = True, knockout: bool = True) -> dict[str, Any]:
     """Pull regulation goal rates and condition inputs for both sides."""
     dc = engine.dc
+    # Knockout football is cagier — suppress the regulation goal rates.
+    goal_scale = config.KO_GOAL_SCALE if knockout else 1.0
     if dc is not None:
-        lh, la = dc._lambdas(home, away, neutral=neutral)
+        lh, la = dc._lambdas(home, away, neutral=neutral, goal_scale=goal_scale)
     else:                                   # Elo-only fallback
         eh = engine.elo.get(home, 1500.0); ea = engine.elo.get(away, 1500.0)
         diff = (eh - ea) / 400.0
         ph = 1.0 / (1.0 + 10 ** (-diff))
-        lh, la = 1.35 * (0.6 + 0.6 * ph), 1.35 * (0.6 + 0.6 * (1 - ph))
+        lh = 1.35 * (0.6 + 0.6 * ph) * goal_scale
+        la = 1.35 * (0.6 + 0.6 * (1 - ph)) * goal_scale
 
     cond = engine.cond
     if cond is not None:
@@ -259,7 +260,7 @@ def _simulate(prof: dict, rng: np.random.Generator,
     so_home = np.zeros(n, dtype=bool)
     sidx = np.where(shootout)[0]
     for i in sidx:
-        so_home[i] = _shootout(h["pen_conversion"], a["pen_conversion"], rng)
+        so_home[i] = shootout(h["pen_conversion"], a["pen_conversion"], rng)
 
     win_home = home_90 | et_home | (shootout & so_home)
     n_pens = int(shootout.sum())
@@ -271,37 +272,6 @@ def _simulate(prof: dict, rng: np.random.Generator,
             "p_shootout": float(shootout.mean()),
             "p_home_pens": float(so_home[sidx].mean()) if n_pens else 0.5,
             "p_away_pens": float((~so_home[sidx]).mean()) if n_pens else 0.5}
-
-
-def _shootout(conv_h: float, conv_a: float, rng: np.random.Generator) -> bool:
-    """One alternating shootout. Returns True if HOME wins. Best-of-5 then
-    sudden death. (Slight first-kicker edge is left out — neutral coin-flip on
-    who shoots first, averaged out over the Monte-Carlo.)"""
-    home_first = rng.random() < 0.5
-    sh, sa = 0, 0
-    # Regulation 5 kicks each, with early-stop short-circuit on decisiveness.
-    for k in range(5):
-        rem_after = 4 - k
-        if home_first:
-            sh += rng.random() < conv_h
-            if sh > sa + rem_after + 1:    # away cannot catch up
-                return True
-            sa += rng.random() < conv_a
-            if sa > sh + rem_after:        # home cannot catch up
-                return False
-        else:
-            sa += rng.random() < conv_a
-            if sa > sh + rem_after + 1:
-                return False
-            sh += rng.random() < conv_h
-            if sh > sa + rem_after:
-                return True
-    # Sudden death
-    while True:
-        h_made = rng.random() < conv_h
-        a_made = rng.random() < conv_a
-        if h_made != a_made:
-            return h_made
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -473,7 +443,7 @@ def simulate_tie(engine, home: str, away: str, base: dict | None = None,
     """
     base = base or {}
     rng = np.random.default_rng(_seed(home, away) + (0 if knockout else 1))
-    prof = _profiles(engine, home, away, neutral=neutral)
+    prof = _profiles(engine, home, away, neutral=neutral, knockout=knockout)
     sim = _simulate(prof, rng, knockout=knockout)
 
     # Favoured side (ignores draw) — used for reasons/narrative framing.

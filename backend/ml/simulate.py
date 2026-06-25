@@ -27,6 +27,7 @@ import pandas as pd
 
 from config import (N_GROUPS, TEAMS_PER_GROUP, N_THIRD_PLACE_ADVANCE,
                     N_SIMS, PROC, PROJECTED_FIELD, REAL_GROUPS_2026)
+import knockout_resolve
 from model import DCModel
 from tournament_form import get_adjusted_elo
 
@@ -105,14 +106,19 @@ def _sample_score(cache: ScoreCache, rng: np.random.Generator,
     return idx // n, idx % n
 
 
-def _knockout_winner(cache: ScoreCache, elo: dict[str, float],
-                     rng: np.random.Generator, a: str, b: str) -> str:
+# Knockout ties are resolved by `knockout_resolve.resolve_ko` (shared with the
+# displayed bracket): a knockout-suppressed 90' scoreline → extra time → a
+# GK/composure-weighted shootout. The old Elo-coin-flip on a draw is gone so the
+# title/survival percentages agree with the bracket the UI renders. The helper
+# below is only a fallback for when KO params can't be built (no condition
+# engine): it keeps the legacy 90'-or-Elo-coin behaviour so the sim never breaks.
+def _ko_winner_fallback(cache: ScoreCache, elo: dict[str, float],
+                        rng: np.random.Generator, a: str, b: str) -> str:
     ga, gb = _sample_score(cache, rng, a, b)
     if ga > gb:
         return a
     if gb > ga:
         return b
-    # Draw → penalties via Elo
     sa = elo.get(a, 1500.0)
     sb = elo.get(b, 1500.0)
     pa = 1.0 / (1.0 + 10 ** ((sb - sa) / 400.0))
@@ -150,7 +156,8 @@ def _group_table(cache: ScoreCache, rng: np.random.Generator,
 
 def simulate_once(cache: ScoreCache, elo: dict[str, float],
                   rng: np.random.Generator, field: list[str],
-                  fixed_groups: list[list[str]] | None = None) -> dict[str, str]:
+                  fixed_groups: list[list[str]] | None = None,
+                  ko_params: dict[str, Any] | None = None) -> dict[str, str]:
     """One full tournament. Returns {team: furthest_stage_reached}."""
     stage: dict[str, str] = {t: "group" for t in field}
     groups = fixed_groups if fixed_groups is not None else _draw_groups(rng, field)
@@ -175,7 +182,12 @@ def simulate_once(cache: ScoreCache, elo: dict[str, float],
     while len(bracket) > 1:
         nxt = []
         for i in range(0, len(bracket) - 1, 2):
-            w = _knockout_winner(cache, elo, rng, bracket[i], bracket[i + 1])
+            if ko_params is not None:
+                w = knockout_resolve.resolve_ko(ko_params, rng,
+                                                bracket[i], bracket[i + 1])
+            else:  # Elo fallback if KO params unavailable
+                w = _ko_winner_fallback(cache, elo, rng,
+                                        bracket[i], bracket[i + 1])
             nxt.append(w)
         if len(bracket) % 2 == 1:
             nxt.append(bracket[-1])
@@ -209,13 +221,17 @@ def run(model: DCModel, field: list[str] | None = None,
     print(f"[sim] Pre-computing {len(field)*(len(field)-1)} score matrices "
           f"({tag}) ... ", end="", flush=True)
     cache = _build_score_cache(model, field, cond=cond)
+    # Shared knockout-resolution params (KO-suppressed 90' grids + penalty model)
+    # so the MC advances ties exactly like the displayed bracket.
+    ko_params = knockout_resolve.build_ko_params(model, field, cond=cond)
     print("done.")
 
     rng = np.random.default_rng(seed)
     reached = {t: defaultdict(int) for t in field}
 
     for i in range(n_sims):
-        res = simulate_once(cache, model.elo, rng, field, fixed_groups=fixed_groups)
+        res = simulate_once(cache, model.elo, rng, field,
+                            fixed_groups=fixed_groups, ko_params=ko_params)
         for t, st in res.items():
             hi = _ORDER.index(st)
             for k in range(hi + 1):

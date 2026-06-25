@@ -52,6 +52,20 @@ POISSON_SUP_K = 1.10     # goal supremacy (favourite - underdog) per unit Elo di
 POISSON_TOT_GAMMA = 0.55  # total-goals lift as the mismatch widens
 POISSON_GOAL_FLOOR = 0.18  # min per-team lambda
 
+# --- Knockout-stage calibration -------------------------------------------
+# Knockout football is cagier and lower-scoring than the group stage (teams sit
+# deeper, the cost of conceding is elimination). Multiplicative suppression on
+# the regulation goal rates in the knockout path only (group games untouched).
+# ~0.92 ≈ a half-goal-per-tie reduction vs group expectation; re-tune from
+# backtest.scoreline_calibration() once real WC2026 knockout games land.
+KO_GOAL_SCALE = 0.92
+
+# Host-nation home edge in the knockouts: when a host (USA / Canada / Mexico)
+# plays a knockout tie inside its own country it keeps the standard home
+# advantage (the tie is flagged non-neutral, so the DC model's home_adv applies)
+# instead of the default neutral venue. See app.knockout_engine._resolve_tie and
+# fixtures.host_at_home.
+
 # Monte Carlo
 N_SIMS = 50000
 

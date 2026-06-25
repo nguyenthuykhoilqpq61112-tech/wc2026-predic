@@ -144,6 +144,28 @@ CITY_VENUE = {
 }
 CITIES = list(CITY_VENUE)
 
+# Host country for each venue city — used to restore a host-nation home edge in
+# knockout ties (group-stage host games are already flagged non-neutral via the
+# schedule). A knockout tie is non-neutral only when a host (HOSTS) plays in its
+# own country.
+CITY_COUNTRY = {
+    "New York/NJ": "United States", "Los Angeles": "United States",
+    "Dallas": "United States", "Atlanta": "United States",
+    "Houston": "United States", "Kansas City": "United States",
+    "Philadelphia": "United States", "San Francisco": "United States",
+    "Seattle": "United States", "Miami": "United States",
+    "Boston": "United States",
+    "Toronto": "Canada", "Vancouver": "Canada",
+    "Mexico City": "Mexico", "Guadalajara": "Mexico", "Monterrey": "Mexico",
+}
+
+
+def host_at_home(team: str, city: str | None) -> bool:
+    """True when `team` is a host nation playing a knockout in its own country."""
+    if not city or team not in HOSTS:
+        return False
+    return CITY_COUNTRY.get(city) == team
+
 FLAG = {
     "Mexico": "mx", "South Africa": "za", "South Korea": "kr", "Czech Republic": "cz",
     "Canada": "ca", "Bosnia and Herzegovina": "ba", "Qatar": "qa", "Switzerland": "ch",

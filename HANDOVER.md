@@ -153,6 +153,37 @@ played games) and clustered too low for blowouts. Fixed:
   Golden Boot needs no manual edit. `ml/awards.py` is presentation-agnostic; the
   router decorates rows with flag + headshot URLs from `fixtures`.
 
+## 11. Knockout prediction strategy overhaul — DONE (Jun 24)
+- **Unified resolver** `ml/knockout_resolve.py` — single source of truth for who
+  advances a knockout tie (90' → extra time → GK/composure-weighted shootout).
+  Both the displayed bracket (`match_flow.simulate_tie`) and the Monte-Carlo
+  (`simulate._knockout_winner` → `resolve_ko`) now share its `shootout()` +
+  `ET_RATE_FACTOR`. **Before:** the sim flipped an Elo-only coin on a draw, so
+  title/survival % disagreed with the bracket's full sim. Fixed by construction.
+- **Knockout realism:** `config.KO_GOAL_SCALE = 0.92` suppresses goal rates in
+  the knockout path only (via a new `goal_scale` arg on `model._lambdas` /
+  `score_matrix`); host-nation home edge restored — `fixtures.host_at_home()` +
+  `CITY_COUNTRY` flag a tie non-neutral when USA/Canada/Mexico play in-country
+  (`knockout_engine._resolve_tie`, also passed to `match_flow`). NOTE simplification:
+  only the HOME-seeded host gets the edge (away-host tie stays neutral to avoid
+  re-orienting the bracket).
+- **Probabilistic bracket:** `resolve_bracket()` attaches per-tie `survival`
+  (each side's MC reach/advance %) + `modal_path: true` + a top-level
+  `modal_path_note`. Frontend knockout page shows an "↗ reach <stage> %" line and
+  the disclaimer. The modal (deterministic max-prob) bracket can crown a champion
+  different from the MC title favourite — that's the modal-path bias, now disclosed.
+- **Suspensions/fatigue scaffold (data-gated, no-op):** `ml/availability.py` +
+  curated `data/raw/cards.json` (gitignore-whitelisted). 2 yellows ⇒ ban, red ⇒
+  ban, yellow slate wiped after QF; `fatigue_factor()` per KO round. **Empty feed
+  ⇒ no effect.** To activate: hand-fill `cards.json` from the web once knockout
+  games are played, then flip the listed player's squad `status` to `"suspended"`
+  in the `player_condition` loader (status already understood by the engine).
+- Impact: champion odds spread (Argentina 32.3% → **27.0%** — favourites compress
+  in single-elimination, as expected). Tests: `ml/tests/test_knockout_resolve.py`
+  11/11; ensemble 14/14, calibration 7/7 still green.
+- **Re-tune later** from `backtest.scoreline_calibration()` once real WC2026
+  knockout games land (KO_GOAL_SCALE, host edge, fatigue coefficient).
+
 ## Known issues / watch-outs
 - **Custom alias auto-follows deploys — FIXED Jun 24.** Permanent fix applied:
   `npx vercel domains add chris-fifaworldcup26-prediction.vercel.app` from repo

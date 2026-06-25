@@ -41,6 +41,44 @@ def _title_odds() -> dict[str, float]:
     return {r["team"]: r.get("Champion", 0.0) for r in ml_engine.sim_table()}
 
 
+# Per-stage reach probabilities from the Monte-Carlo, surfaced on each bracket
+# node so the UI can show that the modal bracket is one path, not a certainty.
+_SURVIVAL_STAGES = ("R32", "R16", "QF", "SF", "Final", "Champion")
+
+# bracket node type -> (stage a side must reach to PLAY this tie, stage it
+# reaches by WINNING it). 3rd-place play-off is between the two SF losers.
+_SURVIVAL_STAGE = {
+    "r32": ("R32", "R16"), "r16": ("R16", "QF"), "qf": ("QF", "SF"),
+    "sf": ("SF", "Final"), "final": ("Final", "Champion"), "third": ("SF", None),
+}
+
+
+def _survival_odds() -> dict[str, dict[str, float]]:
+    """team -> {stage: reach probability (0-1)} from the latest sim."""
+    from . import ml_engine
+    return {r["team"]: {s: r.get(s, 0.0) for s in _SURVIVAL_STAGES}
+            for r in ml_engine.sim_table()}
+
+
+def _node_survival(survival: dict, node_type: str,
+                   home: str, away: str) -> dict:
+    """Per-side reach/advance probabilities for one bracket tie, from the sim.
+
+    ``reach`` = P(side plays this round); ``advance`` = P(side reaches the next
+    round). These come from the Monte-Carlo, NOT the deterministic modal path —
+    they communicate how likely this exact tie is and that an upset is live.
+    """
+    reach, adv = _SURVIVAL_STAGE.get(node_type, (None, None))
+
+    def side(team: str) -> dict:
+        s = survival.get(team, {})
+        return {"reach": round(s.get(reach, 0.0), 4) if reach else None,
+                "advance": round(s.get(adv, 0.0), 4) if adv else None}
+
+    return {"home": side(home), "away": side(away),
+            "reach_stage": reach, "advance_stage": adv}
+
+
 # ── 1. group standings projection ───────────────────────────────────────────
 def project_group_standings() -> dict[str, list[dict]]:
     """Per group, ranked list of teams with projected pts + GD.
@@ -183,7 +221,16 @@ def _consistent_score(home: str, away: str, winner: str) -> tuple[str | None, bo
 
 def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
     from . import ml_engine
-    p = services.predict(home, away, neutral=True, match=None)
+
+    # Host-nation home edge: a knockout tie is non-neutral when the home-seeded
+    # side is a host (USA/Canada/Mexico) playing in its own country. (When only
+    # the AWAY side is the host-at-home we keep it neutral — a deliberate
+    # simplification that avoids re-orienting the bracket's home/away slots; in
+    # practice host nations are usually the higher seed and take the home slot.)
+    city = rows_by_id.get(match_id, {}).get("city")
+    neutral = not fixtures.host_at_home(home, city)
+
+    p = services.predict(home, away, neutral=neutral, match=None)
     ph, pa = p["p_home"], p["p_away"]
 
     # Full match-flow simulation (90' -> ET -> shootout). It is the source of
@@ -192,7 +239,7 @@ def _resolve_tie(home: str, away: str, rows_by_id: dict, match_id: int) -> dict:
     # ensemble's post-draw win prob if the simulation errors.
     flow = None
     try:
-        flow = ml_engine.match_flow(home, away, p)
+        flow = ml_engine.match_flow(home, away, p, neutral=neutral)
     except Exception:  # noqa: BLE001 - never break the bracket on a sim error
         flow = None
 
@@ -259,6 +306,7 @@ def resolve_bracket() -> dict:
 
     results: dict[int, dict] = {}
     title = _title_odds()
+    survival = _survival_odds()
 
     def resolve_label(label: str, slot_id: int) -> str | None:
         if label.startswith("Winner Group "):
@@ -300,6 +348,8 @@ def resolve_bracket() -> dict:
                 "reasons": tie["reasons"],
                 "analysis": tie["analysis"],
                 "flow": tie["flow"],
+                "survival": _node_survival(survival, m["type"], home, away),
+                "modal_path": True,
                 "resolved": True,
             })
         else:
@@ -323,6 +373,10 @@ def resolve_bracket() -> dict:
 
     return {
         "projected": True,
+        "modal_path_note": (
+            "Most likely bracket — one illustrative path, not a certainty. "
+            "Each tie carries per-team survival % from the Monte-Carlo; upsets "
+            "are live and cascade through the draw."),
         "champion": champion,
         "runner_up": runner_up,
         "third_place_winner": third,

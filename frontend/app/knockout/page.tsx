@@ -33,7 +33,7 @@ export default function KnockoutPage() {
 
       <p className="text-sm text-muted">
         {data.projected
-          ? "Projected bracket — group slots filled from final standings (real results + predicted remaining games). The 🏆 % next to a team is its chance to win the WHOLE tournament (Monte-Carlo) — not this match. A team can have higher title odds yet be the underdog in one specific tie: the side that advances is the higher match win-probability (shown inside each match). Click a match for the full analysis."
+          ? (data.modal_path_note ?? "Projected bracket — group slots filled from final standings (real results + predicted remaining games).") + " The 🏆 % is a team's chance to win the WHOLE tournament; ↗ reach % is its Monte-Carlo chance to clear that specific round. A team can have higher title odds yet be the underdog in one tie — the side that advances here is the higher match win-probability. Click a match for the full analysis."
           : "Official knockout schedule (Round of 32 → Final). Team slots resolve once the group stage completes."}
       </p>
 
@@ -136,6 +136,15 @@ function Tie({ m, delay, onClick }: { m: any; delay: number; onClick: () => void
           {wp != null && (
             <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
               <div className="h-full rounded-full bg-gold/80" style={{ width: `${wp}%` }} />
+            </div>
+          )}
+          {m.survival?.advance_stage && (
+            <div className="flex items-center justify-between pt-0.5 text-[10px] text-muted"
+              title={`Monte-Carlo chance each side reaches the ${m.survival.advance_stage} — the modal bracket is one path, not a certainty`}>
+              <span>↗ reach {m.survival.advance_stage}</span>
+              <span className="tabular-nums">
+                {pctStr(m.survival.home?.advance)} · {pctStr(m.survival.away?.advance)}
+              </span>
             </div>
           )}
           <div className="pt-0.5 text-center text-[10px] text-gold/70">

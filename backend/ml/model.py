@@ -28,15 +28,17 @@ class DCModel:
     elo: dict[str, float] = field(default_factory=dict)
 
     # ---- scoreline probabilities -------------------------------------
-    def _lambdas(self, home: str, away: str, neutral: bool) -> tuple[float, float]:
+    def _lambdas(self, home: str, away: str, neutral: bool,
+                 goal_scale: float = 1.0) -> tuple[float, float]:
         ha = 0.0 if neutral else self.home_adv
         if home in self.attack and away in self.attack:
             lh = np.exp(np.clip(self.base_mu + ha + self.attack[home] + self.defense[away], -4.0, 3.0))
             la = np.exp(np.clip(self.base_mu + self.attack[away] + self.defense[home], -4.0, 3.0))
         else:
             lh, la = self._elo_lambdas(home, away, ha)
-        # tournament goal calibration (see config.GOAL_SCALE)
-        scale = getattr(self, "goal_scale", GOAL_SCALE)
+        # tournament goal calibration (config.GOAL_SCALE) × optional caller scale
+        # (e.g. config.KO_GOAL_SCALE for knockout-stage goal suppression).
+        scale = getattr(self, "goal_scale", GOAL_SCALE) * goal_scale
         return float(lh) * scale, float(la) * scale
 
     def _elo_lambdas(self, home: str, away: str, ha: float) -> tuple[float, float]:
@@ -50,8 +52,9 @@ class DCModel:
         la = tot * (0.30 + 0.40 * (1 - ph))
         return lh, la
 
-    def score_matrix(self, home: str, away: str, neutral: bool = True) -> np.ndarray:
-        lh, la = self._lambdas(home, away, neutral)
+    def score_matrix(self, home: str, away: str, neutral: bool = True,
+                     goal_scale: float = 1.0) -> np.ndarray:
+        lh, la = self._lambdas(home, away, neutral, goal_scale)
         ph = poisson.pmf(np.arange(DC_MAX_GOALS + 1), lh)
         pa = poisson.pmf(np.arange(DC_MAX_GOALS + 1), la)
         mat = np.outer(ph, pa)

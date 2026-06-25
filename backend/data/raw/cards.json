@@ -1,0 +1,9 @@
+{
+  "as_of": "2026-06-24",
+  "sources": ["FIFA", "ESPN"],
+  "_schema": {
+    "matches": "key 'Home|Away' -> { date: YYYYMMDD, cards: [ {player, team, type: yellow|red, minute} ] }",
+    "rule": "2 yellows => 1-match ban; straight red => 1-match ban; yellow slate wiped after the quarter-finals (FIFA WC rule)."
+  },
+  "matches": {}
+}

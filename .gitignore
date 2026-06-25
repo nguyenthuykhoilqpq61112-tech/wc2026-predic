@@ -19,6 +19,7 @@ backend/data/processed/*
 !backend/data/raw/post_match.json
 !backend/data/raw/player_images.json
 !backend/data/raw/awards.json
+!backend/data/raw/cards.json
 
 # node / next
 node_modules/
