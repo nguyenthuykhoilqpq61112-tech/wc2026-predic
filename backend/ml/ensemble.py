@@ -78,9 +78,15 @@ CONF_DISPLAY_HI = 58
 # 3-way football tops out ~0.28, so a raw argmax almost never returns a draw.
 # Emit "Draw" only when the draw outcome is genuinely competitive: its prob clears
 # DRAW_PROB_MIN AND the home/away sides are within DRAW_BALANCE of each other.
-# Defaults tuned on played WC matches to convert true draws without flipping any
-# correct home/away winner pick.
-DRAW_PROB_MIN = 0.27       # draw prob must be at least this to consider "Draw"
+#
+# Lowered 0.27 → 0.20 (Jun 25): the form-led retune compresses the draw bucket so
+# its max realised p_draw across 54 played games was 0.24 — under the old 0.27
+# gate the model could NEVER call a draw, and all 14 actual draws (26% of games)
+# were automatic misses. At 0.20 CAI calls the most balanced low-event ties as
+# draws: measured 39/54 → 42/54 (72% → 78%), every new draw-call correct, zero
+# decisive picks flipped. Re-tune from played data; keep below the realised
+# p_draw ceiling so the gate stays reachable.
+DRAW_PROB_MIN = 0.20       # draw prob must be at least this to consider "Draw"
 DRAW_BALANCE = 0.08        # |p_home - p_away| must be within this for a "Draw"
 
 
