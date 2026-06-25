@@ -1593,14 +1593,20 @@
   "away": "South Korea",
   "date": "20260624",
   "score": [
-   0,
+   1,
    0
   ],
   "scorers": {
-   "home": [],
+   "home": [
+    {
+     "player": "Thapelo Maseko",
+     "minute": 63,
+     "type": "goal"
+    }
+   ],
    "away": []
   },
-  "source": "FIFA"
+  "source": "ESPN"
  },
  "Czech Republic|Mexico": {
   "home": "Czech Republic",
