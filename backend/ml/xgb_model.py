@@ -5,7 +5,7 @@ Falls back gracefully if xgboost is unavailable (returns None from load).
 """
 from __future__ import annotations
 
-import pickle
+import json
 from pathlib import Path
 
 import numpy as np
@@ -14,7 +14,8 @@ import pandas as pd
 from config import PROC
 from features import FEATURE_COLS, build_training_frame
 
-MODEL_PATH = PROC / "xgb_model.pkl"
+MODEL_PATH = PROC / "xgb_model.ubj"   # XGBoost native binary format
+COLS_PATH  = PROC / "xgb_cols.json"
 
 
 def train(df_elo: pd.DataFrame, since: str = "2006-01-01") -> Path:
@@ -35,16 +36,19 @@ def train(df_elo: pd.DataFrame, since: str = "2006-01-01") -> Path:
     )
     clf.fit(X[:cut], y[:cut], eval_set=[(X[cut:], y[cut:])], verbose=False)
 
-    with open(MODEL_PATH, "wb") as f:
-        pickle.dump({"clf": clf, "cols": FEATURE_COLS}, f)
+    clf.save_model(str(MODEL_PATH))
+    COLS_PATH.write_text(json.dumps(FEATURE_COLS))
     return MODEL_PATH
 
 
 def load():
     if not MODEL_PATH.exists():
         return None
-    with open(MODEL_PATH, "rb") as f:
-        return pickle.load(f)
+    import xgboost as xgb
+    clf = xgb.XGBClassifier()
+    clf.load_model(str(MODEL_PATH))
+    cols = json.loads(COLS_PATH.read_text()) if COLS_PATH.exists() else FEATURE_COLS
+    return {"clf": clf, "cols": cols}
 
 
 def predict_proba(bundle, x: np.ndarray) -> np.ndarray:
