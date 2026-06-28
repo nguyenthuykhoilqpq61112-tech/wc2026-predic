@@ -267,9 +267,9 @@ def main() -> None:
     with open(PROC / "dc_model.pkl", "rb") as f:
         model: DCModel = pickle.load(f)
 
-    # Patch Elo with live WC2026 in-tournament results (MD1/MD2)
+    # Patch Elo with live WC2026 in-tournament results (full group stage)
     model.elo = get_adjusted_elo(model.elo)
-    print(f"[sim] Elo patched with WC2026 MD1/MD2 tournament results")
+    print(f"[sim] Elo patched with WC2026 full group stage results (MD1-MD3)")
 
     table = run(model)
     save_results(table)

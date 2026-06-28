@@ -121,12 +121,12 @@ MD23: list[tuple] = [
     ("2026-06-26T20:00:00-04:00", "H", "MD3", "Uruguay", "Spain", 0, 1, "Guadalajara"),
     ("2026-06-26T23:00:00-04:00", "G", "MD3", "Egypt", "Iran", 1, 1, "Seattle"),
     ("2026-06-26T23:00:00-04:00", "G", "MD3", "New Zealand", "Belgium", 1, 5, "Vancouver"),
-    ("2026-06-27T17:00:00-04:00", "L", "MD3", "Panama", "England", None, None, "New York/NJ"),
-    ("2026-06-27T17:00:00-04:00", "L", "MD3", "Croatia", "Ghana", None, None, "Philadelphia"),
-    ("2026-06-27T19:30:00-04:00", "K", "MD3", "Colombia", "Portugal", None, None, "Miami"),
-    ("2026-06-27T19:30:00-04:00", "K", "MD3", "DR Congo", "Uzbekistan", None, None, "Atlanta"),
-    ("2026-06-27T22:00:00-04:00", "J", "MD3", "Algeria", "Austria", None, None, "Kansas City"),
-    ("2026-06-27T22:00:00-04:00", "J", "MD3", "Jordan", "Argentina", None, None, "Dallas"),
+    ("2026-06-27T17:00:00-04:00", "L", "MD3", "Panama", "England", 0, 2, "New York/NJ"),
+    ("2026-06-27T17:00:00-04:00", "L", "MD3", "Croatia", "Ghana", 2, 1, "Philadelphia"),
+    ("2026-06-27T19:30:00-04:00", "K", "MD3", "Colombia", "Portugal", 0, 0, "Miami"),
+    ("2026-06-27T19:30:00-04:00", "K", "MD3", "DR Congo", "Uzbekistan", 3, 1, "Atlanta"),
+    ("2026-06-27T22:00:00-04:00", "J", "MD3", "Algeria", "Austria", 3, 3, "Kansas City"),
+    ("2026-06-27T22:00:00-04:00", "J", "MD3", "Jordan", "Argentina", 1, 3, "Dallas"),
 ]
 
 FIELD = [t for ts in REAL_GROUPS.values() for t in ts]
