@@ -11,7 +11,7 @@ const LINKS: [string, string, string][] = [
   ["/live",      "Live",       "◉"],
   ["/matches",   "Matches",    "⚽"],
   ["/groups",    "Groups",     "▦"],
-  ["/knockout",  "Knockout",   "◈"],
+  ["/bracket",   "Bracket",    "⬡"],
   ["/simulator", "Simulator",  "◎"],
   ["/teams",     "Teams",      "🛡"],
   ["/awards",    "Awards",     "🏆"],
@@ -20,15 +20,14 @@ const LINKS: [string, string, string][] = [
 
 // Static fallback for the news ticker if /api/news is unavailable.
 const NEWS_FALLBACK: string[] = [
-  "🏆 FIFA World Cup 2026 · Matchday 3 underway",
-  "🇦🇷 Argentina 2-0 Austria — Messi brace, now WC all-time top scorer",
-  "🇫🇷 France 3-0 Iraq — Mbappé double on his 100th cap",
-  "🇳🇴 Norway 3-2 Senegal — Haaland brace, Norway into last 32",
-  "🇩🇿 Algeria 2-1 Jordan — Gouiri's late winner; Jordan eliminated",
-  "🇪🇬 Egypt 3-1 New Zealand — Salah on target",
-  "👟 Golden Boot: Messi 5 · Haaland & Mbappé 4",
-  "📊 CAI projects 🇦🇷 Argentina champions (32.6%)",
-  "🎯 CAI outcome accuracy: 42/54 (78%)",
+  "🏆 FIFA World Cup 2026 · Round of 32 underway",
+  "🇵🇾 Paraguay 1-1 Germany (4-3 pens) — Germany ELIMINATED 🚨",
+  "🇲🇦 Morocco 1-1 Netherlands (3-2 pens) — Netherlands OUT 🚨",
+  "🇧🇷 Brazil 2-1 Japan · 🇨🇦 Canada · 🇳🇴 Norway through",
+  "🇦🇷 Argentina projected champions (26.7%) · Final: ARG vs FRA",
+  "👟 Golden Boot: Lionel Messi (6 goals)",
+  "📊 CAI projects 🇦🇷 Argentina champions (26.7%)",
+  "🎯 CAI outcome accuracy: 51/77 overall (66%) · R32: 4/5 (80%)",
   "🤖 CAI: current form + momentum led · 3-scenario knockout xG",
 ];
 

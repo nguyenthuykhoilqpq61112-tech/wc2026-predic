@@ -376,9 +376,11 @@ def resolve_bracket() -> dict:
         if home and away:
             tie = _resolve_tie(home, away, rows_by_id, m["id"])
             # Override predicted winner with actual result when match is played.
+            # Preserve the model's original prediction in model_predicted_winner.
             m_data = rows_by_id.get(m["id"], {})
             hs, as_ = m_data.get("home_score"), m_data.get("away_score")
             if hs is not None:
+                tie["model_predicted_winner"] = tie["predicted_winner"]
                 ph, pa = m_data.get("pen_home"), m_data.get("pen_away")
                 if hs != as_:
                     actual_winner = home if hs > as_ else away
@@ -400,6 +402,7 @@ def resolve_bracket() -> dict:
                 "away_title_pct": round(title.get(away, 0.0), 4),
                 "prediction": tie["prediction"],
                 "predicted_winner": tie["predicted_winner"],
+                "model_predicted_winner": tie.get("model_predicted_winner", tie["predicted_winner"]),
                 "win_probability": tie["win_probability"],
                 "predicted_score": tie["predicted_score"],
                 "shootout": tie.get("shootout", False),

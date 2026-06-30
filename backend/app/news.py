@@ -109,7 +109,7 @@ def build(max_results: int = 6) -> dict:
     except Exception:  # noqa: BLE001
         pass
 
-    # ── outcome accuracy across played matches ──
+    # ── outcome accuracy: group stage ──
     try:
         hits = n = 0
         for m in played:
@@ -118,8 +118,40 @@ def build(max_results: int = 6) -> dict:
             if pw:
                 n += 1
                 hits += int(pw == _actual_winner(m))
-        if n:
-            items.append(f"🎯 CAI outcome accuracy: {hits}/{n} ({round(hits / n * 100)}%)")
+        # ── add knockout accuracy from bracket engine ──
+        try:
+            from .knockout_engine import resolve_bracket
+            ko_data = resolve_bracket()
+            ko_hits = ko_n = 0
+            for km in ko_data.get("matches", []):
+                if km.get("home_score") is None:
+                    continue
+                mpw = km.get("model_predicted_winner") or km.get("predicted_winner")
+                if not mpw:
+                    continue
+                hs, aws = km["home_score"], km["away_score"]
+                ph, pa = km.get("pen_home"), km.get("pen_away")
+                if hs > aws:
+                    actual = km["home_team"]
+                elif aws > hs:
+                    actual = km["away_team"]
+                elif ph is not None and pa is not None:
+                    actual = km["home_team"] if ph > pa else km["away_team"]
+                else:
+                    continue
+                ko_n += 1
+                ko_hits += int(mpw == actual)
+        except Exception:  # noqa: BLE001
+            ko_hits = ko_n = 0
+
+        total_hits = hits + ko_hits
+        total_n = n + ko_n
+        if total_n:
+            msg = f"🎯 CAI outcome accuracy: {total_hits}/{total_n} ({round(total_hits / total_n * 100)}%)"
+            if ko_n:
+                rnd_label = "R32" if ko_n <= 16 else "KO"
+                msg += f" · {rnd_label}: {ko_hits}/{ko_n} ({round(ko_hits / ko_n * 100)}%)"
+            items.append(msg)
     except Exception:  # noqa: BLE001
         pass
 
