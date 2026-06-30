@@ -11,6 +11,25 @@ const fetcher = (p: string) => api(p);
 const GROUPS = "ABCDEFGHIJKL".split("");
 const MDS = ["MD1", "MD2", "MD3"];
 
+function buildEliminated(koData: any): Set<string> {
+  const out = new Set<string>();
+  if (!koData?.matches) return out;
+  for (const m of koData.matches as any[]) {
+    const hs = m.home_score;
+    const aws = m.away_score;
+    if (hs == null || aws == null) continue;
+    const home = m.home_team;
+    const away = m.away_team;
+    if (!home || !away) continue;
+    const ph: number | null = m.pen_home ?? null;
+    const pa: number | null = m.pen_away ?? null;
+    if (hs > aws)                              out.add(away);
+    else if (aws > hs)                         out.add(home);
+    else if (ph != null && pa != null)         ph > pa ? out.add(away) : out.add(home);
+  }
+  return out;
+}
+
 const ROUND_LABEL: Record<string, string> = {
   "Round of 32": "R32",
   "Round of 16": "R16",
@@ -86,6 +105,8 @@ export default function MatchesPage() {
     return knockoutData.rounds as any[];
   }, [knockoutData]);
 
+  const eliminated = useMemo(() => buildEliminated(knockoutData), [knockoutData]);
+
   return (
     <div className="space-y-6">
 
@@ -133,7 +154,7 @@ export default function MatchesPage() {
                     <motion.div key={m.id}
                       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.03 }}>
-                      <KnockoutMatchCard m={m} roundLabel={label} />
+                      <KnockoutMatchCard m={m} roundLabel={label} eliminated={eliminated} />
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -244,8 +265,8 @@ export default function MatchesPage() {
               </div>
             )}
 
-            {data && view === "cards" && <CardsView data={data} router={router} />}
-            {data && view === "table" && <TableView data={data} router={router} />}
+            {data && view === "cards" && <CardsView data={data} router={router} eliminated={eliminated} />}
+            {data && view === "table" && <TableView data={data} router={router} eliminated={eliminated} />}
           </div>
         )}
       </section>
@@ -254,11 +275,19 @@ export default function MatchesPage() {
 }
 
 /* ── Knockout match card (all rounds) ── */
-function KnockoutMatchCard({ m, roundLabel }: { m: any; roundLabel: string }) {
+function KnockoutMatchCard({ m, roundLabel, eliminated }: {
+  m: any; roundLabel: string; eliminated: Set<string>;
+}) {
   const p = m.prediction ?? {};
   const played = m.home_score != null && m.away_score != null;
   const homeWin = played && m.home_score > m.away_score;
   const awayWin = played && m.away_score > m.home_score;
+  const homeDraw = played && m.home_score === m.away_score;
+  /* pen winner: home advances if awayWin by pens is false */
+  const homeAdv = homeWin || (homeDraw && (m.pen_home ?? 0) > (m.pen_away ?? 0));
+  const awayAdv = awayWin || (homeDraw && (m.pen_away ?? 0) > (m.pen_home ?? 0));
+  const homeElim = played && eliminated.has(m.home_team);
+  const awayElim = played && eliminated.has(m.away_team);
   const dateStr = m.kickoff ? fmtShort(m.kickoff) : "TBD";
   const timeStr = m.kickoff ? fmtTime(m.kickoff) : "";
 
@@ -274,22 +303,54 @@ function KnockoutMatchCard({ m, roundLabel }: { m: any; roundLabel: string }) {
         <>
           {/* teams */}
           <div className="mb-3 flex items-center justify-between gap-2">
-            <div className="flex min-w-0 flex-1 items-center gap-2">
-              <Flag url={m.home_flag} name={m.home_team} size={28} />
-              <span className={`min-w-0 break-words font-display font-semibold leading-tight text-sm
-                ${homeWin ? "text-gold" : "text-stadium"}`}>{m.home_team}</span>
+            {/* home */}
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <div className="flex items-center gap-2">
+                <div className={homeElim ? "opacity-50 grayscale" : ""}>
+                  <Flag url={m.home_flag} name={m.home_team} size={28} />
+                </div>
+                <span className={`min-w-0 break-words font-display font-semibold leading-tight text-sm
+                  ${homeElim ? "text-danger/70 line-through" : homeAdv ? "text-gold" : "text-stadium"}`}>
+                  {m.home_team}
+                </span>
+              </div>
+              {homeElim && (
+                <span className="ml-9 inline-flex w-fit items-center rounded border border-danger/40 px-1.5 py-px text-[8px] font-bold text-danger">
+                  OUT
+                </span>
+              )}
             </div>
+            {/* score */}
             {played ? (
-              <span className="font-display text-xl font-bold tabnum text-stadium shrink-0 px-2">
-                {m.home_score} – {m.away_score}
-              </span>
+              <div className="shrink-0 px-1 text-center">
+                <span className="font-display text-xl font-bold tabnum text-stadium">
+                  {m.home_score} – {m.away_score}
+                </span>
+                {m.pen_home != null && (
+                  <div className="text-[9px] text-muted tabnum">
+                    ({m.pen_home} – {m.pen_away} pens)
+                  </div>
+                )}
+              </div>
             ) : (
               <span className="font-display text-xs font-bold text-muted/50 shrink-0 px-2">VS</span>
             )}
-            <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
-              <span className={`min-w-0 break-words text-right font-display font-semibold leading-tight text-sm
-                ${awayWin ? "text-gold" : "text-stadium"}`}>{m.away_team}</span>
-              <Flag url={m.away_flag} name={m.away_team} size={28} />
+            {/* away */}
+            <div className="flex min-w-0 flex-1 flex-col items-end gap-0.5">
+              <div className="flex items-center gap-2">
+                <span className={`min-w-0 break-words text-right font-display font-semibold leading-tight text-sm
+                  ${awayElim ? "text-danger/70 line-through" : awayAdv ? "text-gold" : "text-stadium"}`}>
+                  {m.away_team}
+                </span>
+                <div className={awayElim ? "opacity-50 grayscale" : ""}>
+                  <Flag url={m.away_flag} name={m.away_team} size={28} />
+                </div>
+              </div>
+              {awayElim && (
+                <span className="mr-9 inline-flex w-fit items-center rounded border border-danger/40 px-1.5 py-px text-[8px] font-bold text-danger">
+                  OUT
+                </span>
+              )}
             </div>
           </div>
 
@@ -347,7 +408,7 @@ function KnockoutMatchCard({ m, roundLabel }: { m: any; roundLabel: string }) {
 }
 
 /* ── Cards grid ── */
-function CardsView({ data, router }: { data: any[]; router: any }) {
+function CardsView({ data, router, eliminated }: { data: any[]; router: any; eliminated: Set<string> }) {
   const byDate: Record<string, any[]> = {};
   for (const m of data) {
     const d = fmtDate(m.kickoff);
@@ -370,7 +431,7 @@ function CardsView({ data, router }: { data: any[]; router: any }) {
                 <motion.div key={m.id}
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}>
-                  <BroadcastMatchCard m={m} onClick={() => router.push(`/matches/${m.id}`)} />
+                  <BroadcastMatchCard m={m} onClick={() => router.push(`/matches/${m.id}`)} eliminated={eliminated} />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -381,10 +442,23 @@ function CardsView({ data, router }: { data: any[]; router: any }) {
   );
 }
 
+/* ── Small OUT badge for eliminated teams ── */
+function OutBadge() {
+  return (
+    <span className="inline-flex shrink-0 items-center rounded border border-danger/40 px-1 py-px text-[8px] font-bold text-danger leading-none">
+      OUT
+    </span>
+  );
+}
+
 /* ── Broadcast match card (group stage) ── */
-function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
+function BroadcastMatchCard({ m, onClick, eliminated }: {
+  m: any; onClick: () => void; eliminated: Set<string>;
+}) {
   const goldHit = m.played && predictionGoldHit(m);
   const hit = m.played ? predictionHit(m) : null;
+  const homeElim = eliminated.has(m.home_team);
+  const awayElim = eliminated.has(m.away_team);
   const borderCls = goldHit
     ? "border-[#FFD700]/60 shadow-[0_0_14px_rgba(255,215,0,0.12)]"
     : hit === true
@@ -400,9 +474,15 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
       </div>
 
       <div className="mb-3 flex items-center justify-between gap-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Flag url={m.home_flag} name={m.home_team} size={28} />
-          <span className="min-w-0 break-words leading-tight font-display font-semibold text-stadium">{m.home_team}</span>
+        <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          <div className={homeElim ? "opacity-50 grayscale shrink-0" : "shrink-0"}>
+            <Flag url={m.home_flag} name={m.home_team} size={28} />
+          </div>
+          <span className={`min-w-0 break-words leading-tight font-display font-semibold
+            ${homeElim ? "text-danger/70 line-through" : "text-stadium"}`}>
+            {m.home_team}
+          </span>
+          {homeElim && <OutBadge />}
         </div>
         {m.played ? (
           <span className="font-display text-xl font-bold tabnum text-stadium shrink-0 px-2">
@@ -411,9 +491,15 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
         ) : (
           <span className="font-display text-xs font-bold text-muted/50 shrink-0 px-2">VS</span>
         )}
-        <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
-          <span className="min-w-0 break-words text-right leading-tight font-display font-semibold text-stadium">{m.away_team}</span>
-          <Flag url={m.away_flag} name={m.away_team} size={28} />
+        <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5">
+          {awayElim && <OutBadge />}
+          <span className={`min-w-0 break-words text-right leading-tight font-display font-semibold
+            ${awayElim ? "text-danger/70 line-through" : "text-stadium"}`}>
+            {m.away_team}
+          </span>
+          <div className={awayElim ? "opacity-50 grayscale shrink-0" : "shrink-0"}>
+            <Flag url={m.away_flag} name={m.away_team} size={28} />
+          </div>
         </div>
       </div>
 
@@ -448,7 +534,7 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
 }
 
 /* ── Table view ── */
-function TableView({ data, router }: { data: any[]; router: any }) {
+function TableView({ data, router, eliminated }: { data: any[]; router: any; eliminated: Set<string> }) {
   let lastDate = "";
   if (data.length === 0) return <p className="text-muted py-4">No matches match the filter.</p>;
   return (
@@ -469,11 +555,14 @@ function TableView({ data, router }: { data: any[]; router: any }) {
             const d = fmtDate(m.kickoff);
             const newDay = d !== lastDate;
             lastDate = d;
+            const homeElim = eliminated.has(m.home_team);
+            const awayElim = eliminated.has(m.away_team);
             return (
               <tr key={m.id}
                 onClick={() => router.push(`/matches/${m.id}`)}
                 className={`cursor-pointer border-b border-white/5 transition hover:bg-cyan/5
-                  ${newDay ? "border-t border-t-white/10" : ""}`}>
+                  ${newDay ? "border-t border-t-white/10" : ""}
+                  ${(homeElim || awayElim) ? "bg-danger/3" : ""}`}>
                 <td className="whitespace-nowrap px-4 py-3 text-muted">
                   {newDay && <span className="font-display text-xs text-stadium">{d}</span>}
                 </td>
@@ -483,12 +572,18 @@ function TableView({ data, router }: { data: any[]; router: any }) {
                   <span className="ml-1 text-muted text-[10px]">{m.matchday}</span>
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex items-center gap-2 font-display font-semibold text-stadium">
-                    <Flag url={m.home_flag} name={m.home_team} size={18} />
-                    {m.home_team}
+                  <div className="flex items-center gap-1.5 font-display font-semibold">
+                    <div className={homeElim ? "opacity-50 grayscale" : ""}>
+                      <Flag url={m.home_flag} name={m.home_team} size={18} />
+                    </div>
+                    <span className={homeElim ? "text-danger/70 line-through" : "text-stadium"}>{m.home_team}</span>
+                    {homeElim && <span className="text-[8px] font-bold text-danger border border-danger/30 rounded px-0.5">OUT</span>}
                     <span className="text-muted text-xs">v</span>
-                    {m.away_team}
-                    <Flag url={m.away_flag} name={m.away_team} size={18} />
+                    {awayElim && <span className="text-[8px] font-bold text-danger border border-danger/30 rounded px-0.5">OUT</span>}
+                    <span className={awayElim ? "text-danger/70 line-through" : "text-stadium"}>{m.away_team}</span>
+                    <div className={awayElim ? "opacity-50 grayscale" : ""}>
+                      <Flag url={m.away_flag} name={m.away_team} size={18} />
+                    </div>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-center">
