@@ -6,6 +6,9 @@ import { api } from "@/lib/api";
 import { Flag, LowConfidenceTag, isLowConfidence } from "@/components/ui";
 import { MatchFlowReport } from "@/components/match-flow";
 import { CaiScenarios, CaiPainPoints, CaiCompareBar } from "@/components/cai-blocks";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList,
+} from "recharts";
 
 const fetcher = (p: string) => api(p);
 const ET = "America/New_York";
@@ -31,11 +34,367 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
   const homeWin = m.predicted_winner === m.home_team;
   const a = m.analysis ?? {};
 
+  /* ── determine actual winner when played ── */
+  let actualWinner: string | null = null;
+  let actualLoser: string | null = null;
+  if (m.played && m.home_score != null && m.away_score != null) {
+    if (m.home_score > m.away_score) { actualWinner = m.home_team; actualLoser = m.away_team; }
+    else if (m.away_score > m.home_score) { actualWinner = m.away_team; actualLoser = m.home_team; }
+    else if (m.pen_home != null && m.pen_away != null) {
+      if (m.pen_home > m.pen_away) { actualWinner = m.home_team; actualLoser = m.away_team; }
+      else { actualWinner = m.away_team; actualLoser = m.home_team; }
+    }
+  }
+  const predictionCorrect = actualWinner != null && actualWinner === m.predicted_winner;
+  const isPens = m.pen_home != null && m.pen_away != null;
+
   return (
     <Shell>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-        {/* header */}
-        <div className="card overflow-hidden p-0">
+
+        {/* ══ POST-MATCH ANALYSIS (played matches) ══ */}
+        {m.played && actualWinner && (
+          <>
+            {/* Result hero */}
+            <div className="card-broadcast overflow-hidden p-0">
+              <div className="flex items-center justify-between bg-white/[0.04] px-4 py-2 text-[11px] text-muted">
+                <span className="chip-gold">{m.round} · Post-Match Analysis</span>
+                <span>{fmt(m.kickoff)} · 📍 {m.venue}, {m.city}</span>
+              </div>
+
+              {/* Scoreboard */}
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 p-6">
+                <div className="flex flex-col items-center gap-2">
+                  <div className={actualWinner === m.home_team ? "opacity-100" : "opacity-40 grayscale"}>
+                    <Flag url={m.home_flag} name={m.home_team} size={64} />
+                  </div>
+                  <div className={`font-display text-base font-bold leading-tight text-center
+                    ${actualWinner === m.home_team ? "text-gold" : "text-muted"}`}>
+                    {m.home_team}
+                  </div>
+                  {actualWinner === m.home_team && (
+                    <span className="rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-gold">
+                      Advances ›
+                    </span>
+                  )}
+                </div>
+
+                <div className="text-center">
+                  <div className="font-display text-5xl font-black tabnum text-white leading-none">
+                    {m.home_score}<span className="text-muted/50 mx-2">–</span>{m.away_score}
+                  </div>
+                  {isPens && (
+                    <div className="mt-1 font-display text-lg font-bold text-cyan tabnum">
+                      {m.pen_home}–{m.pen_away} <span className="text-xs font-normal text-muted">pens</span>
+                    </div>
+                  )}
+                  <div className="mt-2 text-[10px] uppercase tracking-widest text-muted">
+                    {isPens ? "After Extra Time + Penalties" : "Full Time"}
+                  </div>
+                  <div className={`mt-2 inline-block rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider
+                    ${predictionCorrect
+                      ? "border border-success/30 bg-success/10 text-success"
+                      : "border border-white/15 bg-white/5 text-muted"}`}>
+                    {predictionCorrect ? "✓ Prediction correct" : `✗ Model predicted ${m.predicted_winner}`}
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center gap-2">
+                  <div className={actualWinner === m.away_team ? "opacity-100" : "opacity-40 grayscale"}>
+                    <Flag url={m.away_flag} name={m.away_team} size={64} />
+                  </div>
+                  <div className={`font-display text-base font-bold leading-tight text-center
+                    ${actualWinner === m.away_team ? "text-gold" : "text-muted"}`}>
+                    {m.away_team}
+                  </div>
+                  {actualWinner === m.away_team && (
+                    <span className="rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-gold">
+                      Advances ›
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Score probability + match flow two-col */}
+            <div className="grid gap-5 lg:grid-cols-2">
+
+              {/* Score probability chart */}
+              {m.flow?.most_likely_scores?.length > 0 && (
+                <div className="card-broadcast">
+                  <div className="mb-4">
+                    <div className="font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                      Score Probability
+                    </div>
+                    <div className="text-[11px] text-muted mt-0.5">
+                      Pre-match model · actual result highlighted
+                    </div>
+                  </div>
+                  <div className="h-52">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={m.flow.most_likely_scores}
+                        margin={{ left: 0, right: 40, top: 4, bottom: 4 }}>
+                        <XAxis dataKey="score" tick={{ fill: "#8FA0C8", fontSize: 11 }} stroke="#4A5B80" />
+                        <YAxis tickFormatter={(v) => `${Math.round(v * 100)}%`}
+                          tick={{ fill: "#8FA0C8", fontSize: 10 }} stroke="#4A5B80" />
+                        <Tooltip
+                          formatter={(v: number) => `${(v * 100).toFixed(1)}%`}
+                          contentStyle={{
+                            background: "#0F1D3D",
+                            border: "1px solid rgba(0,212,255,0.2)",
+                            borderRadius: 10, fontSize: 12,
+                          }}
+                          cursor={{ fill: "rgba(0,212,255,0.04)" }}
+                        />
+                        <Bar dataKey="prob" radius={[6, 6, 0, 0]}>
+                          {m.flow.most_likely_scores.map((s: any, i: number) => {
+                            const isActual = s.score === `${m.home_score}-${m.away_score}`;
+                            return <Cell key={i} fill={isActual ? "#FFD700" : "#2A3F6B"} opacity={isActual ? 1 : 0.6} />;
+                          })}
+                          <LabelList dataKey="prob"
+                            position="top"
+                            formatter={(v: number) => `${(v * 100).toFixed(0)}%`}
+                            style={{ fill: "#8FA0C8", fontSize: 9 }} />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="mt-2 flex items-center gap-3 text-[10px] text-muted">
+                    <span className="inline-block h-2.5 w-2.5 rounded-sm bg-gold mr-0.5 align-middle" />
+                    Actual result
+                    <span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#2A3F6B] mr-0.5 align-middle opacity-60" />
+                    Predicted alternatives
+                  </div>
+                </div>
+              )}
+
+              {/* Match timeline */}
+              {m.flow?.match_flow?.length > 0 && (
+                <div className="card-broadcast">
+                  <div className="mb-4">
+                    <div className="font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                      Match Timeline
+                    </div>
+                    <div className="text-[11px] text-muted mt-0.5">Key events as they unfolded</div>
+                  </div>
+                  <div className="relative">
+                    {/* timeline spine */}
+                    <div className="absolute left-[22px] top-0 bottom-0 w-px bg-white/10" />
+                    <div className="space-y-4 pl-12">
+                      {m.flow.match_flow.map((e: any, i: number) => {
+                        const isGoal = e.type === "goal" || e.type === "shootout";
+                        const teamColor = e.team === m.home_team
+                          ? "text-gold" : e.team === m.away_team ? "text-cyan" : "text-muted";
+                        return (
+                          <div key={i} className="relative">
+                            {/* minute bubble */}
+                            <div className={`absolute -left-12 flex h-8 w-8 items-center justify-center
+                              rounded-full border text-[9px] font-bold tabnum
+                              ${isGoal
+                                ? "border-gold/50 bg-gold/15 text-gold"
+                                : "border-white/10 bg-white/5 text-muted"}`}>
+                              {e.minute}′
+                            </div>
+                            <div className={`rounded-xl border p-3 ${
+                              isGoal ? "border-gold/20 bg-gold/5" : "border-white/5 bg-white/2"}`}>
+                              <div className={`text-sm font-semibold ${isGoal ? teamColor : "text-muted"}`}>
+                                {e.type === "goal" ? "⚽ " : e.type === "shootout" ? "🎯 " : ""}
+                                {e.text}
+                              </div>
+                              {e.team && (
+                                <div className="mt-0.5 text-[10px] text-muted">{e.team}</div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Stat comparison */}
+            <div className="card-broadcast">
+              <div className="mb-4 font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                Head-to-Head Stats
+              </div>
+              <div className="space-y-3">
+                <StatBar label="Expected Goals (xG)"
+                  hVal={a.expected_goals?.home} aVal={a.expected_goals?.away}
+                  hTeam={m.home_team} aTeam={m.away_team}
+                  max={3} format={(v) => v.toFixed(2)} suffix="xG" />
+                <StatBar label="Player Condition"
+                  hVal={a.home_condition} aVal={a.away_condition}
+                  hTeam={m.home_team} aTeam={m.away_team}
+                  max={1} format={(v) => `${(v * 100).toFixed(0)}%`} />
+                <StatBar label="Goalkeeper Quality"
+                  hVal={a.home_gk_quality} aVal={a.away_gk_quality}
+                  hTeam={m.home_team} aTeam={m.away_team}
+                  max={1} format={(v) => `${(v * 100).toFixed(0)}%`} />
+                <StatBar label="Manager Win Rate"
+                  hVal={a.home_manager_wr} aVal={a.away_manager_wr}
+                  hTeam={m.home_team} aTeam={m.away_team}
+                  max={1} format={(v) => `${(v * 100).toFixed(0)}%`} />
+              </div>
+            </div>
+
+            {/* Tournament form comparison */}
+            {m.flow?.tournament_form && (
+              <div className="card-broadcast">
+                <div className="mb-4 font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                  Tournament Form
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {[m.home_team, m.away_team].map((team) => {
+                    const tf = m.flow.tournament_form[team];
+                    if (!tf) return null;
+                    const isWinner = team === actualWinner;
+                    return (
+                      <div key={team} className={`rounded-2xl border p-4 ${
+                        isWinner ? "border-gold/25 bg-gold/5" : "border-white/8 bg-white/2"}`}>
+                        <div className="mb-3 flex items-center gap-2">
+                          <Flag url={team === m.home_team ? m.home_flag : m.away_flag} name={team} size={28} />
+                          <div>
+                            <div className={`font-display text-sm font-bold ${isWinner ? "text-gold" : "text-stadium"}`}>
+                              {team}
+                            </div>
+                            <div className="text-[10px] text-muted">{tf.record}</div>
+                          </div>
+                          <div className={`ml-auto text-[11px] font-bold ${
+                            tf.form_delta > 3 ? "text-success" :
+                            tf.form_delta < -3 ? "text-muted" : "text-muted"}`}>
+                            {tf.form_delta > 0 ? "+" : ""}{tf.form_delta} Elo
+                          </div>
+                        </div>
+
+                        {/* W/D/L dots */}
+                        <div className="mb-3 flex gap-1.5">
+                          {["W","D","L"].map((r) => {
+                            const count = r === "W" ? tf.w : r === "D" ? tf.d : tf.l;
+                            return Array.from({ length: count }).map((_, i) => (
+                              <span key={`${r}-${i}`}
+                                className={`flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold
+                                  ${r === "W" ? "bg-success/20 text-success" :
+                                    r === "D" ? "bg-white/15 text-muted" :
+                                    "bg-white/8 text-muted/50"}`}>
+                                {r}
+                              </span>
+                            ));
+                          })}
+                        </div>
+
+                        {/* Goals bar */}
+                        <div className="mb-3 flex items-center gap-3 text-[12px]">
+                          <div>
+                            <div className="font-bold tabnum text-stadium">{tf.gf}</div>
+                            <div className="text-[9px] text-muted">Goals For</div>
+                          </div>
+                          <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                            <div className="h-full bg-gold/60 rounded-full"
+                              style={{ width: `${Math.min(100, (tf.gf / (tf.played * 3)) * 100)}%` }} />
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold tabnum text-muted">{tf.ga}</div>
+                            <div className="text-[9px] text-muted">Against</div>
+                          </div>
+                        </div>
+
+                        {/* Match log */}
+                        <div className="space-y-1">
+                          {tf.log?.map((l: string, i: number) => {
+                            const isWin = l.startsWith("W");
+                            const isDraw = l.startsWith("D");
+                            return (
+                              <div key={i} className="flex items-center gap-2 text-[10px] text-muted">
+                                <span className={`h-3.5 w-3.5 shrink-0 rounded-full flex items-center justify-center text-[7px] font-bold
+                                  ${isWin ? "bg-success/25 text-success" :
+                                    isDraw ? "bg-white/20 text-white" :
+                                    "bg-white/8 text-muted/50"}`}>
+                                  {l[0]}
+                                </span>
+                                {l}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Key moments */}
+            {m.flow?.turning_points?.length > 0 && (
+              <div className="card-broadcast">
+                <div className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                  Key Moments
+                </div>
+                <div className="space-y-2">
+                  {m.flow.turning_points.map((tp: string, i: number) => (
+                    <div key={i} className="flex items-start gap-3 rounded-xl border border-white/8 bg-white/3 px-4 py-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[10px] font-bold text-gold">
+                        {i + 1}
+                      </span>
+                      <span className="text-[13px] leading-snug text-stadium">{tp}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Pain points / weaknesses exposed */}
+            <CaiPainPoints home={m.home_team} away={m.away_team} painPoints={m.flow?.pain_points} />
+
+            {/* Penalty shootout detail */}
+            {isPens && (
+              <div className="card-broadcast">
+                <div className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-stadium">
+                  Penalty Shootout
+                </div>
+                <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+                  <div className="text-center">
+                    <div className={`font-display text-4xl font-black tabnum ${actualWinner === m.home_team ? "text-gold" : "text-muted"}`}>
+                      {m.pen_home}
+                    </div>
+                    <div className="mt-1 text-[11px] text-muted">{m.home_team}</div>
+                  </div>
+                  <div className="text-[11px] uppercase tracking-widest text-muted">Pens</div>
+                  <div className="text-center">
+                    <div className={`font-display text-4xl font-black tabnum ${actualWinner === m.away_team ? "text-gold" : "text-muted"}`}>
+                      {m.pen_away}
+                    </div>
+                    <div className="mt-1 text-[11px] text-muted">{m.away_team}</div>
+                  </div>
+                </div>
+                {m.flow?.key_players && (
+                  <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/8 pt-4">
+                    {[m.home_team, m.away_team].map((team) => {
+                      const kp = m.flow.key_players[team];
+                      if (!kp?.penalty_decider) return null;
+                      return (
+                        <div key={team} className="text-[12px]">
+                          <div className="mb-1 text-[10px] uppercase tracking-wider text-muted">{team}</div>
+                          <div className="text-stadium">🎯 {kp.penalty_decider} — key taker</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <hr className="border-white/8" />
+            <div className="text-center text-[11px] text-muted uppercase tracking-widest">
+              Pre-Match CAI Prediction
+            </div>
+          </>
+        )}
+
+        {/* ══ PRE-MATCH PREDICTION (always shown, labelled as prediction for played matches) ══ */}
+        <div className="card-broadcast overflow-hidden p-0">
           <div className="flex items-center justify-between bg-white/[0.04] px-4 py-2 text-[11px] text-muted">
             <span className="chip">{m.round} · Match {m.id}</span>
             <span>{fmt(m.kickoff)} · 📍 {m.venue}, {m.city}</span>
@@ -48,14 +407,14 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
                 {m.predicted_score}
               </div>
               <div className="text-[10px] uppercase tracking-widest text-muted">
-                {m.shootout ? "after pens" : (() => { const [h,a] = (m.predicted_score ?? "0-0").split("-").map(Number); return !m.played && h === a && m.predicted_winner ? "predicted AET" : "predicted"; })()}
+                {m.played ? "model predicted" : m.shootout ? "after pens" : (() => { const [h,aw] = (m.predicted_score ?? "0-0").split("-").map(Number); return !m.played && h === aw && m.predicted_winner ? "predicted AET" : "predicted"; })()}
               </div>
             </div>
             <TeamHead name={m.away_team} flag={m.away_flag} win={!homeWin}
               title={m.away_title_pct} right />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-white/10 px-4 py-3 text-sm">
-            <span><span className="font-bold text-gold">{m.predicted_winner}</span> advances</span>
+            <span><span className="font-bold text-gold">{m.predicted_winner}</span> {m.played ? "was predicted to advance" : "advances"}</span>
             <span className="text-muted">·</span>
             <span>win prob <span className="font-bold text-stadium">{Math.round((m.win_probability ?? 0) * 100)}%</span></span>
             {m.confidence != null && <><span className="text-muted">·</span><span>conf <span className="font-bold">{m.confidence}</span></span></>}
@@ -82,12 +441,11 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
         {/* CAI three-way scenario projection */}
         <CaiScenarios scenarios={m.flow?.scenarios} knockout />
 
-        {/* pain points */}
-        <CaiPainPoints home={m.home_team} away={m.away_team} painPoints={m.flow?.pain_points} />
-
         {/* why the projected winner advances */}
-        <section className="card p-5">
-          <h2 className="mb-3 font-display text-lg font-bold">Why {m.predicted_winner} advances</h2>
+        <section className="card-broadcast p-5">
+          <h2 className="mb-3 font-display text-lg font-bold">
+            {m.played ? `Why CAI predicted ${m.predicted_winner}` : `Why ${m.predicted_winner} advances`}
+          </h2>
           <div className="space-y-2">
             <CaiCompareBar label="Player condition" h={a.home_condition} a={a.away_condition} />
             <CaiCompareBar label="Manager track record" h={a.home_manager_wr} a={a.away_manager_wr} />
@@ -112,14 +470,46 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
         </section>
 
         {/* projected game flow */}
-        {m.flow && (
-          <section className="card p-5">
+        {m.flow && !m.played && (
+          <section className="card-broadcast p-5">
             <h2 className="mb-3 font-display text-lg font-bold">How the tie plays out</h2>
             <MatchFlowReport flow={m.flow} />
           </section>
         )}
       </motion.div>
     </Shell>
+  );
+}
+
+/* ── Stat comparison bar (post-match) ── */
+function StatBar({ label, hVal, aVal, hTeam, aTeam, max, format, suffix }: {
+  label: string; hVal?: number; aVal?: number;
+  hTeam: string; aTeam: string;
+  max: number; format: (v: number) => string; suffix?: string;
+}) {
+  if (hVal == null || aVal == null) return null;
+  const hW = (hVal / max) * 100;
+  const aW = (aVal / max) * 100;
+  const hWins = hVal >= aVal;
+  return (
+    <div>
+      <div className="mb-1.5 flex items-center justify-between text-[11px]">
+        <span className={`font-medium ${hWins ? "text-gold" : "text-muted"}`}>{hTeam} {format(hVal)}</span>
+        <span className="text-muted/50 text-[10px] uppercase tracking-wider">{label}</span>
+        <span className={`font-medium ${!hWins ? "text-gold" : "text-muted"}`}>{format(aVal)} {aTeam}</span>
+      </div>
+      <div className="flex h-3 items-stretch gap-0.5 overflow-hidden rounded-full">
+        <div className="flex flex-1 justify-end rounded-l-full overflow-hidden bg-white/5">
+          <motion.div className="h-full rounded-l-full bg-gold/70"
+            initial={{ width: 0 }} animate={{ width: `${hW}%` }} transition={{ duration: 0.8, delay: 0.1 }} />
+        </div>
+        <div className="w-px bg-white/20" />
+        <div className="flex flex-1 justify-start rounded-r-full overflow-hidden bg-white/5">
+          <motion.div className="h-full rounded-r-full bg-cyan/60"
+            initial={{ width: 0 }} animate={{ width: `${aW}%` }} transition={{ duration: 0.8, delay: 0.15 }} />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -147,11 +537,10 @@ function TeamHead({ name, flag, win, title, right }:
   );
 }
 
-/* ── a team's group-stage path: each game + key moment ───────────────────── */
 function JourneyColumn({ team, flag, games }:
   { team: string; flag?: string; games?: any[] }) {
   return (
-    <div className="card p-4">
+    <div className="card-broadcast p-4">
       <div className="mb-3 flex items-center gap-2">
         <Flag url={flag} name={team} size={24} />
         <h3 className="font-display text-sm font-bold">{team}</h3>
@@ -204,4 +593,3 @@ function ResultDot({ r }: { r: string }) {
     </span>
   );
 }
-
