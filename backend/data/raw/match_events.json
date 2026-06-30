@@ -1,2038 +1,2067 @@
 {
- "Portugal|Uzbekistan": {
-  "home": "Portugal",
-  "away": "Uzbekistan",
-  "score": [
-   5,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Cristiano Ronaldo",
-     "minute": 6,
-     "type": "goal"
-    },
-    {
-     "player": "Nuno Mendes",
-     "minute": 17,
-     "type": "goal"
-    },
-    {
-     "player": "Cristiano Ronaldo",
-     "minute": 39,
-     "type": "goal"
-    },
-    {
-     "player": "Abduvohid Nematov",
-     "minute": 60,
-     "type": "own goal"
-    },
-    {
-     "player": "Rafael Leão",
-     "minute": 87,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260623"
- },
- "France|Iraq": {
-  "home": "France",
-  "away": "Iraq",
-  "score": [
-   3,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Kylian Mbappé",
-     "minute": 14,
-     "type": "goal"
-    },
-    {
-     "player": "Kylian Mbappé",
-     "minute": 54,
-     "type": "goal"
-    },
-    {
-     "player": "Ousmane Dembélé",
-     "minute": 70,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260622"
- },
- "Norway|Senegal": {
-  "home": "Norway",
-  "away": "Senegal",
-  "score": [
-   3,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Marcus Pedersen",
-     "minute": 43,
-     "type": "goal"
-    },
-    {
-     "player": "Erling Haaland",
-     "minute": 48,
-     "type": "goal"
-    },
-    {
-     "player": "Erling Haaland",
-     "minute": 58,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ismaïla Sarr",
-     "minute": 64,
-     "type": "goal"
-    },
-    {
-     "player": "Ismaïla Sarr",
-     "minute": 90,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260622"
- },
- "Jordan|Algeria": {
-  "home": "Jordan",
-  "away": "Algeria",
-  "score": [
-   1,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Nizar Al-Rashdan",
-     "minute": 28,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Nadhir Benbouali",
-     "minute": 68,
-     "type": "goal"
-    },
-    {
-     "player": "Amine Gouiri",
-     "minute": 82,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260622"
- },
- "New Zealand|Egypt": {
-  "home": "New Zealand",
-  "away": "Egypt",
-  "score": [
-   1,
-   3
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Surman",
-     "minute": 15,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Mostafa Zico",
-     "minute": 58,
-     "type": "goal"
-    },
-    {
-     "player": "Mohamed Salah",
-     "minute": 67,
-     "type": "goal"
-    },
-    {
-     "player": "Trezeguet",
-     "minute": 82,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260621"
- },
- "Argentina|Austria": {
-  "home": "Argentina",
-  "away": "Austria",
-  "score": [
-   2,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Lionel Messi",
-     "minute": 38,
-     "type": "goal"
-    },
-    {
-     "player": "Lionel Messi",
-     "minute": 95,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260622"
- },
- "Mexico|South Africa": {
-  "home": "Mexico",
-  "away": "South Africa",
-  "score": [
-   2,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Julián Quiñones",
-     "minute": 9,
-     "type": "goal"
-    },
-    {
-     "player": "Raúl Jiménez",
-     "minute": 67,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260611"
- },
- "South Korea|Czech Republic": {
-  "home": "South Korea",
-  "away": "Czech Republic",
-  "score": [
-   2,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Hwang In-Beom",
-     "minute": 67,
-     "type": "goal"
-    },
-    {
-     "player": "Oh Hyeon-Gyu",
-     "minute": 80,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ladislav Krejcí",
-     "minute": 59,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260611"
- },
- "Canada|Bosnia and Herzegovina": {
-  "home": "Canada",
-  "away": "Bosnia and Herzegovina",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Cyle Larin",
-     "minute": 78,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Jovo Lukic",
-     "minute": 21,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260612"
- },
- "United States|Paraguay": {
-  "home": "United States",
-  "away": "Paraguay",
-  "score": [
-   4,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Damián Bobadilla",
-     "minute": 7,
-     "type": "own goal"
-    },
-    {
-     "player": "Folarin Balogun",
-     "minute": 31,
-     "type": "goal"
-    },
-    {
-     "player": "Folarin Balogun",
-     "minute": 50,
-     "type": "goal"
-    },
-    {
-     "player": "Giovanni Reyna",
-     "minute": 98,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Maurício",
-     "minute": 73,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260612"
- },
- "Qatar|Switzerland": {
-  "home": "Qatar",
-  "away": "Switzerland",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Miro Muheim",
-     "minute": 94,
-     "type": "own goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Breel Embolo",
-     "minute": 17,
-     "type": "penalty"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260613"
- },
- "Brazil|Morocco": {
-  "home": "Brazil",
-  "away": "Morocco",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Vinícius Júnior",
-     "minute": 32,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ismael Saibari",
-     "minute": 21,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260613"
- },
- "Haiti|Scotland": {
-  "home": "Haiti",
-  "away": "Scotland",
-  "score": [
-   0,
-   1
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "John McGinn",
-     "minute": 28,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260613"
- },
- "Australia|Turkey": {
-  "home": "Australia",
-  "away": "Turkey",
-  "score": [
-   2,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Nestory Irankunda",
-     "minute": 27,
-     "type": "goal"
-    },
-    {
-     "player": "Connor Metcalfe",
-     "minute": 75,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260614"
- },
- "Germany|Curaçao": {
-  "home": "Germany",
-  "away": "Curaçao",
-  "score": [
-   7,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Felix Nmecha",
-     "minute": 6,
-     "type": "goal"
-    },
-    {
-     "player": "Nico Schlotterbeck",
-     "minute": 38,
-     "type": "goal"
-    },
-    {
-     "player": "Jamal Musiala",
-     "minute": 47,
-     "type": "goal"
-    },
-    {
-     "player": "Kai Havertz",
-     "minute": 50,
-     "type": "penalty"
-    },
-    {
-     "player": "Nathaniel Brown",
-     "minute": 68,
-     "type": "goal"
-    },
-    {
-     "player": "Deniz Undav",
-     "minute": 78,
-     "type": "goal"
-    },
-    {
-     "player": "Kai Havertz",
-     "minute": 88,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Livano Comenencia",
-     "minute": 21,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260614"
- },
- "Netherlands|Japan": {
-  "home": "Netherlands",
-  "away": "Japan",
-  "score": [
-   2,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Virgil van Dijk",
-     "minute": 51,
-     "type": "goal"
-    },
-    {
-     "player": "Crysencio Summerville",
-     "minute": 64,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Keito Nakamura",
-     "minute": 57,
-     "type": "goal"
-    },
-    {
-     "player": "Daichi Kamada",
-     "minute": 89,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260614"
- },
- "Ivory Coast|Ecuador": {
-  "home": "Ivory Coast",
-  "away": "Ecuador",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Amad Diallo",
-     "minute": 90,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260614"
- },
- "Sweden|Tunisia": {
-  "home": "Sweden",
-  "away": "Tunisia",
-  "score": [
-   5,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Yasin Ayari",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Alexander Isak",
-     "minute": 30,
-     "type": "goal"
-    },
-    {
-     "player": "Viktor Gyökeres",
-     "minute": 59,
-     "type": "goal"
-    },
-    {
-     "player": "Mattias Svanberg",
-     "minute": 84,
-     "type": "goal"
-    },
-    {
-     "player": "Yasin Ayari",
-     "minute": 96,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Omar Rekik",
-     "minute": 43,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260614"
- },
- "Spain|Cape Verde": {
-  "home": "Spain",
-  "away": "Cape Verde",
-  "score": [
-   0,
-   0
-  ],
-  "scorers": {
-   "home": [],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260615"
- },
- "Belgium|Egypt": {
-  "home": "Belgium",
-  "away": "Egypt",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Mohamed Hany",
-     "minute": 66,
-     "type": "own goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Emam Ashour",
-     "minute": 20,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260615"
- },
- "Saudi Arabia|Uruguay": {
-  "home": "Saudi Arabia",
-  "away": "Uruguay",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Abdulelah Al-Amri",
-     "minute": 41,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Maxi Araújo",
-     "minute": 80,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260615"
- },
- "Iran|New Zealand": {
-  "home": "Iran",
-  "away": "New Zealand",
-  "score": [
-   2,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Ramin Rezaeian",
-     "minute": 32,
-     "type": "goal"
-    },
-    {
-     "player": "Mohammad Mohebbi",
-     "minute": 64,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Elijah Just",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Elijah Just",
-     "minute": 54,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260615"
- },
- "France|Senegal": {
-  "home": "France",
-  "away": "Senegal",
-  "score": [
-   3,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Kylian Mbappé",
-     "minute": 66,
-     "type": "goal"
-    },
-    {
-     "player": "Bradley Barcola",
-     "minute": 82,
-     "type": "goal"
-    },
-    {
-     "player": "Kylian Mbappé",
-     "minute": 96,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ibrahim Mbaye",
-     "minute": 95,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260616"
- },
- "Iraq|Norway": {
-  "home": "Iraq",
-  "away": "Norway",
-  "score": [
-   1,
-   4
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Aymen Hussein",
-     "minute": 39,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Erling Haaland",
-     "minute": 29,
-     "type": "goal"
-    },
-    {
-     "player": "Erling Haaland",
-     "minute": 43,
-     "type": "goal"
-    },
-    {
-     "player": "Leo Østigard",
-     "minute": 76,
-     "type": "goal"
-    },
-    {
-     "player": "Aymen Hussein",
-     "minute": 96,
-     "type": "own goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260616"
- },
- "Argentina|Algeria": {
-  "home": "Argentina",
-  "away": "Algeria",
-  "score": [
-   3,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Lionel Messi",
-     "minute": 17,
-     "type": "goal"
-    },
-    {
-     "player": "Lionel Messi",
-     "minute": 60,
-     "type": "goal"
-    },
-    {
-     "player": "Lionel Messi",
-     "minute": 76,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260616"
- },
- "Austria|Jordan": {
-  "home": "Austria",
-  "away": "Jordan",
-  "score": [
-   3,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Romano Schmid",
-     "minute": 21,
-     "type": "goal"
-    },
-    {
-     "player": "Yazan Al-Arab",
-     "minute": 76,
-     "type": "own goal"
-    },
-    {
-     "player": "Marko Arnautovic",
-     "minute": 102,
-     "type": "penalty"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ali Olwan",
-     "minute": 50,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260617"
- },
- "Portugal|DR Congo": {
-  "home": "Portugal",
-  "away": "DR Congo",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "João Neves",
-     "minute": 6,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Yoane Wissa",
-     "minute": 50,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260617"
- },
- "England|Croatia": {
-  "home": "England",
-  "away": "Croatia",
-  "score": [
-   4,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Harry Kane",
-     "minute": 12,
-     "type": "penalty"
-    },
-    {
-     "player": "Harry Kane",
-     "minute": 42,
-     "type": "goal"
-    },
-    {
-     "player": "Jude Bellingham",
-     "minute": 47,
-     "type": "goal"
-    },
-    {
-     "player": "Marcus Rashford",
-     "minute": 85,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Martin Baturina",
-     "minute": 36,
-     "type": "goal"
-    },
-    {
-     "player": "Petar Musa",
-     "minute": 50,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260617"
- },
- "Ghana|Panama": {
-  "home": "Ghana",
-  "away": "Panama",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Caleb Yirenkyi",
-     "minute": 95,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260617"
- },
- "Uzbekistan|Colombia": {
-  "home": "Uzbekistan",
-  "away": "Colombia",
-  "score": [
-   1,
-   3
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Abbosbek Fayzullaev",
-     "minute": 60,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Daniel Muñoz",
-     "minute": 40,
-     "type": "goal"
-    },
-    {
-     "player": "Luis Díaz",
-     "minute": 65,
-     "type": "goal"
-    },
-    {
-     "player": "Jáminton Campaz",
-     "minute": 99,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260617"
- },
- "Czech Republic|South Africa": {
-  "home": "Czech Republic",
-  "away": "South Africa",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Michal Sadílek",
-     "minute": 6,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Teboho Mokoena",
-     "minute": 83,
-     "type": "penalty"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260618"
- },
- "Switzerland|Bosnia and Herzegovina": {
-  "home": "Switzerland",
-  "away": "Bosnia and Herzegovina",
-  "score": [
-   4,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Johan Manzambi",
-     "minute": 74,
-     "type": "goal"
-    },
-    {
-     "player": "Rubén Vargas",
-     "minute": 84,
-     "type": "goal"
-    },
-    {
-     "player": "Johan Manzambi",
-     "minute": 90,
-     "type": "goal"
-    },
-    {
-     "player": "Granit Xhaka",
-     "minute": 97,
-     "type": "penalty"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ermin Mahmic",
-     "minute": 93,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260618"
- },
- "Canada|Qatar": {
-  "home": "Canada",
-  "away": "Qatar",
-  "score": [
-   6,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Cyle Larin",
-     "minute": 16,
-     "type": "goal"
-    },
-    {
-     "player": "Jonathan David",
-     "minute": 29,
-     "type": "goal"
-    },
-    {
-     "player": "Jonathan David",
-     "minute": 48,
-     "type": "goal"
-    },
-    {
-     "player": "Nathan Saliba",
-     "minute": 64,
-     "type": "goal"
-    },
-    {
-     "player": "Mohamed Manai",
-     "minute": 75,
-     "type": "own goal"
-    },
-    {
-     "player": "Jonathan David",
-     "minute": 92,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260618"
- },
- "Mexico|South Korea": {
-  "home": "Mexico",
-  "away": "South Korea",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Luis Romo",
-     "minute": 50,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260618"
- },
- "United States|Australia": {
-  "home": "United States",
-  "away": "Australia",
-  "score": [
-   2,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Cameron Burgess",
-     "minute": 11,
-     "type": "own goal"
-    },
-    {
-     "player": "Alex Freeman",
-     "minute": 43,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260619"
- },
- "Scotland|Morocco": {
-  "home": "Scotland",
-  "away": "Morocco",
-  "score": [
-   0,
-   1
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Ismael Saibari",
-     "minute": 2,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260619"
- },
- "Brazil|Haiti": {
-  "home": "Brazil",
-  "away": "Haiti",
-  "score": [
-   3,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Matheus Cunha",
-     "minute": 23,
-     "type": "goal"
-    },
-    {
-     "player": "Matheus Cunha",
-     "minute": 36,
-     "type": "goal"
-    },
-    {
-     "player": "Vinícius Júnior",
-     "minute": 45,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260619"
- },
- "Paraguay|Turkey": {
-  "home": "Paraguay",
-  "away": "Turkey",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Matías Galarza",
-     "minute": 2,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260619"
- },
- "Netherlands|Sweden": {
-  "home": "Netherlands",
-  "away": "Sweden",
-  "score": [
-   5,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Brian Brobbey",
-     "minute": 5,
-     "type": "goal"
-    },
-    {
-     "player": "Brian Brobbey",
-     "minute": 17,
-     "type": "goal"
-    },
-    {
-     "player": "Cody Gakpo",
-     "minute": 47,
-     "type": "goal"
-    },
-    {
-     "player": "Cody Gakpo",
-     "minute": 54,
-     "type": "goal"
-    },
-    {
-     "player": "Crysencio Summerville",
-     "minute": 89,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Anthony Elanga",
-     "minute": 59,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260620"
- },
- "Germany|Ivory Coast": {
-  "home": "Germany",
-  "away": "Ivory Coast",
-  "score": [
-   2,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Deniz Undav",
-     "minute": 68,
-     "type": "goal"
-    },
-    {
-     "player": "Deniz Undav",
-     "minute": 94,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Franck Kessié",
-     "minute": 30,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260620"
- },
- "Ecuador|Curaçao": {
-  "home": "Ecuador",
-  "away": "Curaçao",
-  "score": [
-   0,
-   0
-  ],
-  "scorers": {
-   "home": [],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260620"
- },
- "Tunisia|Japan": {
-  "home": "Tunisia",
-  "away": "Japan",
-  "score": [
-   0,
-   4
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Daichi Kamada",
-     "minute": 4,
-     "type": "goal"
-    },
-    {
-     "player": "Ayase Ueda",
-     "minute": 31,
-     "type": "goal"
-    },
-    {
-     "player": "Junya Ito",
-     "minute": 69,
-     "type": "goal"
-    },
-    {
-     "player": "Ayase Ueda",
-     "minute": 83,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260620"
- },
- "Spain|Saudi Arabia": {
-  "home": "Spain",
-  "away": "Saudi Arabia",
-  "score": [
-   4,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Lamine Yamal",
-     "minute": 10,
-     "type": "goal"
-    },
-    {
-     "player": "Mikel Oyarzabal",
-     "minute": 21,
-     "type": "goal"
-    },
-    {
-     "player": "Mikel Oyarzabal",
-     "minute": 24,
-     "type": "goal"
-    },
-    {
-     "player": "Hassan Al-Tambakti",
-     "minute": 49,
-     "type": "own goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN",
-  "date": "20260621"
- },
- "Belgium|Iran": {
-  "home": "Belgium",
-  "away": "Iran",
-  "date": "20260621",
-  "score": [
-   0,
-   0
-  ],
-  "scorers": {
-   "home": [],
-   "away": []
-  },
-  "source": "ESPN"
- },
- "Uruguay|Cape Verde": {
-  "home": "Uruguay",
-  "away": "Cape Verde",
-  "date": "20260621",
-  "score": [
-   2,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "minute": 44,
-     "player": "Maximiliano Araújo",
-     "type": "goal"
-    },
-    {
-     "minute": 45,
-     "player": "Agustín Canobbio",
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "minute": 21,
-     "player": "Kevin Pina",
-     "type": "goal"
-    },
-    {
-     "minute": 61,
-     "player": "Helio Varela",
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA"
- },
- "Colombia|DR Congo": {
-  "home": "Colombia",
-  "away": "DR Congo",
-  "date": "20260623",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "minute": 76,
-     "player": "Daniel Muñoz",
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN"
- },
- "England|Ghana": {
-  "home": "England",
-  "away": "Ghana",
-  "date": "20260623",
-  "score": [
-   0,
-   0
-  ],
-  "scorers": {
-   "home": [],
-   "away": []
-  },
-  "source": "FIFA"
- },
- "Panama|Croatia": {
-  "home": "Panama",
-  "away": "Croatia",
-  "date": "20260623",
-  "score": [
-   0,
-   1
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "minute": 54,
-     "player": "Ante Budimir",
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "Switzerland|Canada": {
-  "home": "Switzerland",
-  "away": "Canada",
-  "date": "20260624",
-  "score": [
-   2,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Rubén Vargas",
-     "minute": 46,
-     "type": "goal"
-    },
-    {
-     "player": "Johan Manzambi",
-     "minute": 57,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Promise David",
-     "minute": 76,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "Bosnia and Herzegovina|Qatar": {
-  "home": "Bosnia and Herzegovina",
-  "away": "Qatar",
-  "date": "20260624",
-  "score": [
-   3,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Kerim Alajbegović",
-     "minute": 18,
-     "type": "goal"
-    },
-    {
-     "player": "Sultan Al-Brake",
-     "minute": 34,
-     "type": "own goal"
-    },
-    {
-     "player": "Ermin Mahmić",
-     "minute": 80,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Hassan Al-Haydos",
-     "minute": 42,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "Scotland|Brazil": {
-  "home": "Scotland",
-  "away": "Brazil",
-  "date": "20260624",
-  "score": [
-   0,
-   3
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Vinícius Júnior",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Vinícius Júnior",
-     "minute": 45,
-     "type": "goal"
-    },
-    {
-     "player": "Matheus Cunha",
-     "minute": 60,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "Morocco|Haiti": {
-  "home": "Morocco",
-  "away": "Haiti",
-  "date": "20260624",
-  "score": [
-   4,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Achraf Hakimi",
-     "minute": 39,
-     "type": "goal"
-    },
-    {
-     "player": "Ismael Saibari",
-     "minute": 45,
-     "type": "goal"
-    },
-    {
-     "player": "Soufiane Rahimi",
-     "minute": 78,
-     "type": "goal"
-    },
-    {
-     "player": "Gessime Yassine",
-     "minute": 89,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Yassine Bounou",
-     "minute": 10,
-     "type": "own goal"
-    },
-    {
-     "player": "Wilson Isidor",
-     "minute": 43,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "South Africa|South Korea": {
-  "home": "South Africa",
-  "away": "South Korea",
-  "date": "20260624",
-  "score": [
-   1,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Thapelo Maseko",
-     "minute": 63,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "ESPN"
- },
- "Czech Republic|Mexico": {
-  "home": "Czech Republic",
-  "away": "Mexico",
-  "date": "20260624",
-  "score": [
-   0,
-   3
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Mateo Chávez",
-     "minute": 55,
-     "type": "goal"
-    },
-    {
-     "player": "Julián Quiñones",
-     "minute": 61,
-     "type": "goal"
-    },
-    {
-     "player": "Álvaro Fidalgo",
-     "minute": 90,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN"
- },
- "Ecuador|Germany": {
-  "home": "Ecuador",
-  "away": "Germany",
-  "score": [
-   2,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Nilson Angulo",
-     "minute": 9,
-     "type": "goal"
-    },
-    {
-     "player": "Gonzalo Plata",
-     "minute": 77,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Leroy Sané",
-     "minute": 4,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Curaçao|Ivory Coast": {
-  "home": "Curaçao",
-  "away": "Ivory Coast",
-  "score": [
-   0,
-   2
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Nicolas Pépé",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Nicolas Pépé",
-     "minute": 58,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Japan|Sweden": {
-  "home": "Japan",
-  "away": "Sweden",
-  "score": [
-   1,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Daizen Maeda",
-     "minute": 56,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Anthony Elanga",
-     "minute": 62,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Tunisia|Netherlands": {
-  "home": "Tunisia",
-  "away": "Netherlands",
-  "score": [
-   1,
-   3
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Hazem Mastouri",
-     "minute": 54,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ellys Skhiri",
-     "minute": 3,
-     "type": "own goal"
-    },
-    {
-     "player": "Brian Brobbey",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Anis Slimane",
-     "minute": 62,
-     "type": "own goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Turkey|United States": {
-  "home": "Turkey",
-  "away": "United States",
-  "score": [
-   3,
-   2
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Arda Güler",
-     "minute": 10,
-     "type": "goal"
-    },
-    {
-     "player": "Orkun Kökcü",
-     "minute": 31,
-     "type": "goal"
-    },
-    {
-     "player": "Kaan Ayhan",
-     "minute": 98,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Auston Trusty",
-     "minute": 3,
-     "type": "goal"
-    },
-    {
-     "player": "Sebastian Berhalter",
-     "minute": 49,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Paraguay|Australia": {
-  "home": "Paraguay",
-  "away": "Australia",
-  "score": [
-   0,
-   0
-  ],
-  "scorers": {
-   "home": [],
-   "away": []
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260625"
- },
- "Norway|France": {
-  "home": "Norway",
-  "away": "France",
-  "score": [
-   1,
-   4
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Thelo Aasgaard",
-     "minute": 21,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Ousmane Dembélé",
-     "minute": 7,
-     "type": "goal"
-    },
-    {
-     "player": "Ousmane Dembélé",
-     "minute": 20,
-     "type": "goal"
-    },
-    {
-     "player": "Ousmane Dembélé",
-     "minute": 32,
-     "type": "goal"
-    },
-    {
-     "player": "Désiré Doué",
-     "minute": 94,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260626"
- },
- "Senegal|Iraq": {
-  "home": "Senegal",
-  "away": "Iraq",
-  "score": [
-   5,
-   0
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Habib Diarra",
-     "minute": 4,
-     "type": "goal"
-    },
-    {
-     "player": "Ismaïla Sarr",
-     "minute": 56,
-     "type": "goal"
-    },
-    {
-     "player": "Pape Gueye",
-     "minute": 59,
-     "type": "goal"
-    },
-    {
-     "player": "Pape Gueye",
-     "minute": 71,
-     "type": "goal"
-    },
-    {
-     "player": "Iliman Ndiaye",
-     "minute": 82,
-     "type": "goal"
-    }
-   ],
-   "away": []
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260626"
- },
- "Jordan|Argentina": {
-  "home": "Jordan",
-  "away": "Argentina",
-  "score": [
-   1,
-   3
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Unknown",
-     "minute": 70,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Lionel Messi",
-     "minute": 23,
-     "type": "goal"
-    },
-    {
-     "player": "Unknown",
-     "minute": 55,
-     "type": "goal"
-    },
-    {
-     "player": "Unknown",
-     "minute": 82,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "ESPN",
-  "date": "20260627"
- },
- "South Africa|Canada": {
-  "home": "South Africa",
-  "away": "Canada",
-  "score": [
-   0,
-   1
-  ],
-  "scorers": {
-   "home": [],
-   "away": [
-    {
-     "player": "Stephen Eustaquio",
-     "minute": 92,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260628"
- },
- "Brazil|Japan": {
-  "home": "Brazil",
-  "away": "Japan",
-  "score": [
-   2,
-   1
-  ],
-  "scorers": {
-   "home": [
-    {
-     "player": "Casemiro",
-     "minute": 56,
-     "type": "goal"
-    },
-    {
-     "player": "Gabriel Martinelli",
-     "minute": 96,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Kaishu Sano",
-     "minute": 29,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260629"
- },
- "Germany|Paraguay": {
-  "home": "Germany",
-  "away": "Paraguay",
-  "score": [
-   1,
-   1
-  ],
-  "pen_home": 3,
-  "pen_away": 4,
-  "scorers": {
-   "home": [
-    {
-     "player": "Kai Havertz",
-     "minute": 54,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Julio Enciso",
-     "minute": 42,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260629"
- },
- "Netherlands|Morocco": {
-  "home": "Netherlands",
-  "away": "Morocco",
-  "score": [
-   1,
-   1
-  ],
-  "pen_home": 2,
-  "pen_away": 3,
-  "scorers": {
-   "home": [
-    {
-     "player": "Cody Gakpo",
-     "minute": 72,
-     "type": "goal"
-    }
-   ],
-   "away": [
-    {
-     "player": "Issa Diop",
-     "minute": 91,
-     "type": "goal"
-    }
-   ]
-  },
-  "source": "FIFA/ESPN",
-  "date": "20260629"
- }
+  "Portugal|Uzbekistan": {
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "score": [
+      5,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Cristiano Ronaldo",
+          "minute": 6,
+          "type": "goal"
+        },
+        {
+          "player": "Nuno Mendes",
+          "minute": 17,
+          "type": "goal"
+        },
+        {
+          "player": "Cristiano Ronaldo",
+          "minute": 39,
+          "type": "goal"
+        },
+        {
+          "player": "Abduvohid Nematov",
+          "minute": 60,
+          "type": "own goal"
+        },
+        {
+          "player": "Rafael Leão",
+          "minute": 87,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260623"
+  },
+  "France|Iraq": {
+    "home": "France",
+    "away": "Iraq",
+    "score": [
+      3,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Kylian Mbappé",
+          "minute": 14,
+          "type": "goal"
+        },
+        {
+          "player": "Kylian Mbappé",
+          "minute": 54,
+          "type": "goal"
+        },
+        {
+          "player": "Ousmane Dembélé",
+          "minute": 70,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "Norway|Senegal": {
+    "home": "Norway",
+    "away": "Senegal",
+    "score": [
+      3,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Marcus Pedersen",
+          "minute": 43,
+          "type": "goal"
+        },
+        {
+          "player": "Erling Haaland",
+          "minute": 48,
+          "type": "goal"
+        },
+        {
+          "player": "Erling Haaland",
+          "minute": 58,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ismaïla Sarr",
+          "minute": 64,
+          "type": "goal"
+        },
+        {
+          "player": "Ismaïla Sarr",
+          "minute": 90,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "Jordan|Algeria": {
+    "home": "Jordan",
+    "away": "Algeria",
+    "score": [
+      1,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Nizar Al-Rashdan",
+          "minute": 28,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Nadhir Benbouali",
+          "minute": 68,
+          "type": "goal"
+        },
+        {
+          "player": "Amine Gouiri",
+          "minute": 82,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "New Zealand|Egypt": {
+    "home": "New Zealand",
+    "away": "Egypt",
+    "score": [
+      1,
+      3
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Surman",
+          "minute": 15,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Mostafa Zico",
+          "minute": 58,
+          "type": "goal"
+        },
+        {
+          "player": "Mohamed Salah",
+          "minute": 67,
+          "type": "goal"
+        },
+        {
+          "player": "Trezeguet",
+          "minute": 82,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260621"
+  },
+  "Argentina|Austria": {
+    "home": "Argentina",
+    "away": "Austria",
+    "score": [
+      2,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Lionel Messi",
+          "minute": 38,
+          "type": "goal"
+        },
+        {
+          "player": "Lionel Messi",
+          "minute": 95,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260622"
+  },
+  "Mexico|South Africa": {
+    "home": "Mexico",
+    "away": "South Africa",
+    "score": [
+      2,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Julián Quiñones",
+          "minute": 9,
+          "type": "goal"
+        },
+        {
+          "player": "Raúl Jiménez",
+          "minute": 67,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260611"
+  },
+  "South Korea|Czech Republic": {
+    "home": "South Korea",
+    "away": "Czech Republic",
+    "score": [
+      2,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Hwang In-Beom",
+          "minute": 67,
+          "type": "goal"
+        },
+        {
+          "player": "Oh Hyeon-Gyu",
+          "minute": 80,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ladislav Krejcí",
+          "minute": 59,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260611"
+  },
+  "Canada|Bosnia and Herzegovina": {
+    "home": "Canada",
+    "away": "Bosnia and Herzegovina",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Cyle Larin",
+          "minute": 78,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Jovo Lukic",
+          "minute": 21,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260612"
+  },
+  "United States|Paraguay": {
+    "home": "United States",
+    "away": "Paraguay",
+    "score": [
+      4,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Damián Bobadilla",
+          "minute": 7,
+          "type": "own goal"
+        },
+        {
+          "player": "Folarin Balogun",
+          "minute": 31,
+          "type": "goal"
+        },
+        {
+          "player": "Folarin Balogun",
+          "minute": 50,
+          "type": "goal"
+        },
+        {
+          "player": "Giovanni Reyna",
+          "minute": 98,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Maurício",
+          "minute": 73,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260612"
+  },
+  "Qatar|Switzerland": {
+    "home": "Qatar",
+    "away": "Switzerland",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Miro Muheim",
+          "minute": 94,
+          "type": "own goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Breel Embolo",
+          "minute": 17,
+          "type": "penalty"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260613"
+  },
+  "Brazil|Morocco": {
+    "home": "Brazil",
+    "away": "Morocco",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Vinícius Júnior",
+          "minute": 32,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ismael Saibari",
+          "minute": 21,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260613"
+  },
+  "Haiti|Scotland": {
+    "home": "Haiti",
+    "away": "Scotland",
+    "score": [
+      0,
+      1
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "John McGinn",
+          "minute": 28,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260613"
+  },
+  "Australia|Turkey": {
+    "home": "Australia",
+    "away": "Turkey",
+    "score": [
+      2,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Nestory Irankunda",
+          "minute": 27,
+          "type": "goal"
+        },
+        {
+          "player": "Connor Metcalfe",
+          "minute": 75,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260614"
+  },
+  "Germany|Curaçao": {
+    "home": "Germany",
+    "away": "Curaçao",
+    "score": [
+      7,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Felix Nmecha",
+          "minute": 6,
+          "type": "goal"
+        },
+        {
+          "player": "Nico Schlotterbeck",
+          "minute": 38,
+          "type": "goal"
+        },
+        {
+          "player": "Jamal Musiala",
+          "minute": 47,
+          "type": "goal"
+        },
+        {
+          "player": "Kai Havertz",
+          "minute": 50,
+          "type": "penalty"
+        },
+        {
+          "player": "Nathaniel Brown",
+          "minute": 68,
+          "type": "goal"
+        },
+        {
+          "player": "Deniz Undav",
+          "minute": 78,
+          "type": "goal"
+        },
+        {
+          "player": "Kai Havertz",
+          "minute": 88,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Livano Comenencia",
+          "minute": 21,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260614"
+  },
+  "Netherlands|Japan": {
+    "home": "Netherlands",
+    "away": "Japan",
+    "score": [
+      2,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Virgil van Dijk",
+          "minute": 51,
+          "type": "goal"
+        },
+        {
+          "player": "Crysencio Summerville",
+          "minute": 64,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Keito Nakamura",
+          "minute": 57,
+          "type": "goal"
+        },
+        {
+          "player": "Daichi Kamada",
+          "minute": 89,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260614"
+  },
+  "Ivory Coast|Ecuador": {
+    "home": "Ivory Coast",
+    "away": "Ecuador",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Amad Diallo",
+          "minute": 90,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260614"
+  },
+  "Sweden|Tunisia": {
+    "home": "Sweden",
+    "away": "Tunisia",
+    "score": [
+      5,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Yasin Ayari",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Alexander Isak",
+          "minute": 30,
+          "type": "goal"
+        },
+        {
+          "player": "Viktor Gyökeres",
+          "minute": 59,
+          "type": "goal"
+        },
+        {
+          "player": "Mattias Svanberg",
+          "minute": 84,
+          "type": "goal"
+        },
+        {
+          "player": "Yasin Ayari",
+          "minute": 96,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Omar Rekik",
+          "minute": 43,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260614"
+  },
+  "Spain|Cape Verde": {
+    "home": "Spain",
+    "away": "Cape Verde",
+    "score": [
+      0,
+      0
+    ],
+    "scorers": {
+      "home": [],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260615"
+  },
+  "Belgium|Egypt": {
+    "home": "Belgium",
+    "away": "Egypt",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Mohamed Hany",
+          "minute": 66,
+          "type": "own goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Emam Ashour",
+          "minute": 20,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260615"
+  },
+  "Saudi Arabia|Uruguay": {
+    "home": "Saudi Arabia",
+    "away": "Uruguay",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Abdulelah Al-Amri",
+          "minute": 41,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Maxi Araújo",
+          "minute": 80,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260615"
+  },
+  "Iran|New Zealand": {
+    "home": "Iran",
+    "away": "New Zealand",
+    "score": [
+      2,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Ramin Rezaeian",
+          "minute": 32,
+          "type": "goal"
+        },
+        {
+          "player": "Mohammad Mohebbi",
+          "minute": 64,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Elijah Just",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Elijah Just",
+          "minute": 54,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260615"
+  },
+  "France|Senegal": {
+    "home": "France",
+    "away": "Senegal",
+    "score": [
+      3,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Kylian Mbappé",
+          "minute": 66,
+          "type": "goal"
+        },
+        {
+          "player": "Bradley Barcola",
+          "minute": 82,
+          "type": "goal"
+        },
+        {
+          "player": "Kylian Mbappé",
+          "minute": 96,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ibrahim Mbaye",
+          "minute": 95,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260616"
+  },
+  "Iraq|Norway": {
+    "home": "Iraq",
+    "away": "Norway",
+    "score": [
+      1,
+      4
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Aymen Hussein",
+          "minute": 39,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Erling Haaland",
+          "minute": 29,
+          "type": "goal"
+        },
+        {
+          "player": "Erling Haaland",
+          "minute": 43,
+          "type": "goal"
+        },
+        {
+          "player": "Leo Østigard",
+          "minute": 76,
+          "type": "goal"
+        },
+        {
+          "player": "Aymen Hussein",
+          "minute": 96,
+          "type": "own goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260616"
+  },
+  "Argentina|Algeria": {
+    "home": "Argentina",
+    "away": "Algeria",
+    "score": [
+      3,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Lionel Messi",
+          "minute": 17,
+          "type": "goal"
+        },
+        {
+          "player": "Lionel Messi",
+          "minute": 60,
+          "type": "goal"
+        },
+        {
+          "player": "Lionel Messi",
+          "minute": 76,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260616"
+  },
+  "Austria|Jordan": {
+    "home": "Austria",
+    "away": "Jordan",
+    "score": [
+      3,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Romano Schmid",
+          "minute": 21,
+          "type": "goal"
+        },
+        {
+          "player": "Yazan Al-Arab",
+          "minute": 76,
+          "type": "own goal"
+        },
+        {
+          "player": "Marko Arnautovic",
+          "minute": 102,
+          "type": "penalty"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ali Olwan",
+          "minute": 50,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260617"
+  },
+  "Portugal|DR Congo": {
+    "home": "Portugal",
+    "away": "DR Congo",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "João Neves",
+          "minute": 6,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Yoane Wissa",
+          "minute": 50,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260617"
+  },
+  "England|Croatia": {
+    "home": "England",
+    "away": "Croatia",
+    "score": [
+      4,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Harry Kane",
+          "minute": 12,
+          "type": "penalty"
+        },
+        {
+          "player": "Harry Kane",
+          "minute": 42,
+          "type": "goal"
+        },
+        {
+          "player": "Jude Bellingham",
+          "minute": 47,
+          "type": "goal"
+        },
+        {
+          "player": "Marcus Rashford",
+          "minute": 85,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Martin Baturina",
+          "minute": 36,
+          "type": "goal"
+        },
+        {
+          "player": "Petar Musa",
+          "minute": 50,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260617"
+  },
+  "Ghana|Panama": {
+    "home": "Ghana",
+    "away": "Panama",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Caleb Yirenkyi",
+          "minute": 95,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260617"
+  },
+  "Uzbekistan|Colombia": {
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "score": [
+      1,
+      3
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Abbosbek Fayzullaev",
+          "minute": 60,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Daniel Muñoz",
+          "minute": 40,
+          "type": "goal"
+        },
+        {
+          "player": "Luis Díaz",
+          "minute": 65,
+          "type": "goal"
+        },
+        {
+          "player": "Jáminton Campaz",
+          "minute": 99,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260617"
+  },
+  "Czech Republic|South Africa": {
+    "home": "Czech Republic",
+    "away": "South Africa",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Michal Sadílek",
+          "minute": 6,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Teboho Mokoena",
+          "minute": 83,
+          "type": "penalty"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260618"
+  },
+  "Switzerland|Bosnia and Herzegovina": {
+    "home": "Switzerland",
+    "away": "Bosnia and Herzegovina",
+    "score": [
+      4,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Johan Manzambi",
+          "minute": 74,
+          "type": "goal"
+        },
+        {
+          "player": "Rubén Vargas",
+          "minute": 84,
+          "type": "goal"
+        },
+        {
+          "player": "Johan Manzambi",
+          "minute": 90,
+          "type": "goal"
+        },
+        {
+          "player": "Granit Xhaka",
+          "minute": 97,
+          "type": "penalty"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ermin Mahmic",
+          "minute": 93,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260618"
+  },
+  "Canada|Qatar": {
+    "home": "Canada",
+    "away": "Qatar",
+    "score": [
+      6,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Cyle Larin",
+          "minute": 16,
+          "type": "goal"
+        },
+        {
+          "player": "Jonathan David",
+          "minute": 29,
+          "type": "goal"
+        },
+        {
+          "player": "Jonathan David",
+          "minute": 48,
+          "type": "goal"
+        },
+        {
+          "player": "Nathan Saliba",
+          "minute": 64,
+          "type": "goal"
+        },
+        {
+          "player": "Mohamed Manai",
+          "minute": 75,
+          "type": "own goal"
+        },
+        {
+          "player": "Jonathan David",
+          "minute": 92,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260618"
+  },
+  "Mexico|South Korea": {
+    "home": "Mexico",
+    "away": "South Korea",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Luis Romo",
+          "minute": 50,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260618"
+  },
+  "United States|Australia": {
+    "home": "United States",
+    "away": "Australia",
+    "score": [
+      2,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Cameron Burgess",
+          "minute": 11,
+          "type": "own goal"
+        },
+        {
+          "player": "Alex Freeman",
+          "minute": 43,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260619"
+  },
+  "Scotland|Morocco": {
+    "home": "Scotland",
+    "away": "Morocco",
+    "score": [
+      0,
+      1
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Ismael Saibari",
+          "minute": 2,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260619"
+  },
+  "Brazil|Haiti": {
+    "home": "Brazil",
+    "away": "Haiti",
+    "score": [
+      3,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Matheus Cunha",
+          "minute": 23,
+          "type": "goal"
+        },
+        {
+          "player": "Matheus Cunha",
+          "minute": 36,
+          "type": "goal"
+        },
+        {
+          "player": "Vinícius Júnior",
+          "minute": 45,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260619"
+  },
+  "Paraguay|Turkey": {
+    "home": "Paraguay",
+    "away": "Turkey",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Matías Galarza",
+          "minute": 2,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260619"
+  },
+  "Netherlands|Sweden": {
+    "home": "Netherlands",
+    "away": "Sweden",
+    "score": [
+      5,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Brian Brobbey",
+          "minute": 5,
+          "type": "goal"
+        },
+        {
+          "player": "Brian Brobbey",
+          "minute": 17,
+          "type": "goal"
+        },
+        {
+          "player": "Cody Gakpo",
+          "minute": 47,
+          "type": "goal"
+        },
+        {
+          "player": "Cody Gakpo",
+          "minute": 54,
+          "type": "goal"
+        },
+        {
+          "player": "Crysencio Summerville",
+          "minute": 89,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Anthony Elanga",
+          "minute": 59,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260620"
+  },
+  "Germany|Ivory Coast": {
+    "home": "Germany",
+    "away": "Ivory Coast",
+    "score": [
+      2,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Deniz Undav",
+          "minute": 68,
+          "type": "goal"
+        },
+        {
+          "player": "Deniz Undav",
+          "minute": 94,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Franck Kessié",
+          "minute": 30,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260620"
+  },
+  "Ecuador|Curaçao": {
+    "home": "Ecuador",
+    "away": "Curaçao",
+    "score": [
+      0,
+      0
+    ],
+    "scorers": {
+      "home": [],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260620"
+  },
+  "Tunisia|Japan": {
+    "home": "Tunisia",
+    "away": "Japan",
+    "score": [
+      0,
+      4
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Daichi Kamada",
+          "minute": 4,
+          "type": "goal"
+        },
+        {
+          "player": "Ayase Ueda",
+          "minute": 31,
+          "type": "goal"
+        },
+        {
+          "player": "Junya Ito",
+          "minute": 69,
+          "type": "goal"
+        },
+        {
+          "player": "Ayase Ueda",
+          "minute": 83,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260620"
+  },
+  "Spain|Saudi Arabia": {
+    "home": "Spain",
+    "away": "Saudi Arabia",
+    "score": [
+      4,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Lamine Yamal",
+          "minute": 10,
+          "type": "goal"
+        },
+        {
+          "player": "Mikel Oyarzabal",
+          "minute": 21,
+          "type": "goal"
+        },
+        {
+          "player": "Mikel Oyarzabal",
+          "minute": 24,
+          "type": "goal"
+        },
+        {
+          "player": "Hassan Al-Tambakti",
+          "minute": 49,
+          "type": "own goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN",
+    "date": "20260621"
+  },
+  "Belgium|Iran": {
+    "home": "Belgium",
+    "away": "Iran",
+    "date": "20260621",
+    "score": [
+      0,
+      0
+    ],
+    "scorers": {
+      "home": [],
+      "away": []
+    },
+    "source": "ESPN"
+  },
+  "Uruguay|Cape Verde": {
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "date": "20260621",
+    "score": [
+      2,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "minute": 44,
+          "player": "Maximiliano Araújo",
+          "type": "goal"
+        },
+        {
+          "minute": 45,
+          "player": "Agustín Canobbio",
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "minute": 21,
+          "player": "Kevin Pina",
+          "type": "goal"
+        },
+        {
+          "minute": 61,
+          "player": "Helio Varela",
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA"
+  },
+  "Colombia|DR Congo": {
+    "home": "Colombia",
+    "away": "DR Congo",
+    "date": "20260623",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "minute": 76,
+          "player": "Daniel Muñoz",
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN"
+  },
+  "England|Ghana": {
+    "home": "England",
+    "away": "Ghana",
+    "date": "20260623",
+    "score": [
+      0,
+      0
+    ],
+    "scorers": {
+      "home": [],
+      "away": []
+    },
+    "source": "FIFA"
+  },
+  "Panama|Croatia": {
+    "home": "Panama",
+    "away": "Croatia",
+    "date": "20260623",
+    "score": [
+      0,
+      1
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "minute": 54,
+          "player": "Ante Budimir",
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "Switzerland|Canada": {
+    "home": "Switzerland",
+    "away": "Canada",
+    "date": "20260624",
+    "score": [
+      2,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Rubén Vargas",
+          "minute": 46,
+          "type": "goal"
+        },
+        {
+          "player": "Johan Manzambi",
+          "minute": 57,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Promise David",
+          "minute": 76,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "Bosnia and Herzegovina|Qatar": {
+    "home": "Bosnia and Herzegovina",
+    "away": "Qatar",
+    "date": "20260624",
+    "score": [
+      3,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Kerim Alajbegović",
+          "minute": 18,
+          "type": "goal"
+        },
+        {
+          "player": "Sultan Al-Brake",
+          "minute": 34,
+          "type": "own goal"
+        },
+        {
+          "player": "Ermin Mahmić",
+          "minute": 80,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Hassan Al-Haydos",
+          "minute": 42,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "Scotland|Brazil": {
+    "home": "Scotland",
+    "away": "Brazil",
+    "date": "20260624",
+    "score": [
+      0,
+      3
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Vinícius Júnior",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Vinícius Júnior",
+          "minute": 45,
+          "type": "goal"
+        },
+        {
+          "player": "Matheus Cunha",
+          "minute": 60,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "Morocco|Haiti": {
+    "home": "Morocco",
+    "away": "Haiti",
+    "date": "20260624",
+    "score": [
+      4,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Achraf Hakimi",
+          "minute": 39,
+          "type": "goal"
+        },
+        {
+          "player": "Ismael Saibari",
+          "minute": 45,
+          "type": "goal"
+        },
+        {
+          "player": "Soufiane Rahimi",
+          "minute": 78,
+          "type": "goal"
+        },
+        {
+          "player": "Gessime Yassine",
+          "minute": 89,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Yassine Bounou",
+          "minute": 10,
+          "type": "own goal"
+        },
+        {
+          "player": "Wilson Isidor",
+          "minute": 43,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "South Africa|South Korea": {
+    "home": "South Africa",
+    "away": "South Korea",
+    "date": "20260624",
+    "score": [
+      1,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Thapelo Maseko",
+          "minute": 63,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "ESPN"
+  },
+  "Czech Republic|Mexico": {
+    "home": "Czech Republic",
+    "away": "Mexico",
+    "date": "20260624",
+    "score": [
+      0,
+      3
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Mateo Chávez",
+          "minute": 55,
+          "type": "goal"
+        },
+        {
+          "player": "Julián Quiñones",
+          "minute": 61,
+          "type": "goal"
+        },
+        {
+          "player": "Álvaro Fidalgo",
+          "minute": 90,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN"
+  },
+  "Ecuador|Germany": {
+    "home": "Ecuador",
+    "away": "Germany",
+    "score": [
+      2,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Nilson Angulo",
+          "minute": 9,
+          "type": "goal"
+        },
+        {
+          "player": "Gonzalo Plata",
+          "minute": 77,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Leroy Sané",
+          "minute": 4,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Curaçao|Ivory Coast": {
+    "home": "Curaçao",
+    "away": "Ivory Coast",
+    "score": [
+      0,
+      2
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Nicolas Pépé",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Nicolas Pépé",
+          "minute": 58,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Japan|Sweden": {
+    "home": "Japan",
+    "away": "Sweden",
+    "score": [
+      1,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Daizen Maeda",
+          "minute": 56,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Anthony Elanga",
+          "minute": 62,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Tunisia|Netherlands": {
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "score": [
+      1,
+      3
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Hazem Mastouri",
+          "minute": 54,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ellys Skhiri",
+          "minute": 3,
+          "type": "own goal"
+        },
+        {
+          "player": "Brian Brobbey",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Anis Slimane",
+          "minute": 62,
+          "type": "own goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Turkey|United States": {
+    "home": "Turkey",
+    "away": "United States",
+    "score": [
+      3,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Arda Güler",
+          "minute": 10,
+          "type": "goal"
+        },
+        {
+          "player": "Orkun Kökcü",
+          "minute": 31,
+          "type": "goal"
+        },
+        {
+          "player": "Kaan Ayhan",
+          "minute": 98,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Auston Trusty",
+          "minute": 3,
+          "type": "goal"
+        },
+        {
+          "player": "Sebastian Berhalter",
+          "minute": 49,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Paraguay|Australia": {
+    "home": "Paraguay",
+    "away": "Australia",
+    "score": [
+      0,
+      0
+    ],
+    "scorers": {
+      "home": [],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260625"
+  },
+  "Norway|France": {
+    "home": "Norway",
+    "away": "France",
+    "score": [
+      1,
+      4
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Thelo Aasgaard",
+          "minute": 21,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Ousmane Dembélé",
+          "minute": 7,
+          "type": "goal"
+        },
+        {
+          "player": "Ousmane Dembélé",
+          "minute": 20,
+          "type": "goal"
+        },
+        {
+          "player": "Ousmane Dembélé",
+          "minute": 32,
+          "type": "goal"
+        },
+        {
+          "player": "Désiré Doué",
+          "minute": 94,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260626"
+  },
+  "Senegal|Iraq": {
+    "home": "Senegal",
+    "away": "Iraq",
+    "score": [
+      5,
+      0
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Habib Diarra",
+          "minute": 4,
+          "type": "goal"
+        },
+        {
+          "player": "Ismaïla Sarr",
+          "minute": 56,
+          "type": "goal"
+        },
+        {
+          "player": "Pape Gueye",
+          "minute": 59,
+          "type": "goal"
+        },
+        {
+          "player": "Pape Gueye",
+          "minute": 71,
+          "type": "goal"
+        },
+        {
+          "player": "Iliman Ndiaye",
+          "minute": 82,
+          "type": "goal"
+        }
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260626"
+  },
+  "Jordan|Argentina": {
+    "home": "Jordan",
+    "away": "Argentina",
+    "score": [
+      1,
+      3
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Yazan Al-Naimat",
+          "minute": 55,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Giovani Lo Celso",
+          "minute": 19,
+          "type": "goal"
+        },
+        {
+          "player": "Lautaro Martínez",
+          "minute": 31,
+          "type": "penalty"
+        },
+        {
+          "player": "Lionel Messi",
+          "minute": 80,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "ESPN",
+    "date": "20260627"
+  },
+  "South Africa|Canada": {
+    "home": "South Africa",
+    "away": "Canada",
+    "score": [
+      0,
+      1
+    ],
+    "scorers": {
+      "home": [],
+      "away": [
+        {
+          "player": "Stephen Eustaquio",
+          "minute": 92,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260628"
+  },
+  "Brazil|Japan": {
+    "home": "Brazil",
+    "away": "Japan",
+    "score": [
+      2,
+      1
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Casemiro",
+          "minute": 56,
+          "type": "goal"
+        },
+        {
+          "player": "Gabriel Martinelli",
+          "minute": 96,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Kaishu Sano",
+          "minute": 29,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260629"
+  },
+  "Germany|Paraguay": {
+    "home": "Germany",
+    "away": "Paraguay",
+    "score": [
+      1,
+      1
+    ],
+    "pen_home": 3,
+    "pen_away": 4,
+    "scorers": {
+      "home": [
+        {
+          "player": "Kai Havertz",
+          "minute": 54,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Julio Enciso",
+          "minute": 42,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260629"
+  },
+  "Netherlands|Morocco": {
+    "home": "Netherlands",
+    "away": "Morocco",
+    "score": [
+      1,
+      1
+    ],
+    "pen_home": 2,
+    "pen_away": 3,
+    "scorers": {
+      "home": [
+        {
+          "player": "Cody Gakpo",
+          "minute": 72,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Issa Diop",
+          "minute": 91,
+          "type": "goal"
+        }
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260629"
+  },
+  "Ivory Coast|Norway": {
+    "home": "Ivory Coast",
+    "away": "Norway",
+    "score": [
+      1,
+      2
+    ],
+    "scorers": {
+      "home": [
+        {
+          "player": "Unknown",
+          "minute": 55,
+          "type": "goal"
+        }
+      ],
+      "away": [
+        {
+          "player": "Erling Haaland",
+          "minute": 38,
+          "type": "goal"
+        },
+        {
+          "player": "Unknown",
+          "minute": 71,
+          "type": "goal"
+        }
+      ]
+    }
+  }
 }
