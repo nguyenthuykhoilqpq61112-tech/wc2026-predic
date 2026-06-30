@@ -1,6 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
 import { api, pct0 } from "@/lib/api";
@@ -9,6 +10,23 @@ import { Flag, ProbBar, LiveBadge, SectionHeader, LowConfidenceTag, isLowConfide
 const fetcher = (p: string) => api(p);
 const GROUPS = "ABCDEFGHIJKL".split("");
 const MDS = ["MD1", "MD2", "MD3"];
+
+const ROUND_LABEL: Record<string, string> = {
+  "Round of 32": "R32",
+  "Round of 16": "R16",
+  "Quarter Final": "QF",
+  "Semi Final": "SF",
+  "Third Place": "3P",
+  "Final": "Final",
+};
+
+const ROUND_DATE: Record<string, string> = {
+  "Round of 32": "Jun 28 – Jul 3",
+  "Round of 16": "Jul 5 – Jul 7",
+  "Quarter Final": "Jul 10 – Jul 11",
+  "Semi Final": "Jul 14 – Jul 15",
+  "Final": "Jul 19",
+};
 
 const ET = "America/New_York";
 const fmtDate = (iso: string) =>
@@ -19,6 +37,8 @@ const fmtTime = (iso: string) =>
   new Date(iso).toLocaleTimeString("en-US", {
     hour: "numeric", minute: "2-digit", timeZone: ET,
   });
+const fmtShort = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: ET });
 
 export default function MatchesPage() {
   const router = useRouter();
@@ -28,6 +48,8 @@ export default function MatchesPage() {
   const [upcoming, setUpcoming] = useState(false);
   const [view, setView] = useState<"cards" | "table">("cards");
   const [groupsOpen, setGroupsOpen] = useState(false);
+  const [openRounds, setOpenRounds] = useState<Record<string, boolean>>({ "Round of 32": true });
+  const toggleRound = (r: string) => setOpenRounds(p => ({ ...p, [r]: !p[r] }));
 
   const { data: allData, error } = useSWR(`/api/matches?`, fetcher);
   const { data: knockoutData } = useSWR(`/api/knockout`, fetcher);
@@ -48,8 +70,6 @@ export default function MatchesPage() {
   const played = (data ?? []).filter((m: any) => m.played).length;
   const total = (data ?? []).length;
 
-  // Overall model accuracy across ALL played matches (unfiltered, so the
-  // headline number is stable regardless of the active group/MD filter).
   const accuracy = useMemo(() => {
     const pl = (allData ?? []).filter((m: any) => m.played);
     const n = pl.length;
@@ -61,49 +81,67 @@ export default function MatchesPage() {
              exact, exactPct: Math.round((exact / n) * 100) };
   }, [allData]);
 
-  const r32Matches = useMemo(() => {
-    if (!knockoutData?.matches) return [];
-    return (knockoutData.matches as any[])
-      .filter((m) => m.round === "Round of 32" && m.resolved)
-      .sort((a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime());
+  const knockoutRounds: any[] = useMemo(() => {
+    if (!knockoutData?.rounds) return [];
+    return knockoutData.rounds as any[];
   }, [knockoutData]);
 
   return (
     <div className="space-y-6">
 
       {/* ── Page header ── */}
-      <SectionHeader title="FIXTURES" sub="FIFA World Cup 2026 · Canada · Mexico · USA"
-        action={
-          <div className="flex items-center gap-2">
-            <button onClick={() => setView("cards")}
-              className={`btn-sm ${view === "cards" ? "btn-gold" : ""}`}>⊞ Cards</button>
-            <button onClick={() => setView("table")}
-              className={`btn-sm ${view === "table" ? "btn-gold" : ""}`}>☰ Table</button>
-          </div>
-        } />
+      <SectionHeader title="FIXTURES" sub="FIFA World Cup 2026 · Canada · Mexico · USA" />
 
-      {/* ── Round of 32 ── */}
-      {r32Matches.length > 0 && (
-        <section>
-          <div className="mb-4 flex items-center gap-3">
-            <span className="chip-gold text-[11px] uppercase tracking-widest">Knockout Stage</span>
-            <h3 className="font-display text-base font-bold uppercase tracking-tight text-stadium">Round of 32</h3>
-            <span className="text-[11px] text-muted">Jun 28 – Jul 3</span>
-            <div className="h-px flex-1 bg-white/5" />
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence>
-              {r32Matches.map((m: any, i: number) => (
-                <motion.div key={m.id}
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.03 }}>
-                  <R32MatchCard m={m} onClick={() => router.push(`/knockout/${m.id}`)} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </section>
-      )}
+      {/* ── Knockout rounds ── */}
+      {knockoutRounds.map((r: any) => {
+        const label = ROUND_LABEL[r.round] ?? r.round;
+        const dateRange = ROUND_DATE[r.round];
+        const isOpen = openRounds[r.round] ?? false;
+        const resolvedCount = (r.matches as any[]).filter((m: any) => m.resolved).length;
+        const sortedMatches = [...r.matches].sort((a: any, b: any) => {
+          if (a.kickoff && b.kickoff)
+            return new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime();
+          return (a.id ?? 0) - (b.id ?? 0);
+        });
+
+        return (
+          <section key={r.round}>
+            <button
+              onClick={() => toggleRound(r.round)}
+              className="card-broadcast w-full flex items-center justify-between py-3 px-5 hover:border-white/20 transition cursor-pointer">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="chip-gold text-[10px] uppercase tracking-wider">{label}</span>
+                <span className="font-display text-sm font-bold uppercase tracking-wider text-stadium">
+                  {r.round}
+                </span>
+                {dateRange && (
+                  <span className="hidden sm:inline text-[11px] text-muted">{dateRange}</span>
+                )}
+                <span className="text-[11px] text-muted">
+                  {resolvedCount}/{r.matches.length} resolved
+                </span>
+              </div>
+              <span className="shrink-0 text-muted text-xs font-semibold uppercase tracking-wider">
+                {isOpen ? "▲ Hide" : "▼ Show"}
+              </span>
+            </button>
+
+            {isOpen && (
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <AnimatePresence>
+                  {sortedMatches.map((m: any, i: number) => (
+                    <motion.div key={m.id}
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.03 }}>
+                      <KnockoutMatchCard m={m} roundLabel={label} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            )}
+          </section>
+        );
+      })}
 
       {/* ── Group Stage (collapsible) ── */}
       <section>
@@ -150,7 +188,7 @@ export default function MatchesPage() {
               </div>
             )}
 
-            {/* Filter bar */}
+            {/* Filter bar + view toggle */}
             <div className="card-broadcast flex flex-wrap items-center gap-3 py-4">
               <div className="flex flex-wrap gap-2">
                 <button onClick={() => setGroup("")}
@@ -180,6 +218,12 @@ export default function MatchesPage() {
                 className={`btn-sm ${upcoming ? "btn-gold" : ""}`}>
                 {upcoming ? "⏭ Upcoming" : "All dates"}
               </button>
+              <div className="flex items-center gap-1.5">
+                <button onClick={() => setView("cards")}
+                  className={`btn-sm ${view === "cards" ? "btn-gold" : ""}`}>⊞</button>
+                <button onClick={() => setView("table")}
+                  className={`btn-sm ${view === "table" ? "btn-gold" : ""}`}>☰</button>
+              </div>
               {data && (
                 <span className="ml-auto text-xs text-muted hidden md:block">
                   <b className="text-success">{played}</b> played · <b className="text-stadium">{total - played}</b> upcoming
@@ -209,9 +253,101 @@ export default function MatchesPage() {
   );
 }
 
+/* ── Knockout match card (all rounds) ── */
+function KnockoutMatchCard({ m, roundLabel }: { m: any; roundLabel: string }) {
+  const p = m.prediction ?? {};
+  const played = m.home_score != null && m.away_score != null;
+  const homeWin = played && m.home_score > m.away_score;
+  const awayWin = played && m.away_score > m.home_score;
+  const dateStr = m.kickoff ? fmtShort(m.kickoff) : "TBD";
+  const timeStr = m.kickoff ? fmtTime(m.kickoff) : "";
+
+  const inner = (
+    <div className={`card-broadcast h-full text-left ${m.resolved ? "match-card-hover" : "opacity-60"}`}>
+      {/* header */}
+      <div className="mb-3 flex items-center justify-between text-[11px]">
+        <span className="chip-gold text-[10px] uppercase tracking-wider">{roundLabel}</span>
+        <span className="text-muted">{dateStr}{timeStr ? ` · ${timeStr}` : ""}</span>
+      </div>
+
+      {m.resolved ? (
+        <>
+          {/* teams */}
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <Flag url={m.home_flag} name={m.home_team} size={28} />
+              <span className={`min-w-0 break-words font-display font-semibold leading-tight text-sm
+                ${homeWin ? "text-gold" : "text-stadium"}`}>{m.home_team}</span>
+            </div>
+            {played ? (
+              <span className="font-display text-xl font-bold tabnum text-stadium shrink-0 px-2">
+                {m.home_score} – {m.away_score}
+              </span>
+            ) : (
+              <span className="font-display text-xs font-bold text-muted/50 shrink-0 px-2">VS</span>
+            )}
+            <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
+              <span className={`min-w-0 break-words text-right font-display font-semibold leading-tight text-sm
+                ${awayWin ? "text-gold" : "text-stadium"}`}>{m.away_team}</span>
+              <Flag url={m.away_flag} name={m.away_team} size={28} />
+            </div>
+          </div>
+
+          {/* prob bar for upcoming */}
+          {!played && p.p_home != null && (
+            <>
+              <ProbBar home={p.p_home} draw={p.p_draw ?? 0} away={p.p_away ?? 0} height={6} />
+              <div className="mt-2 flex justify-between text-[11px] tabnum">
+                <span className="text-success">{pct0(p.p_home)}</span>
+                <span className="text-muted">D {pct0(p.p_draw)}</span>
+                <span className="text-cyan">{pct0(p.p_away)}</span>
+              </div>
+            </>
+          )}
+
+          {/* predicted score */}
+          {m.predicted_score && !played && (
+            <div className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-white/5 py-1 text-[11px]">
+              <span className="uppercase tracking-wider text-muted">Predicted</span>
+              <span className="font-display font-bold text-gold">{m.predicted_score}</span>
+              {m.shootout && <span className="text-muted">· pens</span>}
+              {!m.shootout && !m.played && m.predicted_score && (() => { const [h,a] = m.predicted_score.split("-").map(Number); return h === a && m.predicted_winner; })() && <span className="text-muted">· AET</span>}
+            </div>
+          )}
+
+          <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-2 text-[11px] text-muted">
+            <span>📍 {m.city}</span>
+            {m.confidence && <span className="font-bold text-gold">{m.confidence} conf</span>}
+          </div>
+        </>
+      ) : (
+        /* unresolved / TBD */
+        <div className="space-y-2 py-1">
+          <div className="flex items-center gap-2">
+            <div className="h-7 w-7 shrink-0 rounded-full bg-white/10" />
+            <span className="font-display text-sm text-muted">{m.home_label ?? "TBD"}</span>
+          </div>
+          <div className="pl-9 text-[10px] uppercase tracking-widest text-gold/50">vs</div>
+          <div className="flex items-center gap-2">
+            <div className="h-7 w-7 shrink-0 rounded-full bg-white/10" />
+            <span className="font-display text-sm text-muted">{m.away_label ?? "TBD"}</span>
+          </div>
+          {m.city && (
+            <div className="mt-2 border-t border-white/5 pt-2 text-[10px] text-muted">
+              📍 {m.city} · {dateStr}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  if (!m.resolved) return <div className="h-full">{inner}</div>;
+  return <Link href={`/knockout/${m.id}`} className="block h-full">{inner}</Link>;
+}
+
 /* ── Cards grid ── */
 function CardsView({ data, router }: { data: any[]; router: any }) {
-  // Group by date
   const byDate: Record<string, any[]> = {};
   for (const m of data) {
     const d = fmtDate(m.kickoff);
@@ -245,55 +381,7 @@ function CardsView({ data, router }: { data: any[]; router: any }) {
   );
 }
 
-/* ── R32 knockout match card ── */
-function R32MatchCard({ m, onClick }: { m: any; onClick: () => void }) {
-  const p = m.prediction ?? {};
-  const date = new Date(m.kickoff).toLocaleDateString("en-US", {
-    month: "short", day: "numeric", timeZone: "America/New_York",
-  });
-  return (
-    <button onClick={onClick} className="card-broadcast match-card-hover w-full text-left group">
-      <div className="mb-3 flex items-center justify-between text-[11px]">
-        <span className="chip-gold text-[10px] uppercase tracking-wider">R32</span>
-        <span className="text-muted">{date} · {fmtTime(m.kickoff)}</span>
-      </div>
-
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Flag url={m.home_flag} name={m.home_team} size={28} />
-          <span className="min-w-0 break-words font-display font-semibold text-stadium leading-tight text-sm">{m.home_team}</span>
-        </div>
-        <span className="font-display text-xs font-bold text-muted/50 shrink-0 px-2">VS</span>
-        <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
-          <span className="min-w-0 break-words text-right font-display font-semibold text-stadium leading-tight text-sm">{m.away_team}</span>
-          <Flag url={m.away_flag} name={m.away_team} size={28} />
-        </div>
-      </div>
-
-      <ProbBar home={p.p_home ?? 0} draw={p.p_draw ?? 0} away={p.p_away ?? 0} height={6} />
-      <div className="mt-2 flex justify-between text-[11px] tabnum">
-        <span className="text-success">{pct0(p.p_home)}</span>
-        <span className="text-muted">D {pct0(p.p_draw)}</span>
-        <span className="text-cyan">{pct0(p.p_away)}</span>
-      </div>
-
-      {m.predicted_score && (
-        <div className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-white/5 py-1 text-[11px]">
-          <span className="uppercase tracking-wider text-muted">Predicted</span>
-          <span className="font-display font-bold text-gold">{m.predicted_score}</span>
-          {m.shootout && <span className="text-muted">· pens</span>}
-        </div>
-      )}
-
-      <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-2 text-[11px] text-muted">
-        <span>📍 {m.city}</span>
-        <span className="font-bold text-gold">{m.confidence} conf</span>
-      </div>
-    </button>
-  );
-}
-
-/* ── Broadcast match card (inline, not using MatchCard to keep self-contained) ── */
+/* ── Broadcast match card (group stage) ── */
 function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
   const goldHit = m.played && predictionGoldHit(m);
   const hit = m.played ? predictionHit(m) : null;
@@ -304,7 +392,6 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
       : "";
   return (
     <button onClick={onClick} className={`card-broadcast match-card-hover w-full text-left group ${borderCls}`}>
-      {/* top meta */}
       <div className="mb-3 flex items-center justify-between text-[11px] text-muted">
         <span className="chip-cyan">GRP {m.group} · {m.matchday}</span>
         {m.played
@@ -312,7 +399,6 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
           : <span className="chip">{fmtTime(m.kickoff)}</span>}
       </div>
 
-      {/* teams + score */}
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <Flag url={m.home_flag} name={m.home_team} size={28} />
@@ -331,14 +417,12 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
         </div>
       </div>
 
-      {/* played: did the model's pick land? */}
       {m.played && (
         <div className="mb-2 flex justify-center">
           <PredictionBadge m={m} />
         </div>
       )}
 
-      {/* prob bar */}
       {!m.played && (
         <>
           <ProbBar home={m.p_home} draw={m.p_draw} away={m.p_away} height={6} />
@@ -350,7 +434,6 @@ function BroadcastMatchCard({ m, onClick }: { m: any; onClick: () => void }) {
         </>
       )}
 
-      {/* bottom meta */}
       <div className="mt-3 flex items-center justify-between text-[11px] text-muted border-t border-white/5 pt-2">
         <span>📍 {m.city}</span>
         <div className="flex gap-1">
@@ -443,4 +526,3 @@ function TableView({ data, router }: { data: any[]; router: any }) {
     </div>
   );
 }
-

@@ -48,7 +48,7 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
                 {m.predicted_score}
               </div>
               <div className="text-[10px] uppercase tracking-widest text-muted">
-                {m.shootout ? "after pens" : "predicted"}
+                {m.shootout ? "after pens" : (() => { const [h,a] = (m.predicted_score ?? "0-0").split("-").map(Number); return !m.played && h === a && m.predicted_winner ? "predicted AET" : "predicted"; })()}
               </div>
             </div>
             <TeamHead name={m.away_team} flag={m.away_flag} win={!homeWin}
@@ -126,8 +126,8 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="space-y-4">
-      <Link href="/knockout" className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-gold">
-        ← All knockout ties
+      <Link href="/matches" className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-gold">
+        ← All fixtures
       </Link>
       {children}
     </div>

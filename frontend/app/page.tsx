@@ -16,8 +16,16 @@ const fetcher = (p: string) => api(p);
 const FADE_UP = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 const stagger = (i: number) => ({ duration: 0.45, delay: i * 0.07, ease: "easeOut" });
 
+const ET = "America/New_York";
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: ET });
+const fmtTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: ET });
+
 export default function Home() {
   const { data, error } = useSWR("/api/home", fetcher, { revalidateOnFocus: false });
+  const { data: knockoutData } = useSWR("/api/knockout", fetcher, { revalidateOnFocus: false });
+
   if (error) return (
     <div className="card-broadcast flex items-center gap-3 text-danger">
       <span className="text-2xl">⚡</span>
@@ -26,7 +34,23 @@ export default function Home() {
   );
   if (!data) return <Skeleton />;
 
-  const hero = data.featured_matches?.[0];
+  const r32Matches: any[] = knockoutData?.matches
+    ? (knockoutData.matches as any[])
+        .filter((m: any) => m.round === "Round of 32" && m.resolved)
+        .sort((a: any, b: any) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime())
+    : [];
+
+  // First upcoming or most recent R32 match drives the hero
+  const now = Date.now();
+  const nextR32 = r32Matches.find((m: any) => new Date(m.kickoff).getTime() > now - 2 * 60 * 60 * 1000)
+    ?? r32Matches[0];
+
+  const hero = nextR32
+    ? { ...nextR32, p_home: nextR32.prediction?.p_home ?? 0,
+        p_draw: nextR32.prediction?.p_draw ?? 0,
+        p_away: nextR32.prediction?.p_away ?? 0, isKnockout: true }
+    : data.featured_matches?.[0];
+
   const winner = hero ? (hero.p_home >= hero.p_away ? hero.home_team : hero.away_team) : "";
   const winP = hero ? Math.max(hero.p_home, hero.p_away) : 0;
 
@@ -52,7 +76,7 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <LiveBadge label="NEXT MATCH" color="cyan" />
                 <span className="chip-cyan font-display text-xs uppercase tracking-widest">
-                  GROUP {hero.group} · MD{hero.matchday}
+                  {hero.isKnockout ? "ROUND OF 32" : `GROUP ${hero.group} · MD${hero.matchday}`}
                 </span>
               </div>
               <span className="font-display text-xs uppercase tracking-[0.2em] text-muted">
@@ -89,7 +113,8 @@ export default function Home() {
                     <span className="ml-2 chip-gold text-xs">{hero.confidence} confidence</span>
                   )}
                 </span>
-                <Link href={`/matches/${hero.id}`} className="btn-gold text-xs">
+                <Link href={hero.isKnockout ? `/knockout/${hero.id}` : `/matches/${hero.id}`}
+                  className="btn-gold text-xs">
                   Open Match Center →
                 </Link>
               </div>
@@ -204,21 +229,96 @@ export default function Home() {
         </motion.section>
       )}
 
-      {/* ════════════ FEATURED MATCHES ════════════ */}
-      <motion.section variants={FADE_UP} initial="hidden" animate="show" transition={stagger(5)}>
-        <SectionHeader title="FEATURED MATCHES" sub="Model-selected fixtures"
-          action={<Link href="/matches" className="btn-sm">All fixtures →</Link>} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(data.featured_matches ?? []).map((m: any, i: number) => (
-            <motion.div key={m.id}
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.06 }}>
-              <MatchCard m={m} />
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+      {/* ════════════ ROUND OF 32 ════════════ */}
+      {r32Matches.length > 0 && (
+        <motion.section variants={FADE_UP} initial="hidden" animate="show" transition={stagger(5)}>
+          <SectionHeader title="ROUND OF 32" sub="Knockout stage · Jun 28 – Jul 3"
+            action={<Link href="/matches" className="btn-sm">All fixtures →</Link>} />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {r32Matches.map((m: any, i: number) => (
+              <KnockoutCard key={m.id} m={m} index={i} />
+            ))}
+          </div>
+        </motion.section>
+      )}
     </div>
+  );
+}
+
+/* ── R32 knockout card ── */
+function KnockoutCard({ m, index }: { m: any; index: number }) {
+  const p = m.prediction ?? {};
+  const played = m.home_score != null && m.away_score != null;
+  const homeWin = played && m.home_score > m.away_score;
+  const awayWin = played && m.away_score > m.home_score;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.05 + index * 0.04 }}>
+      <Link href={`/knockout/${m.id}`}
+        className="card-broadcast match-card-hover block h-full">
+
+        {/* header */}
+        <div className="mb-3 flex items-center justify-between">
+          <span className="chip-gold text-[10px] uppercase tracking-wider">R32</span>
+          {played
+            ? <span className="status-ft text-[10px]">FT</span>
+            : <span className="text-[11px] text-muted">{fmtDate(m.kickoff)}</span>}
+        </div>
+
+        {/* teams stacked */}
+        <div className="mb-3 space-y-2">
+          <div className="flex items-center gap-2">
+            <Flag url={m.home_flag} name={m.home_team} size={20} />
+            <span className={`min-w-0 flex-1 break-words font-display text-sm font-semibold leading-tight
+              ${homeWin ? "text-gold" : "text-stadium"}`}>{m.home_team}</span>
+            {played && (
+              <span className={`shrink-0 font-bold tabnum ${homeWin ? "text-gold" : "text-muted"}`}>
+                {m.home_score}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Flag url={m.away_flag} name={m.away_team} size={20} />
+            <span className={`min-w-0 flex-1 break-words font-display text-sm font-semibold leading-tight
+              ${awayWin ? "text-gold" : "text-stadium"}`}>{m.away_team}</span>
+            {played && (
+              <span className={`shrink-0 font-bold tabnum ${awayWin ? "text-gold" : "text-muted"}`}>
+                {m.away_score}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* countdown + prob bar for upcoming */}
+        {!played && (
+          <>
+            <div className="mb-2.5 flex justify-center">
+              <Countdown to={m.kickoff} compact />
+            </div>
+            <ProbBar home={p.p_home ?? 0} draw={p.p_draw ?? 0} away={p.p_away ?? 0} height={5} animate={false} />
+            <div className="mt-1.5 flex justify-between text-[10px] tabnum">
+              <span className="text-success">{pct0(p.p_home)}</span>
+              <span className="text-muted">D {pct0(p.p_draw)}</span>
+              <span className="text-cyan">{pct0(p.p_away)}</span>
+            </div>
+            {m.predicted_score && (
+              <div className="mt-2 text-center text-[10px] text-muted">
+                Pick <span className="font-bold text-gold">{m.predicted_score}</span>
+                {m.shootout && <span> · pens</span>}
+                {!m.shootout && (() => { const [h,a] = (m.predicted_score ?? "0-0").split("-").map(Number); return h === a && m.predicted_winner; })() && <span> · AET</span>}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* footer */}
+        <div className="mt-2.5 border-t border-white/5 pt-2 text-[10px] text-muted">
+          📍 {m.city} · {fmtTime(m.kickoff)}
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
