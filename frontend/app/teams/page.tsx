@@ -92,28 +92,16 @@ export default function TeamsPage() {
         sub={`${activeFiltered.length} still competing · ${eliminated.size} knocked out · ${groupStageOut} eliminated in group stage · FIFA World Cup 2026`}
       />
 
-      {/* eliminated banner */}
+      {/* knocked-out notice */}
       {eliminated.size > 0 && (
         <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
-          className="flex flex-wrap items-center gap-3 rounded-2xl border border-danger/25 bg-danger/8 px-4 py-3">
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">✕</span>
-          <span className="font-display text-sm font-bold text-danger">
-            Eliminated · {eliminated.size} team{eliminated.size > 1 ? "s" : ""} knocked out
+          className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3">
+          <span className="font-display text-sm font-semibold text-muted">
+            {eliminated.size} team{eliminated.size > 1 ? "s" : ""} knocked out · shown below
           </span>
-          <div className="flex flex-wrap gap-2 ml-1">
-            {[...eliminated].sort().map(name => {
-              const t = data.find((d: any) => d.name === name);
-              return (
-                <span key={name} className="flex items-center gap-1.5 rounded-full border border-danger/30 bg-danger/10 px-2 py-0.5">
-                  <Flag url={t?.flag_url} name={name} size={14} />
-                  <span className="font-display text-[11px] font-semibold text-danger/80 line-through">{name}</span>
-                </span>
-              );
-            })}
-          </div>
           <button onClick={() => setShowElim(v => !v)}
-            className="ml-auto text-[11px] text-danger/60 hover:text-danger transition">
-            {showElim ? "Hide eliminated" : "Show eliminated"}
+            className="ml-auto text-[11px] text-muted/60 hover:text-muted transition">
+            {showElim ? "Hide" : "Show"}
           </button>
         </motion.div>
       )}
@@ -142,16 +130,15 @@ export default function TeamsPage() {
         ))}
       </div>
 
-      {/* eliminated section */}
+      {/* knocked-out section */}
       {showElim && elimFiltered.length > 0 && (
         <>
           <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-danger/20" />
-            <span className="flex items-center gap-2 rounded-full border border-danger/30 bg-danger/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-danger">
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[9px] text-white">✕</span>
-              Eliminated from WC 2026
+            <div className="h-px flex-1 bg-white/8" />
+            <span className="rounded-full border border-white/10 bg-white/3 px-3 py-1 text-[11px] uppercase tracking-widest text-muted">
+              Knocked out
             </span>
-            <div className="h-px flex-1 bg-danger/20" />
+            <div className="h-px flex-1 bg-white/8" />
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {elimFiltered.map((t: any, i: number) => (
@@ -182,45 +169,38 @@ function TeamCard({ t, i, eliminated, getTier }: {
       <Link href={`/teams/${encodeURIComponent(t.name)}`}
         className={`group flex items-center gap-4 rounded-2xl border p-4 transition
           ${eliminated
-            ? "border-danger/30 bg-danger/5 hover:border-danger/50 hover:bg-danger/10 opacity-75 hover:opacity-100"
+            ? "border-white/5 bg-white/2 opacity-45 hover:opacity-70 hover:border-white/10"
             : "card-broadcast match-card-hover"
           }`}>
 
         {/* flag */}
         <div className="relative shrink-0">
-          <div className={eliminated ? "opacity-60 grayscale" : ""}>
+          <div className={eliminated ? "grayscale" : ""}>
             <Flag url={t.flag_url} name={t.name} size={44} />
           </div>
-          {eliminated
-            ? <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white border-2 border-ink">✕</span>
-            : <span className="absolute -bottom-1 -right-1 rounded-full bg-ink-3 px-1 text-[9px] font-bold text-muted border border-white/10">#{t.fifa_rank}</span>
-          }
+          <span className="absolute -bottom-1 -right-1 rounded-full bg-ink-3 px-1 text-[9px] font-bold text-muted border border-white/10">
+            #{t.fifa_rank}
+          </span>
         </div>
 
         {/* info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 leading-tight">
-            <span className={`min-w-0 break-words font-display font-semibold leading-tight
-              ${eliminated ? "text-danger/70 line-through" : "text-stadium"}`}>
+            <span className="min-w-0 break-words font-display font-semibold leading-tight text-muted">
               {t.name}
             </span>
-            {eliminated
-              ? <span className="shrink-0 rounded border border-danger/40 px-1.5 py-0.5 text-[9px] font-bold text-danger">OUT</span>
-              : <span className={`shrink-0 text-[10px] font-bold ${tier.color}`}>{tier.label}</span>
-            }
+            {!eliminated && (
+              <span className={`shrink-0 text-[10px] font-bold ${tier.color}`}>{tier.label}</span>
+            )}
           </div>
-          <div className="mt-0.5 flex items-center gap-2 text-[11px] text-muted">
-            <span className={eliminated ? "chip text-[9px] border-danger/25 text-danger/60" : "chip-cyan text-[9px]"}>
-              GRP {t.group}
-            </span>
-            <span className={eliminated ? "text-danger/40" : ""}>Elo {t.elo}</span>
+          <div className="mt-0.5 flex items-center gap-2 text-[11px] text-muted/60">
+            <span className="chip text-[9px]">GRP {t.group}</span>
+            <span>Elo {t.elo}</span>
           </div>
           {/* strength bar */}
           <div className="mt-2 h-1.5 w-full rounded-full bg-white/5">
             <motion.div
-              className={`h-1.5 rounded-full ${eliminated
-                ? "bg-gradient-to-r from-danger/50 to-danger/30"
-                : "bg-gradient-to-r from-cyan/60 to-teal/60"}`}
+              className="h-1.5 rounded-full bg-white/20"
               initial={{ width: 0 }}
               animate={{ width: `${strengthW}%` }}
               transition={{ duration: 0.6, delay: i * 0.025 }} />
@@ -229,10 +209,10 @@ function TeamCard({ t, i, eliminated, getTier }: {
 
         {/* strength index */}
         <div className="text-right shrink-0">
-          <div className={`font-display text-xl font-bold tabnum ${eliminated ? "text-danger/50" : "text-cyan"}`}>
+          <div className="font-display text-xl font-bold tabnum text-muted/50">
             {t.strength_index}
           </div>
-          <div className="text-[10px] text-muted">Strength</div>
+          <div className="text-[10px] text-muted/40">Strength</div>
         </div>
       </Link>
     </motion.div>

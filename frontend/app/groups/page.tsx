@@ -65,7 +65,7 @@ export default function GroupsPage() {
           <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[8px] font-bold text-ink">✓</span>
           <span>Group stage complete.</span>
           <span className="text-teal font-semibold">ADV</span><span>= confirmed R32 qualifier ·</span>
-          <span className="text-danger font-semibold">OUT</span><span>= eliminated ·</span>
+          <span className="text-muted/50 font-semibold">OUT</span><span>= knocked out ·</span>
           <span className="text-stadium">Pts</span><span>= final points ·</span>
           <span className="text-gold">Proj</span><span>= projected (sim) ·</span>
           <span className="text-cyan">Adv%</span><span>= pre-tournament sim %</span>
@@ -136,14 +136,12 @@ export default function GroupsPage() {
                       return (
                         <tr key={t.team}
                           className={`border-b border-line/30 transition
-                            ${groupOut
-                              ? "bg-danger/5 opacity-70"
-                              : confirmed ? "" : "text-muted"}
+                            ${groupOut ? "opacity-35" : confirmed ? "" : "text-muted"}
                             ${borderLeft}`}>
 
                           {/* Rank */}
                           <td className={`py-2 pr-1 text-left text-[11px] font-bold
-                            ${groupOut ? "text-danger/40" : confirmed ? "text-teal" : "text-muted/40"}`}>
+                            ${groupOut ? "text-muted/30" : confirmed ? "text-teal" : "text-muted/40"}`}>
                             {i + 1}
                           </td>
 
@@ -151,50 +149,42 @@ export default function GroupsPage() {
                           <td className="py-2 pl-1">
                             <Link href={`/teams/${encodeURIComponent(t.team)}`}
                               className="flex items-center gap-1.5 hover:opacity-80 transition">
-                              <div className={groupOut ? "opacity-40 grayscale" : ""}>
+                              <div className={groupOut ? "grayscale" : ""}>
                                 <Flag url={t.flag_url} name={t.team} size={16} />
                               </div>
                               <span className={`min-w-0 break-words leading-tight text-[12px]
                                 ${groupOut
-                                  ? "text-danger/60 line-through font-medium"
+                                  ? "text-muted/50 font-medium"
                                   : confirmed ? "font-semibold text-stadium" : "text-muted"}`}>
                                 {t.team}
                               </span>
-                              {groupOut && (
-                                <span className="shrink-0 rounded border border-danger/40 px-1 py-px text-[8px] font-bold text-danger leading-none">
-                                  OUT
-                                </span>
-                              )}
                               {confirmed && !groupOut && (
                                 <span className={`shrink-0 text-[8px] font-bold rounded px-1 py-px leading-none
-                                  ${knockedOut
-                                    ? "border border-danger/40 text-danger"
-                                    : "chip-gold"}`}>
-                                  {knockedOut ? "R32 OUT" : "ADV"}
+                                  ${knockedOut ? "chip text-muted" : "chip-gold"}`}>
+                                  {knockedOut ? "OUT" : "ADV"}
                                 </span>
                               )}
                             </Link>
                           </td>
 
                           {/* Stats */}
-                          <td className={`px-1.5 py-2 text-center tabnum ${groupOut ? "text-danger/30" : ""}`}>{t.mp}</td>
-                          <td className={`px-1 py-2 text-center tabnum ${groupOut ? "text-danger/30" : ""}`}>{t.w}</td>
-                          <td className={`px-1 py-2 text-center tabnum ${groupOut ? "text-danger/30" : ""}`}>{t.d}</td>
-                          <td className={`px-1 py-2 text-center tabnum ${groupOut ? "text-danger/30" : ""}`}>{t.l}</td>
-                          <td className={`px-1.5 py-2 text-center tabnum ${groupOut ? "text-danger/30" : ""}`}>
+                          <td className="px-1.5 py-2 text-center tabnum">{t.mp}</td>
+                          <td className="px-1 py-2 text-center tabnum">{t.w}</td>
+                          <td className="px-1 py-2 text-center tabnum">{t.d}</td>
+                          <td className="px-1 py-2 text-center tabnum">{t.l}</td>
+                          <td className="px-1.5 py-2 text-center tabnum">
                             {t.gd > 0 ? `+${t.gd}` : t.gd}
                           </td>
                           <td className={`px-1.5 py-2 text-center font-display font-bold tabnum
-                            ${groupOut ? "text-danger/40" : "text-stadium"}`}>
+                            ${groupOut ? "text-muted/40" : "text-stadium"}`}>
                             {t.pts}
                           </td>
-                          <td className={`px-1.5 py-2 text-center font-display tabnum text-xs
-                            ${groupOut ? "text-danger/30" : "text-gold/90"}`}
+                          <td className="px-1.5 py-2 text-center font-display tabnum text-gold/90 text-xs"
                             title="Projected final points (incl. remaining games)">
                             {t.proj_pts != null ? t.proj_pts.toFixed(1) : "—"}
                           </td>
                           <td className={`py-2 pl-1.5 text-right font-bold tabnum text-xs
-                            ${groupOut ? "text-danger/30" : "text-cyan"}`}>
+                            ${groupOut ? "text-muted/30" : "text-cyan"}`}>
                             {groupOut ? "—" : pct(t.advance_prob)}
                           </td>
                         </tr>
