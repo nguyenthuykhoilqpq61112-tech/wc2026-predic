@@ -4,6 +4,7 @@ import { Sora, Inter } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { RouteTransition } from "@/components/route-transition";
 import { CaiInfo } from "@/components/cai-info";
+import { Mascot } from "@/components/mascot";
 
 const display = Sora({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <RouteTransition />
+        <Mascot />
         <Nav />
         <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-6">
           {children}
