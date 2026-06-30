@@ -469,10 +469,18 @@ export default function KnockoutMatchPage({ params }: { params: { id: string } }
           )}
         </section>
 
-        {/* projected game flow */}
-        {m.flow && !m.played && (
+        {/* projected game flow — always shown; for played matches it's the pre-match CAI projection */}
+        {m.flow && (
           <section className="card-broadcast p-5">
-            <h2 className="mb-3 font-display text-lg font-bold">How the tie plays out</h2>
+            <h2 className="mb-3 font-display text-lg font-bold">
+              {m.played ? "CAI Pre-Match Projection" : "How the tie plays out"}
+            </h2>
+            {m.played && (
+              <p className="mb-4 text-[12px] text-muted leading-relaxed">
+                This is what CAI projected before kick-off — compare against the actual result above
+                to see where the model was right and where the game surprised us.
+              </p>
+            )}
             <MatchFlowReport flow={m.flow} />
           </section>
         )}
