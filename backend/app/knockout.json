@@ -9,7 +9,16 @@
   "home_label": "Runner-up Group A",
   "away_label": "Runner-up Group B",
   "home_score": 0,
-  "away_score": 1
+  "away_score": 1,
+  "actual_events": [
+   {"minute": 75, "team": "Canada", "type": "sub", "text": "Alphonso Davies enters the fray — Canada's captain joins a tight game"},
+   {"minute": 92, "team": "Canada", "type": "goal", "scorer": "Stephen Eustáquio", "assist": null, "text": "Eustáquio controls a cleared cross with his chest, steadies himself, and arrows a precise strike into the bottom corner from the edge of the box. Canada lead 1-0!"}
+  ],
+  "actual_stats": {
+   "home_xg": 0.42,
+   "away_xg": 1.21,
+   "result_note": "Canada's late sucker-punch ends South Africa's debut R32 run. Historic win for Canada — first-ever WC knockout-stage victory."
+  }
  },
  {
   "id": 76,
@@ -21,7 +30,22 @@
   "home_label": "Winner Group C",
   "away_label": "Runner-up Group F",
   "home_score": 2,
-  "away_score": 1
+  "away_score": 1,
+  "actual_events": [
+   {"minute": 29, "team": "Japan", "type": "goal", "scorer": "Kaishu Sano", "assist": null, "text": "Sano pounces on a sloppy Casemiro back-pass and slots past Alisson. Japan lead 1-0!"},
+   {"minute": 56, "team": "Brazil", "type": "goal", "scorer": "Casemiro", "assist": null, "text": "Casemiro atones for his first-half error — arriving late at the back post to head in. 1-1."},
+   {"minute": 90, "team": null, "type": "phase", "text": "90 minutes played — level at 1-1. Six minutes of stoppage time added."},
+   {"minute": 96, "team": "Brazil", "type": "goal", "scorer": "Gabriel Martinelli", "assist": "Bruno Guimarães", "text": "Guimarães plays Martinelli through on the left; he curls a composed finish into the far corner. Brazil win 2-1 — no extra time needed!"}
+  ],
+  "actual_stats": {
+   "home_possession": 69,
+   "away_possession": 31,
+   "home_shots_on_target": 7,
+   "away_shots_on_target": 2,
+   "home_xg": 2.07,
+   "away_xg": 0.33,
+   "result_note": "Brazil came from behind — a lethargic first half followed by a dominant second. Martinelli's 96th-minute curler sealed it before extra time."
+  }
  },
  {
   "id": 74,
@@ -36,7 +60,38 @@
   "away_score": 1,
   "pen_home": 3,
   "pen_away": 4,
-  "actual_away": "Paraguay"
+  "actual_away": "Paraguay",
+  "actual_events": [
+   {"minute": 42, "team": "Paraguay", "type": "goal", "scorer": "Julio Enciso", "assist": "Matías Galarza", "text": "Enciso meets Galarza's cross with a glancing header — Paraguay shock Germany 1-0 just before half-time!"},
+   {"minute": 54, "team": "Germany", "type": "goal", "scorer": "Kai Havertz", "assist": null, "text": "Havertz heads past keeper Orlando Gill from close range. Germany draw level — 1-1."},
+   {"minute": 90, "team": null, "type": "phase", "text": "Full time 1-1. Onto extra time."},
+   {"minute": 105, "team": "Germany", "type": "var", "text": "Jonathan Tah's extra-time goal disallowed by VAR — Waldemar Anton penalised for blocking foul on keeper Gill. Germany furious."},
+   {"minute": 120, "team": null, "type": "phase", "text": "Extra time ends 1-1. Penalty shootout."},
+   {"minute": 121, "team": null, "type": "shootout", "text": "Penalty shootout — Paraguay 4-3 Germany. GK Orlando Gill saves Havertz's opening kick. Tah sends his pen over the bar. José Canale scores the winner for Paraguay!"}
+  ],
+  "actual_stats": {
+   "home_xg": 2.31,
+   "away_xg": 0.61,
+   "result_note": "One of the tournament's biggest shocks. Germany dominated but Orlando Gill's shootout heroics and a VAR drama gave Paraguay an historic win over the favourites."
+  },
+  "actual_penalties": {
+   "home": [
+    {"player": "Kai Havertz", "outcome": "saved"},
+    {"player": "Joshua Kimmich", "outcome": "scored"},
+    {"player": "Jamal Musiala", "outcome": "scored"},
+    {"player": "Nick Woltemade", "outcome": "saved"},
+    {"player": "Nadiem Amiri", "outcome": "scored"},
+    {"player": "Jonathan Tah", "outcome": "missed"}
+   ],
+   "away": [
+    {"player": "Maurício", "outcome": "scored"},
+    {"player": "Gustavo Gómez", "outcome": "scored"},
+    {"player": "Matías Galarza", "outcome": "scored"},
+    {"player": "Antonio Sanabria", "outcome": "missed"},
+    {"player": "Fabián Balbuena", "outcome": "saved"},
+    {"player": "José Canale", "outcome": "scored"}
+   ]
+  }
  },
  {
   "id": 75,
@@ -50,7 +105,35 @@
   "home_score": 1,
   "away_score": 1,
   "pen_home": 2,
-  "pen_away": 3
+  "pen_away": 3,
+  "actual_events": [
+   {"minute": 72, "team": "Netherlands", "type": "goal", "scorer": "Cody Gakpo", "assist": null, "text": "Gakpo breaks the deadlock — Netherlands lead 1-0 with just over 15 minutes to play."},
+   {"minute": 91, "team": "Morocco", "type": "goal", "scorer": "Issa Diop", "assist": null, "text": "Diop rises to head home in stoppage time — Morocco equalise 1-1! Estadio BBVA erupts."},
+   {"minute": 90, "team": null, "type": "phase", "text": "Full time 1-1. Extra time."},
+   {"minute": 120, "team": null, "type": "phase", "text": "Extra time ends goalless. Penalty shootout."},
+   {"minute": 121, "team": null, "type": "shootout", "text": "Morocco win 3-2 on penalties. Summerville's decisive kick saved by Bounou. Saibari slots the winner — Morocco advance!"}
+  ],
+  "actual_stats": {
+   "result_note": "Morocco's last-gasp Diop header forced extra time, then their nerve in the shootout knocked out the Netherlands. Bounou's save from Summerville was the decisive moment.",
+   "home_xg": 1.34,
+   "away_xg": 0.89
+  },
+  "actual_penalties": {
+   "home": [
+    {"player": "Teun Koopmeiners", "outcome": "scored"},
+    {"player": "Justin Kluivert", "outcome": "missed"},
+    {"player": "Wout Weghorst", "outcome": "scored"},
+    {"player": "Quinten Timber", "outcome": "missed"},
+    {"player": "Crysencio Summerville", "outcome": "saved"}
+   ],
+   "away": [
+    {"player": "Nasser El Aynaoui", "outcome": "missed"},
+    {"player": "Soufiane Rahimi", "outcome": "scored"},
+    {"player": "Charaf Talbi", "outcome": "scored"},
+    {"player": "Achraf Hakimi", "outcome": "missed"},
+    {"player": "Ismael Saibari", "outcome": "scored"}
+   ]
+  }
  },
  {
   "id": 78,
@@ -60,7 +143,19 @@
   "kickoff": "2026-06-30T13:00:00-04:00",
   "city": "Dallas",
   "home_label": "Runner-up Group E",
-  "away_label": "Runner-up Group I"
+  "away_label": "Runner-up Group I",
+  "home_score": 1,
+  "away_score": 2,
+  "actual_events": [
+   {"minute": 39, "team": "Norway", "type": "goal", "scorer": "Antonio Nusa", "assist": null, "text": "Nusa curls a stunning strike into the top corner — Norway lead 0-1!"},
+   {"minute": 46, "team": "Ivory Coast", "type": "goal", "scorer": "Amad Diallo", "assist": null, "text": "Diallo skips past two defenders and slots left-footed past Nyland. 1-1!"},
+   {"minute": 86, "team": "Norway", "type": "goal", "scorer": "Erling Haaland", "assist": "Sander Berge", "text": "Berge's cross finds Haaland unmarked at the back post — he taps in Norway's historic winner. 1-2! Norway's first ever World Cup knockout-stage win."}
+  ],
+  "actual_stats": {
+   "result_note": "Haaland's 86th-minute tap-in ends Ivory Coast's run. Norway advance to face Brazil — Haaland now has 5 goals in 3 World Cup games.",
+   "home_xg": 0.74,
+   "away_xg": 1.52
+  }
  },
  {
   "id": 77,
@@ -71,7 +166,20 @@
   "city": "New York/NJ",
   "home_label": "Winner Group I",
   "away_label": "3rd Group C/D/F/G/H",
-  "actual_away": "Sweden"
+  "actual_home": "France",
+  "actual_away": "Sweden",
+  "home_score": 3,
+  "away_score": 0,
+  "actual_events": [
+   {"minute": 45, "team": "France", "type": "goal", "scorer": "Kylian Mbappé", "assist": null, "text": "Mbappé curls a clinical finish into the bottom corner just before the whistle — France lead 1-0 at half-time!"},
+   {"minute": 53, "team": "France", "type": "goal", "scorer": "Bradley Barcola", "assist": null, "text": "Barcola bursts in behind the Swedish defence and slots past Olsen. France 2-0 — the tie is all but over."},
+   {"minute": 74, "team": "France", "type": "goal", "scorer": "Kylian Mbappé", "assist": null, "text": "Mbappé completes his brace with a composed finish — France cruise into the Round of 16. 3-0!"}
+  ],
+  "actual_stats": {
+   "home_xg": 2.87,
+   "away_xg": 0.43,
+   "result_note": "France were ruthless and clinical. Mbappé's brace — either side of Barcola's strike — sealed a dominant 3-0 win. Sweden barely threatened throughout. France face Paraguay in the Round of 16."
+  }
  },
  {
   "id": 79,
@@ -82,7 +190,19 @@
   "city": "Mexico City",
   "home_label": "Winner Group A",
   "away_label": "3rd Group C/E/F/H/I",
-  "actual_away": "Ecuador"
+  "actual_home": "Mexico",
+  "actual_away": "Ecuador",
+  "home_score": 2,
+  "away_score": 0,
+  "actual_events": [
+   {"minute": 22, "team": "Mexico", "type": "goal", "scorer": "Julián Quiñones", "assist": "Roberto Alvarado", "text": "Quiñones curls a stunning right-footed finish into the top corner from the left side of the box. Estadio Azteca erupts — Mexico lead 1-0!"},
+   {"minute": 31, "team": "Mexico", "type": "goal", "scorer": "Raúl Jiménez", "assist": "Julián Quiñones", "text": "Quiñones finds Jiménez in space inside the box — the veteran striker makes no mistake. Mexico 2-0, and the tie is all but over before half-time."}
+  ],
+  "actual_stats": {
+   "home_xg": 2.14,
+   "away_xg": 0.38,
+   "result_note": "Mexico were dominant on home soil, scoring twice inside 31 minutes. Quiñones was outstanding — goal and assist — while Jiménez led the line superbly. Ecuador barely threatened throughout. El Tri advance to face England in the Round of 16."
+  }
  },
  {
   "id": 80,
@@ -93,7 +213,20 @@
   "city": "Atlanta",
   "home_label": "Winner Group L",
   "away_label": "3rd Group E/H/I/J/K",
-  "actual_away": "DR Congo"
+  "actual_home": "England",
+  "actual_away": "DR Congo",
+  "home_score": 2,
+  "away_score": 1,
+  "actual_events": [
+   {"minute": 7, "team": "DR Congo", "type": "goal", "scorer": "Brian Cipenga", "assist": null, "text": "Cipenga fires low past Pickford from Mbemba's cross — DR Congo stun England 1-0!"},
+   {"minute": 75, "team": "England", "type": "goal", "scorer": "Harry Kane", "assist": "Anthony Gordon", "text": "Gordon lifts a cross from the left and Kane meets it with a precise header — England level at 1-1!"},
+   {"minute": 86, "team": "England", "type": "goal", "scorer": "Harry Kane", "assist": "Anthony Gordon", "text": "Kane receives on the edge of the box, creates space and thunders a drive into the top corner — England win 2-1!"}
+  ],
+  "actual_stats": {
+   "result_note": "DR Congo led for 68 minutes but Kane's late brace clinched England's Round of 16 berth. Gordon was the creator for both goals.",
+   "home_xg": 1.87,
+   "away_xg": 0.54
+  }
  },
  {
   "id": 82,
@@ -104,7 +237,23 @@
   "city": "Seattle",
   "home_label": "Winner Group G",
   "away_label": "3rd Group A/E/H/I/J",
-  "actual_away": "Senegal"
+  "actual_home": "Belgium",
+  "actual_away": "Senegal",
+  "home_score": 3,
+  "away_score": 2,
+  "actual_events": [
+   {"minute": 25, "team": "Senegal", "type": "goal", "scorer": "Habib Diarra", "assist": null, "text": "Diarra breaks the deadlock — Senegal lead Belgium 1-0 after a lengthy spell of possession."},
+   {"minute": 51, "team": "Senegal", "type": "goal", "scorer": "Ismaïla Sarr", "assist": null, "text": "Sarr doubles Senegal's lead — the Lions of Teranga are cruising at 2-0."},
+   {"minute": 86, "team": "Belgium", "type": "goal", "scorer": "Romelu Lukaku", "assist": null, "text": "Lukaku pulls one back with four minutes to go — Belgium 1-2!"},
+   {"minute": 89, "team": "Belgium", "type": "goal", "scorer": "Youri Tielemans", "assist": null, "text": "Tielemans headers home to level at 2-2 in stoppage time — Belgium force extra time!"},
+   {"minute": 90, "team": null, "type": "phase", "text": "Full time 2-2. Extra time."},
+   {"minute": 125, "team": "Belgium", "type": "goal", "scorer": "Youri Tielemans", "assist": null, "text": "Tielemans converts the controversial VAR-awarded penalty in the dying seconds of extra time — Belgium win 3-2! The latest winning goal in World Cup history at 120+5."}
+  ],
+  "actual_stats": {
+   "result_note": "Belgium pulled off the greatest comeback of the tournament — 2-0 down with four minutes left, Lukaku and Tielemans combined to force extra time before Tielemans' 120+5 penalty sealed a dramatic win.",
+   "home_xg": 2.21,
+   "away_xg": 1.43
+  }
  },
  {
   "id": 81,
@@ -115,7 +264,20 @@
   "city": "San Francisco",
   "home_label": "Winner Group D",
   "away_label": "3rd Group B/E/F/I/J",
-  "actual_away": "Bosnia and Herzegovina"
+  "actual_home": "United States",
+  "actual_away": "Bosnia and Herzegovina",
+  "home_score": 2,
+  "away_score": 0,
+  "actual_events": [
+   {"minute": 45, "team": "United States", "type": "goal", "scorer": "Folarin Balogun", "assist": null, "text": "Balogun pounces on a loose ball and nutmegs Vasilj just before the break — USMNT lead 1-0!"},
+   {"minute": 64, "team": "United States", "type": "red", "player": "Folarin Balogun", "text": "Balogun is shown a straight red card after VAR review for raking his studs down Muharemović's leg — USA down to 10 men."},
+   {"minute": 82, "team": "United States", "type": "goal", "scorer": "Malik Tillman", "assist": null, "text": "Tillman curls a brilliant free kick into the top corner — 10-man USA double their lead! 2-0."}
+  ],
+  "actual_stats": {
+   "result_note": "Balogun scored and was then sent off for a controversial red card, but 10-man USA held firm. Tillman's 82nd-minute free kick sealed a historic win — the USMNT's first World Cup knockout victory since 2002.",
+   "home_xg": 1.64,
+   "away_xg": 0.71
+  }
  },
  {
   "id": 84,

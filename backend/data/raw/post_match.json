@@ -357,5 +357,43 @@
       "ESPN",
       "FIFA"
     ]
+  },
+  "England|DR Congo": {
+    "headline": "Kane's late brace rescues England against DR Congo",
+    "summary": "Brian Cipenga's seventh-minute strike looked set to cause a stunning upset, but Harry Kane delivered twice in the final 15 minutes to complete a 2-1 comeback. Gordon's crossing was pivotal — he created both Kane goals as England advance to face Mexico in the Round of 16.",
+    "star_player": "Harry Kane",
+    "star_reason": "Two goals in four minutes (75', 86') — both headers/strikes — turned the game on its head after England trailed for 68 minutes.",
+    "turning_point": "Gordon's 75th-minute cross gave Kane a chance to equalise and lift a nervy England side.",
+    "what_lacked": "England were sluggish for much of the match and allowed DR Congo to sit deep and threaten on the counter.",
+    "sources": [
+      "ESPN",
+      "FIFA",
+      "Al Jazeera"
+    ]
+  },
+  "Belgium|Senegal": {
+    "headline": "Tielemans' 120+5 penalty completes Belgium's miracle comeback",
+    "summary": "Senegal led 2-0 with four minutes of normal time remaining through Habib Diarra and Ismaïla Sarr. Romelu Lukaku pulled one back in the 86th minute before Tielemans headed home in the 89th to force extra time. A controversial VAR-awarded penalty in the dying moments of extra time allowed Tielemans to convert at 120+5 — the latest winning goal in World Cup history.",
+    "star_player": "Youri Tielemans",
+    "star_reason": "Two crucial goals in the comeback (89', 120+5 pen) — his extra-time penalty was the decisive blow.",
+    "turning_point": "Lukaku's 86th-minute goal sparked a frantic finale that Senegal could not survive.",
+    "what_lacked": "Senegal were comfortable at 2-0 but couldn't defend their lead in the final minutes — poor game management cost them.",
+    "sources": [
+      "ESPN",
+      "FIFA"
+    ]
+  },
+  "United States|Bosnia and Herzegovina": {
+    "headline": "10-man USMNT beat Bosnia for first knockout win since 2002",
+    "summary": "Folarin Balogun nutmegged Vasilj just before half-time to give the hosts the lead, but was then controversially sent off in the 64th minute for a VAR-reviewed tackle. Despite playing with 10 men, Malik Tillman curled a stunning free kick into the top corner in the 82nd minute to seal a 2-0 win — the USMNT's first World Cup knockout victory in 24 years.",
+    "star_player": "Malik Tillman",
+    "star_reason": "His 82nd-minute free kick doubled the lead while the US were a man down and put the tie beyond doubt.",
+    "turning_point": "Tillman's free kick after Balogun's red card swung the momentum firmly back to the hosts.",
+    "what_lacked": "Bosnia struggled to create chances against a disciplined US defence and never threatened after going behind.",
+    "sources": [
+      "ESPN",
+      "FIFA",
+      "NBC News"
+    ]
   }
 }

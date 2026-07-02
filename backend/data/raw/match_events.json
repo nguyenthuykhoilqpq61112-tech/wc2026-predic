@@ -2038,30 +2038,94 @@
   "Ivory Coast|Norway": {
     "home": "Ivory Coast",
     "away": "Norway",
-    "score": [
-      1,
-      2
-    ],
+    "score": [1, 2],
     "scorers": {
       "home": [
-        {
-          "player": "Unknown",
-          "minute": 55,
-          "type": "goal"
-        }
+        {"player": "Amad Diallo", "minute": 46, "type": "goal"}
       ],
       "away": [
-        {
-          "player": "Erling Haaland",
-          "minute": 38,
-          "type": "goal"
-        },
-        {
-          "player": "Unknown",
-          "minute": 71,
-          "type": "goal"
-        }
+        {"player": "Antonio Nusa", "minute": 39, "type": "goal"},
+        {"player": "Erling Haaland", "minute": 86, "type": "goal"}
       ]
-    }
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260630"
+  },
+  "Mexico|Ecuador": {
+    "home": "Mexico",
+    "away": "Ecuador",
+    "score": [2, 0],
+    "scorers": {
+      "home": [
+        {"player": "Julián Quiñones", "minute": 22, "type": "goal"},
+        {"player": "Raúl Jiménez", "minute": 31, "type": "goal"}
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260630"
+  },
+  "France|Sweden": {
+    "home": "France",
+    "away": "Sweden",
+    "score": [3, 0],
+    "scorers": {
+      "home": [
+        {"player": "Kylian Mbappé", "minute": 45, "type": "goal"},
+        {"player": "Bradley Barcola", "minute": 53, "type": "goal"},
+        {"player": "Kylian Mbappé", "minute": 74, "type": "goal"}
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260630"
+  },
+  "England|DR Congo": {
+    "home": "England",
+    "away": "DR Congo",
+    "score": [2, 1],
+    "scorers": {
+      "home": [
+        {"player": "Harry Kane", "minute": 75, "type": "goal"},
+        {"player": "Harry Kane", "minute": 86, "type": "goal"}
+      ],
+      "away": [
+        {"player": "Brian Cipenga", "minute": 7, "type": "goal"}
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260701"
+  },
+  "Belgium|Senegal": {
+    "home": "Belgium",
+    "away": "Senegal",
+    "score": [3, 2],
+    "scorers": {
+      "home": [
+        {"player": "Romelu Lukaku", "minute": 86, "type": "goal"},
+        {"player": "Youri Tielemans", "minute": 89, "type": "goal"},
+        {"player": "Youri Tielemans", "minute": 125, "type": "goal"}
+      ],
+      "away": [
+        {"player": "Habib Diarra", "minute": 25, "type": "goal"},
+        {"player": "Ismaïla Sarr", "minute": 51, "type": "goal"}
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260701"
+  },
+  "United States|Bosnia and Herzegovina": {
+    "home": "United States",
+    "away": "Bosnia and Herzegovina",
+    "score": [2, 0],
+    "scorers": {
+      "home": [
+        {"player": "Folarin Balogun", "minute": 45, "type": "goal"},
+        {"player": "Malik Tillman", "minute": 82, "type": "goal"}
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260701"
   }
 }
