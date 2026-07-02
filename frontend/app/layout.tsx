@@ -5,6 +5,7 @@ import { Nav } from "@/components/nav";
 import { RouteTransition } from "@/components/route-transition";
 import { CaiInfo } from "@/components/cai-info";
 import { Mascot } from "@/components/mascot";
+import { FeedbackButton } from "@/components/feedback";
 
 const display = Sora({
   subsets: ["latin"],
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <RouteTransition />
         <Mascot />
         <Nav />
+        <FeedbackButton />
         <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-6">
           {children}
         </main>

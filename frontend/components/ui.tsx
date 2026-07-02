@@ -152,7 +152,7 @@ export function ProbRing({ value, label, color = "#00D4FF", size = 96, track = "
 /* ══════════════════════════════════════════════════════════════════════════════
    COUNTDOWN TIMER
 ══════════════════════════════════════════════════════════════════════════════ */
-export function Countdown({ to }: { to: string }) {
+export function Countdown({ to, compact = false }: { to: string; compact?: boolean }) {
   const [left, setLeft] = useState<number>(0);
   useEffect(() => {
     const tick = () => setLeft(new Date(to).getTime() - Date.now());
@@ -168,9 +168,11 @@ export function Countdown({ to }: { to: string }) {
   const m = Math.floor((left % 3_600_000) / 60_000);
   const s = Math.floor((left % 60_000) / 1_000);
 
+  const numCls = compact ? "text-lg" : "text-2xl";
+  const sepCls = compact ? "text-sm" : "text-lg";
   const Unit = ({ v, u }: { v: number; u: string }) => (
     <div className="flex flex-col items-center">
-      <span className="stat-num text-2xl font-bold text-stadium tabnum leading-none">
+      <span className={`stat-num font-bold text-stadium tabnum leading-none ${numCls}`}>
         {String(v).padStart(2, "0")}
       </span>
       <span className="text-[9px] uppercase tracking-wider text-muted">{u}</span>
@@ -178,13 +180,13 @@ export function Countdown({ to }: { to: string }) {
   );
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <Unit v={d} u="d" />
-      <span className="text-cyan/40 text-lg">:</span>
+      <span className={`text-cyan/40 ${sepCls}`}>:</span>
       <Unit v={h} u="h" />
-      <span className="text-cyan/40 text-lg">:</span>
+      <span className={`text-cyan/40 ${sepCls}`}>:</span>
       <Unit v={m} u="m" />
-      <span className="text-cyan/40 text-lg">:</span>
+      <span className={`text-cyan/40 ${sepCls}`}>:</span>
       <Unit v={s} u="s" />
     </div>
   );

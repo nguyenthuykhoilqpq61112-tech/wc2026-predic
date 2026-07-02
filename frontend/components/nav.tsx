@@ -21,13 +21,14 @@ const LINKS: [string, string, string][] = [
 // Static fallback for the news ticker if /api/news is unavailable.
 const NEWS_FALLBACK: string[] = [
   "🏆 FIFA World Cup 2026 · Round of 32 underway",
+  "🇫🇷 France 3-0 Sweden — Mbappé brace (45', 74') + Barcola (53') 🔥",
   "🇵🇾 Paraguay 1-1 Germany (4-3 pens) — Germany ELIMINATED 🚨",
   "🇲🇦 Morocco 1-1 Netherlands (3-2 pens) — Netherlands OUT 🚨",
+  "🇲🇽 Mexico 2-0 Ecuador — Quiñones (22') + Jiménez (31') 🏟️",
   "🇧🇷 Brazil 2-1 Japan · 🇨🇦 Canada · 🇳🇴 Norway through",
+  "👟 Golden Boot: Messi & Mbappé TIED — 6 goals each 🔥",
   "🇦🇷 Argentina projected champions (26.7%) · Final: ARG vs FRA",
-  "👟 Golden Boot: Lionel Messi (6 goals)",
-  "📊 CAI projects 🇦🇷 Argentina champions (26.7%)",
-  "🎯 CAI outcome accuracy: 51/77 overall (66%) · R32: 4/5 (80%)",
+  "🎯 CAI outcome accuracy: 51/77 overall (66%) · R32: 5/6 (83%)",
   "🤖 CAI: current form + momentum led · 3-scenario knockout xG",
 ];
 
