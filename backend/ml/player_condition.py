@@ -663,8 +663,17 @@ class TeamConditionEngine:
         gk_fitness = max((p["fitness"] for p in (fit_gk or gks)), default=1.0)
         gk_quality = gk_base * (0.85 + 0.15 * gk_fitness)  # backup/unfit keeper dims it
 
-        # Key players (top-3 by impact)
-        key = sorted(squad, key=lambda p: p["impact"], reverse=True)[:3]
+        # Key players: tournament goals first, then pre-tournament impact.
+        # This surfaces in-form WC2026 scorers (e.g. Oyarzabal, Ronaldo) above
+        # higher-reputation players who haven't scored yet.
+        try:
+            import tournament_stats as _ts
+            _wc_goals = _ts.player_goals()
+        except Exception:
+            _wc_goals = {}
+        key = sorted(squad,
+                     key=lambda p: (_wc_goals.get(self._player_name(p), 0), p["impact"]),
+                     reverse=True)[:3]
 
         # Condition score composite — player FORM is prioritised (0.42), and
         # tournament momentum is down-weighted to 0.03 because it is already

@@ -2127,5 +2127,36 @@
     },
     "source": "FIFA/ESPN",
     "date": "20260701"
+  },
+  "Spain|Austria": {
+    "home": "Spain",
+    "away": "Austria",
+    "score": [3, 0],
+    "scorers": {
+      "home": [
+        {"player": "Mikel Oyarzabal", "minute": 36, "type": "goal"},
+        {"player": "Pedro Porro", "minute": 66, "type": "goal"},
+        {"player": "Mikel Oyarzabal", "minute": 88, "type": "goal"}
+      ],
+      "away": []
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260702"
+  },
+  "Portugal|Croatia": {
+    "home": "Portugal",
+    "away": "Croatia",
+    "score": [2, 1],
+    "scorers": {
+      "home": [
+        {"player": "Cristiano Ronaldo", "minute": 68, "type": "goal"},
+        {"player": "Gonçalo Ramos", "minute": 94, "type": "goal"}
+      ],
+      "away": [
+        {"player": "Ivan Perišić", "minute": 53, "type": "goal"}
+      ]
+    },
+    "source": "FIFA/ESPN",
+    "date": "20260702"
   }
 }

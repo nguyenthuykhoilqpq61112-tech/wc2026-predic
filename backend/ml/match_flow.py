@@ -332,15 +332,30 @@ def _narrative(prof: dict, sim: dict, winner: str | None,
 
 
 def _key_players(prof: dict) -> dict:
+    try:
+        import tournament_stats as _ts
+        _wc_goals: dict[str, int] = _ts.player_goals()
+    except Exception:
+        _wc_goals = {}
+
     def pick(side: dict) -> dict:
         kps = side["key_players"]
-        scorer = next((p for p in kps if p.get("pos") in ("FW", "CM")), None) \
-            or (kps[0] if kps else None)
+        # Re-rank by real WC2026 goals first, then pre-tournament impact.
+        ranked = sorted(kps,
+                        key=lambda p: (_wc_goals.get(p["name"], 0), p.get("impact", 0)),
+                        reverse=True)
+        # Prefer an attacker/midfielder as likely scorer.
+        scorer = next((p for p in ranked if p.get("pos") in ("FW", "CM", "MF")), None) \
+            or (ranked[0] if ranked else None)
         decider = max(kps, key=lambda p: p.get("form", 0), default=None)
+        # Watch list: tournament top-scorers from this squad first, then pad with impact order.
+        watch_order = sorted(kps,
+                             key=lambda p: (_wc_goals.get(p["name"], 0), p.get("impact", 0)),
+                             reverse=True)
         return {
             "likely_scorer": scorer["name"] if scorer else None,
             "penalty_decider": decider["name"] if decider else None,
-            "watch": [p["name"] for p in kps[:3]],
+            "watch": [p["name"] for p in watch_order[:3]],
         }
     return {prof["home"]["team"]: pick(prof["home"]),
             prof["away"]["team"]: pick(prof["away"])}
