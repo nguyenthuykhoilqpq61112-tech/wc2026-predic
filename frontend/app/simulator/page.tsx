@@ -11,12 +11,13 @@ import {
 
 const fetcher = (p: string) => api(p);
 
-/* ── Derive eliminated teams from completed knockout matches ── */
-function useEliminatedTeams() {
+/* ── Derive eliminated teams and confirmed R16 qualifiers from knockout results ── */
+function useKnockoutStatus() {
   const { data: ko } = useSWR("/api/knockout", fetcher, { revalidateOnFocus: false });
-  return useMemo<Set<string>>(() => {
-    const out = new Set<string>();
-    if (!ko?.matches) return out;
+  return useMemo<{ eliminated: Set<string>; r16Teams: Set<string> }>(() => {
+    const eliminated = new Set<string>();
+    const r16Teams   = new Set<string>();
+    if (!ko?.matches) return { eliminated, r16Teams };
     for (const m of ko.matches as any[]) {
       const hs = m.home_score;
       const aws = m.away_score;
@@ -26,15 +27,34 @@ function useEliminatedTeams() {
       if (!home || !away) continue;
       const ph: number | null = m.pen_home ?? null;
       const pa: number | null = m.pen_away ?? null;
-      if (hs > aws)           { out.add(away); }
-      else if (aws > hs)      { out.add(home); }
+      let winner: string, loser: string;
+      if (hs > aws)           { winner = home; loser = away; }
+      else if (aws > hs)      { winner = away; loser = home; }
       else if (ph != null && pa != null) {
-        if (ph > pa)          { out.add(away); }
-        else                  { out.add(home); }
-      }
+        winner = ph > pa ? home : away;
+        loser  = ph > pa ? away : home;
+      } else { continue; }
+      eliminated.add(loser);
+      if (m.type === "r32") r16Teams.add(winner);
     }
-    return out;
+    return { eliminated, r16Teams };
   }, [ko]);
+}
+
+/* ── Scale raw sim odds to conditional on being in R16 ── */
+function applyConditional(r: any, r16Teams: Set<string>): any {
+  if (!r16Teams.has(r.team)) return r;
+  const pR16 = r.R16 ?? 0;
+  if (pR16 < 0.01) return r;
+  return {
+    ...r,
+    R32: 1.0,
+    QF:       r.QF       / pR16,
+    SF:       r.SF       / pR16,
+    Final:    r.Final    / pR16,
+    Champion: r.Champion / pR16,
+    _conditional: true,
+  };
 }
 
 type SortStage = "R32" | "QF" | "SF" | "Final" | "Champion";
@@ -43,7 +63,7 @@ const SORT_STAGES: SortStage[] = ["R32", "QF", "SF", "Final", "Champion"];
 export default function SimulatorPage() {
   const { data, error } = useSWR("/api/simulate?top=24", fetcher);
   const { data: groups }  = useSWR("/api/simulate/groups", fetcher);
-  const eliminated = useEliminatedTeams();
+  const { eliminated, r16Teams } = useKnockoutStatus();
   const [sortBy, setSortBy] = useState<SortStage>("Champion");
 
   if (error) return (
@@ -53,18 +73,18 @@ export default function SimulatorPage() {
   );
   if (!data) return <SimSkeleton />;
 
-  const chart     = data.champion_odds.slice(0, 12);
-  const fullTable = data.champion_odds;
+  const fullTable = (data.champion_odds as any[]).map((r: any) => applyConditional(r, r16Teams));
 
   /* Split table into active vs eliminated, then sort by selected stage */
   const sortFn = (a: any, b: any) => (b[sortBy] ?? 0) - (a[sortBy] ?? 0);
   const activeRows    = fullTable.filter((r: any) => !eliminated.has(r.team)).sort(sortFn);
   const eliminatedRows = fullTable.filter((r: any) =>  eliminated.has(r.team));
 
-  /* Chart: put eliminated teams at the bottom in red */
+  /* Chart top-12 by adjusted champion odds, eliminated at bottom */
+  const chartAll = [...fullTable].sort((a: any, b: any) => b.Champion - a.Champion).slice(0, 12);
   const chartRows = [
-    ...chart.filter((r: any) => !eliminated.has(r.team)),
-    ...chart.filter((r: any) =>  eliminated.has(r.team)),
+    ...chartAll.filter((r: any) => !eliminated.has(r.team)),
+    ...chartAll.filter((r: any) =>  eliminated.has(r.team)),
   ];
 
   return (
@@ -184,7 +204,10 @@ export default function SimulatorPage() {
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
         className="card-broadcast overflow-hidden">
         <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-          <SectionHeader title="STAGE-BY-STAGE ODDS" sub={`${activeRows.length} active · ${eliminatedRows.length} eliminated`} />
+          <SectionHeader
+            title="STAGE-BY-STAGE ODDS"
+            sub={`${activeRows.length} active · ${eliminatedRows.length} eliminated${r16Teams.size > 0 ? " · R16 odds conditional on current bracket" : ""}`}
+          />
           {/* Sort filter pills */}
           <div className="flex items-center gap-1 flex-wrap">
             <span className="text-[10px] text-muted/50 uppercase tracking-widest mr-1">Sort by</span>
@@ -348,6 +371,7 @@ function StageRow({ r, rank, eliminated, sortBy }: {
       {/* stage probabilities */}
       {(["R32", "QF", "SF", "Final", "Champion"] as const).map((stage, si) => {
         const isSort = stage === sortBy;
+        const isWonR32 = !eliminated && r._conditional && stage === "R32";
         return (
           <span key={stage}
             className={`text-right tabnum text-xs
@@ -357,7 +381,7 @@ function StageRow({ r, rank, eliminated, sortBy }: {
               ${!eliminated && !isSort ? "text-muted/60" : ""}
               ${si === 4 ? "pr-1" : ""}
             `}>
-            {eliminated ? "—" : pct(r[stage])}
+            {eliminated ? "—" : isWonR32 ? <span className="text-teal">✓</span> : pct(r[stage])}
           </span>
         );
       })}
