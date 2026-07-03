@@ -287,7 +287,21 @@
   "kickoff": "2026-07-02T15:00:00-04:00",
   "city": "Los Angeles",
   "home_label": "Winner Group H",
-  "away_label": "Runner-up Group J"
+  "away_label": "Runner-up Group J",
+  "actual_home": "Spain",
+  "actual_away": "Austria",
+  "home_score": 3,
+  "away_score": 0,
+  "actual_events": [
+   {"minute": 36, "team": "Spain", "type": "goal", "scorer": "Mikel Oyarzabal", "assist": "Marc Cucurella", "text": "Oyarzabal opens the scoring — Cucurella's driving run creates the chance and Oyarzabal finishes clinically. Spain lead 1-0!"},
+   {"minute": 66, "team": "Spain", "type": "goal", "scorer": "Pedro Porro", "assist": "Álex Baena", "text": "Porro powers a header through traffic from Baena's pinpoint cross — Spain double their lead. 2-0!"},
+   {"minute": 88, "team": "Spain", "type": "goal", "scorer": "Mikel Oyarzabal", "assist": "Marc Cucurella", "text": "Oyarzabal slots into the bottom corner from Cucurella's searching pass — his brace wraps up a dominant Spain victory. 3-0!"}
+  ],
+  "actual_stats": {
+   "home_xg": 2.74,
+   "away_xg": 0.21,
+   "result_note": "Spain were imperious — Oyarzabal's brace and Porro's header sealed a 3-0 win. An early Cucurella goal was ruled out; Schlager made two fine saves to limit the damage before half-time. Spain's first World Cup knockout win since their 2010 triumph."
+  }
  },
  {
   "id": 83,
@@ -297,7 +311,21 @@
   "kickoff": "2026-07-02T19:00:00-04:00",
   "city": "Toronto",
   "home_label": "Runner-up Group K",
-  "away_label": "Runner-up Group L"
+  "away_label": "Runner-up Group L",
+  "actual_home": "Portugal",
+  "actual_away": "Croatia",
+  "home_score": 2,
+  "away_score": 1,
+  "actual_events": [
+   {"minute": 53, "team": "Croatia", "type": "goal", "scorer": "Ivan Perišić", "assist": "Josip Stanišić", "text": "Perišić attacks Stanišić's cross at the back post and volleys past Diogo Costa — Croatia lead 0-1!"},
+   {"minute": 68, "team": "Portugal", "type": "goal", "scorer": "Cristiano Ronaldo", "assist": null, "text": "VAR awards a penalty after Renato Veiga is fouled in the box. Ronaldo steps up — his first-ever goal in a World Cup knockout match — and converts emphatically. 1-1!"},
+   {"minute": 94, "team": "Portugal", "type": "goal", "scorer": "Gonçalo Ramos", "assist": "Rafael Leão", "text": "Leão whips in a cross from the left and Ramos outjumps two defenders to head into the bottom corner — Portugal win it in stoppage time! 2-1!"}
+  ],
+  "actual_stats": {
+   "home_xg": 2.11,
+   "away_xg": 0.82,
+   "result_note": "A VAR-filled classic in Toronto — three goals were ruled out for offside before Ronaldo's historic penalty equalised and Ramos headed home a dramatic 94th-minute winner. Ronaldo finally scores in a World Cup knockout round at his fifth attempt. Portugal advance to face Spain in the Round of 16."
+  }
  },
  {
   "id": 85,
