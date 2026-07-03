@@ -28,6 +28,11 @@ def news():
 
 @app.get("/api/health")
 def health():
+    return {"ok": True, "environment": settings.environment}
+
+
+@app.get("/api/health/model")
+def health_model():
     from . import ml_engine
     e = ml_engine.engine()
     return {"ok": True, "environment": settings.environment,
